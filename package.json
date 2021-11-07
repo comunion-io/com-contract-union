@@ -1,0 +1,22 @@
+{
+  "name": "comunion-contract",
+  "version": "1.0.0",
+  "description": "comunion contract for v5+ version",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "truffle compile",
+    "goerli": "truffle migrate --reset --network goerli",
+    "develop": "truffle migrate",
+    "remixd": "remixd -s   ./ --remix-ide  https://remix.ethereum.org",
+    "test": "truffle test --network goerli"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.zhlh6.cn:comunion-io/comunion-contract.git"
+  },
+  "author": "zehui ys神",
+  "license": "ISC"
+}
