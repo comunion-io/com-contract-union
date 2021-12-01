@@ -6,6 +6,8 @@ contract Base
     address internal  _owner;
     address payable internal  _coinbase;
 
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
     modifier isOwner() {
         assert(msg.sender == _owner);
         _;
@@ -16,7 +18,7 @@ contract Base
         _owner = msg.sender;
     }
 
-    fallback() external payable {
+    fallback() external virtual payable {
         revert();
     }
 
@@ -26,6 +28,17 @@ contract Base
 
     function setCoinBase(address payable cb) internal isOwner {
         _coinbase = cb;
+    }
+
+    function transferOwnership(address newOwner) public virtual isOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        _transferOwnership(newOwner);
+    }
+
+    function _transferOwnership(address newOwner) internal virtual {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
     }
 
     function suicide0(address payable receiver)
