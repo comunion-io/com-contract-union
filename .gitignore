@@ -2,4 +2,6 @@
 node_modules
 package-lock.json
 .secret
-
+build/contracts
+.vscode
+*.iml
