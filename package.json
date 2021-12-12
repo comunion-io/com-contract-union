@@ -6,12 +6,21 @@
   "directories": {
     "test": "test"
   },
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.4.1",
+    "bip39": "^3.0.3",
+    "ethereumjs-util": "^7.0.8",
+    "ethereumjs-wallet": "^1.0.1",
+    "fs-extra": "^4.0.3",
+    "safemath": "^1.0.6",
+    "secp256k1": "^4.0.2",
+    "@truffle/hdwallet-provider": "^1.0.17"
+  },
   "scripts": {
     "compile": "truffle compile",
     "goerli": "truffle migrate --reset --network goerli",
-    "develop": "truffle migrate",
-    "remixd": "remixd -s   ./ --remix-ide  https://remix.ethereum.org",
-    "test": "truffle test --network goerli"
+    "dev": "truffle migrate --reset ---network development",
+    "remixd": "remixd -s   ./ --remix-ide  https://remix.ethereum.org"
   },
   "repository": {
     "type": "git",

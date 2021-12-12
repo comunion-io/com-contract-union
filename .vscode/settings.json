@@ -1,6 +1,4 @@
 {
-  "cSpell.words": [
-    "comunion",
-    "remixd"
-  ]
+  "cSpell.words": ["comunion", "remixd"],
+  "solidity.compileUsingLocalVersion": "d:\\comunion\\comunion-contract\\soljson-v0.8.0+commit.c7dfd78e.js"
 }
