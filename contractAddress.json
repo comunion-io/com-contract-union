@@ -1,0 +1,12 @@
+{
+  "goerli": {
+    "Startup": {
+      "address": "xxxxxxxxxxxxxxx"
+    }
+  },
+  "main": {
+    "Startup": {
+      "address": "xxxxxxxxxxxxxxx"
+    }
+  }
+}

@@ -61,3 +61,4 @@ in your source code, run
       ganache-cli
     ```
   - if you installed ganache by GUI， you can start it directly
+8. after deployed contract, please update contract address in contractAddress.json file
