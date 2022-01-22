@@ -20,7 +20,7 @@
     "compile": "truffle compile",
     "goerli": "truffle migrate --reset --network goerli",
     "dev": "truffle migrate --reset ---network development",
-    "remixd": "remixd -s   ./ --remix-ide  https://remix.ethereum.org"
+    "remixd": "remixd -s ./ --remix-ide  https://remix.ethereum.org"
   },
   "repository": {
     "type": "git",

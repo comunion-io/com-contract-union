@@ -1,0 +1,274 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "startupId",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "id",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "enum Startup.Mode",
+								"name": "mode",
+								"type": "uint8"
+							},
+							{
+								"internalType": "string",
+								"name": "hashtag",
+								"type": "string"
+							},
+							{
+								"internalType": "bytes",
+								"name": "logo",
+								"type": "bytes"
+							},
+							{
+								"internalType": "string",
+								"name": "mission",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "overview",
+								"type": "string"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct Startup.Profile",
+						"name": "startUp",
+						"type": "tuple"
+					}
+				],
+				"name": "created",
+				"type": "event"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "id",
+						"type": "string"
+					}
+				],
+				"name": "getStartup",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "id",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "enum Startup.Mode",
+								"name": "mode",
+								"type": "uint8"
+							},
+							{
+								"internalType": "string",
+								"name": "hashtag",
+								"type": "string"
+							},
+							{
+								"internalType": "bytes",
+								"name": "logo",
+								"type": "bytes"
+							},
+							{
+								"internalType": "string",
+								"name": "mission",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "overview",
+								"type": "string"
+							}
+						],
+						"internalType": "struct Startup.Profile",
+						"name": "p",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "id",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "enum Startup.Mode",
+								"name": "mode",
+								"type": "uint8"
+							},
+							{
+								"internalType": "string",
+								"name": "hashtag",
+								"type": "string"
+							},
+							{
+								"internalType": "bytes",
+								"name": "logo",
+								"type": "bytes"
+							},
+							{
+								"internalType": "string",
+								"name": "mission",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "overview",
+								"type": "string"
+							}
+						],
+						"internalType": "struct Startup.Profile",
+						"name": "p",
+						"type": "tuple"
+					}
+				],
+				"name": "newStartup",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "receiver",
+						"type": "address"
+					}
+				],
+				"name": "suicide0",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Startup.sol": "Startup"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Startup.sol": {
+			"keccak256": "0x37c8e620c7f7717b5208546d43f7473baa49fab41af0c828fb646a373ecbef43",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://746b7d11591a127bb96b76ce8388b4397b6a3dd830245068fba3922dc28c3167",
+				"dweb:/ipfs/QmQ7RcQqPZKidfUDS45TMyHvA92ArHtWS8Qjy4B9L91bFi"
+			]
+		},
+		"contracts/base/Base.sol": {
+			"keccak256": "0xaa189fb9729288dbebdb8d7e02dfd6a0c2302ba2054f5d42a034cb4b5d9aa78c",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://5cf0a758c0507640c071614f7df0a58be3549fd5073cdb365bc5b4e13bcfcd98",
+				"dweb:/ipfs/QmWHPsNtAEE5bwzLaQ87oMWrBrSsKFdQmvFM4RZKQTPL7Z"
+			]
+		}
+	},
+	"version": 1
+}

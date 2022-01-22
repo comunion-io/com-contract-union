@@ -1,12 +1,14 @@
 {
-  "goerli": {
-    "Startup": {
+  "goerli": [
+    {
+      "name": "Startup",
       "address": "xxxxxxxxxxxxxxx"
     }
-  },
-  "main": {
-    "Startup": {
+  ],
+  "main": [
+    {
+      "name": "Startup",
       "address": "xxxxxxxxxxxxxxx"
     }
-  }
+  ]
 }
