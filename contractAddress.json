@@ -2,8 +2,8 @@
   "goerli": [
     {
       "name": "Startup",
-      "address": "xxxxxxxxxxxxxxx",
-      "abiUrl": "/build/contracts/Startup.json"
+      "address": "0xd9145CCE52D386f254917e481eB44e9943F39138",
+      "abiUrl": "/contracts/artifacts/Startup.json"
     }
   ],
   "main": [
