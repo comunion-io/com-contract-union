@@ -9,38 +9,49 @@ contract Startup is Base
         NONE, ESG, NGO, DAO, COM
     }
 
-    struct Profile {
-        string id;
+    struct wallet {
         string name;
-        Mode mode;
-        string hashtag;
-        bytes logo;
-        string mission;
-        string overview;
+        address walletAddress;
     }
 
-    event created(string startupId, Profile startUp);
+    struct Profile {
+        /** startup name */
+        string name;
+        /** startup type */
+        Mode mode;
+        /** startup hash */
+        string[] hashtag;
+        /** startup logo src */
+        string logo;
+        /** startup mission */
+        string mission;
+        /** startup token contract */
+        address tokenContract;
+        /** startup compose wallet */
+        wallet[] wallets;
+        string overview;
+        /** is validate the startup name is only */
+        // bool isValidate;
+    }
 
-    mapping(string => Profile) roster;
+    event created(string name, Profile startUp);
+
+    //public 属性自动生成同名get方法
+    mapping(string => Profile) public startups;
 
     constructor() Base()
     {
         _owner = msg.sender;
     }
 
-    function newStartup(Profile memory p) public payable {
-        require(msg.value >= 1e17, "your balance must more than 0.1 eth");
+    function newStartup(Profile calldata p) public payable {
         require(_coinbase != address(0), "the address can not be the smart contract address");
-        require(bytes(p.id).length != 0, "id can not be null");
-        roster[p.id] = p;
-        _coinbase.transfer(msg.value);
-        emit created(p.id, p);
-    }
-
-    function getStartup(string calldata id)
-    external
-    view
-    returns (Profile memory p){
-        return roster[id];
+        require(bytes(p.name).length != 0, "name can not be null");
+        //名称唯一
+        // require(!startups[p.name].isValidate,"startup name has been used");
+        // p.isValidate = true;
+        startups[p.name] = p;
+        emit created(p.name, p);
     }
 }
+

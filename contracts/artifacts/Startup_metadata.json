@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.7+commit.e28d00a7"
+		"version": "0.8.13+commit.abaa5c0e"
 	},
 	"language": "Solidity",
 	"output": {
@@ -35,16 +35,11 @@
 					{
 						"indexed": false,
 						"internalType": "string",
-						"name": "startupId",
+						"name": "name",
 						"type": "string"
 					},
 					{
 						"components": [
-							{
-								"internalType": "string",
-								"name": "id",
-								"type": "string"
-							},
 							{
 								"internalType": "string",
 								"name": "name",
@@ -56,19 +51,41 @@
 								"type": "uint8"
 							},
 							{
-								"internalType": "string",
+								"internalType": "string[]",
 								"name": "hashtag",
-								"type": "string"
+								"type": "string[]"
 							},
 							{
-								"internalType": "bytes",
+								"internalType": "string",
 								"name": "logo",
-								"type": "bytes"
+								"type": "string"
 							},
 							{
 								"internalType": "string",
 								"name": "mission",
 								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "tokenContract",
+								"type": "address"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "address",
+										"name": "walletAddress",
+										"type": "address"
+									}
+								],
+								"internalType": "struct Startup.wallet[]",
+								"name": "wallets",
+								"type": "tuple[]"
 							},
 							{
 								"internalType": "string",
@@ -92,20 +109,7 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "id",
-						"type": "string"
-					}
-				],
-				"name": "getStartup",
-				"outputs": [
-					{
 						"components": [
-							{
-								"internalType": "string",
-								"name": "id",
-								"type": "string"
-							},
 							{
 								"internalType": "string",
 								"name": "name",
@@ -117,14 +121,14 @@
 								"type": "uint8"
 							},
 							{
-								"internalType": "string",
+								"internalType": "string[]",
 								"name": "hashtag",
-								"type": "string"
+								"type": "string[]"
 							},
 							{
-								"internalType": "bytes",
+								"internalType": "string",
 								"name": "logo",
-								"type": "bytes"
+								"type": "string"
 							},
 							{
 								"internalType": "string",
@@ -132,52 +136,26 @@
 								"type": "string"
 							},
 							{
-								"internalType": "string",
-								"name": "overview",
-								"type": "string"
-							}
-						],
-						"internalType": "struct Startup.Profile",
-						"name": "p",
-						"type": "tuple"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"components": [
-							{
-								"internalType": "string",
-								"name": "id",
-								"type": "string"
+								"internalType": "address",
+								"name": "tokenContract",
+								"type": "address"
 							},
 							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "enum Startup.Mode",
-								"name": "mode",
-								"type": "uint8"
-							},
-							{
-								"internalType": "string",
-								"name": "hashtag",
-								"type": "string"
-							},
-							{
-								"internalType": "bytes",
-								"name": "logo",
-								"type": "bytes"
-							},
-							{
-								"internalType": "string",
-								"name": "mission",
-								"type": "string"
+								"components": [
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "address",
+										"name": "walletAddress",
+										"type": "address"
+									}
+								],
+								"internalType": "struct Startup.wallet[]",
+								"name": "wallets",
+								"type": "tuple[]"
 							},
 							{
 								"internalType": "string",
@@ -193,6 +171,50 @@
 				"name": "newStartup",
 				"outputs": [],
 				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "startups",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "enum Startup.Mode",
+						"name": "mode",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "logo",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "mission",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "tokenContract",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "overview",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -254,11 +276,11 @@
 	},
 	"sources": {
 		"contracts/Startup.sol": {
-			"keccak256": "0x6fa3a57d4f7549b4da183f0a4084b1c9c60ab8eefe3495c46765babd4db14257",
+			"keccak256": "0x468f6ce6ece1e0cce305d6be44ed056d04fa6dbd34a0f88ae037b797265ee00e",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://30939820cbdab1837e68f25aacd36a3e326d9e1b31ecb2e10fcc42cd04f574e1",
-				"dweb:/ipfs/QmNXJuxtSSrB2Txu7uRkDYav3Bom4d729FCyH19hKA41aA"
+				"bzz-raw://2c11eb6a4f137fc879ba7c1723c3163af36020e0b3715900a890233707481c9e",
+				"dweb:/ipfs/QmXad22YbbMw4u1UCbA52ytiZPceGgX5NRhaUatSJ6k3ZX"
 			]
 		},
 		"contracts/base/Base.sol": {
