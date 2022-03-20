@@ -2,7 +2,7 @@
   "goerli": [
     {
       "name": "Startup",
-      "address": "0x837D2dBCeC01B8f819640f1aA4Eb02fe2e9EB139",
+      "address": "0x319C25a41Eb9C4B9E84C9b911DaB21995f7b7913",
       "abiUrl": "/contracts/artifacts/Startup.json"
     }
   ],

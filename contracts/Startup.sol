@@ -44,8 +44,9 @@ contract Startup is Base
         _owner = msg.sender;
     }
 
+    // for web front,  the params looks like  ["zehui1",2,["javascript", "python"],"http://baidu.com","this is my mission", "0xF98A7F9E86DCE7298F3be4778ACd692D649c5228",[["walletname1", "0xF98A7F9E86DCE7298F3be4778ACd692D649c5228"]],"this is overview",true]
     function newStartup(Profile calldata p) public payable {
-        require(_coinbase != address(0), "the address can not be the smart contract address");
+        // require(_coinbase != address(0), "the address can not be the smart contract address");
         require(bytes(p.name).length != 0, "name can not be null");
         //名称唯一
         require(!startups[p.name].isValidate, "startup name has been used");
