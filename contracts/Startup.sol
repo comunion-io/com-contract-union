@@ -31,7 +31,7 @@ contract Startup is Base
         wallet[] wallets;
         string overview;
         /** is validate the startup name is only */
-        // bool isValidate;
+        bool isValidate;
     }
 
     event created(string name, Profile startUp);
@@ -48,7 +48,7 @@ contract Startup is Base
         require(_coinbase != address(0), "the address can not be the smart contract address");
         require(bytes(p.name).length != 0, "name can not be null");
         //名称唯一
-        // require(!startups[p.name].isValidate,"startup name has been used");
+        require(!startups[p.name].isValidate, "startup name has been used");
         // p.isValidate = true;
         startups[p.name] = p;
         emit created(p.name, p);
