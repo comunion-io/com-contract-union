@@ -36,7 +36,7 @@ contract Startup is Base
 
     event created(string name, Profile startUp);
 
-    //public 属性自动生成同名get方法
+    //public name mappong to startup
     mapping(string => Profile) public startups;
 
     constructor() Base()
