@@ -34,7 +34,7 @@ contract Startup is Base
         bool isValidate;
     }
 
-    event created(string name, Profile startUp);
+    event created(string name, Profile startUp, address msg);
 
     //public name mappong to startup
     mapping(string => Profile) public startups;
@@ -50,9 +50,10 @@ contract Startup is Base
         require(bytes(p.name).length != 0, "name can not be null");
         //名称唯一
         require(!startups[p.name].isValidate, "startup name has been used");
+        // require(startups[p.name].tokenContract != p.tokenContract, "token contract has been used");
         // p.isValidate = true;
         startups[p.name] = p;
-        emit created(p.name, p);
+        emit created(p.name, p, msg.sender);
     }
 }
 

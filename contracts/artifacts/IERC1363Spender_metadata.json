@@ -1,0 +1,93 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "onApprovalReceived",
+				"outputs": [
+					{
+						"internalType": "bytes4",
+						"name": "",
+						"type": "bytes4"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Interface for any contract that wants to support approveAndCall  from ERC1363 token contracts as defined in  https://eips.ethereum.org/EIPS/eip-1363",
+			"kind": "dev",
+			"methods": {
+				"onApprovalReceived(address,uint256,bytes)": {
+					"details": "Any ERC1363 smart contract calls this function on the recipient after an `approve`. This function MAY throw to revert and reject the approval. Return of other than the magic value MUST result in the transaction being reverted. Note: the token contract address is always the message sender.",
+					"params": {
+						"amount": "uint256 The amount of tokens to be spent",
+						"data": "bytes Additional data with no specified format",
+						"sender": "address The address which called `approveAndCall` function"
+					},
+					"returns": {
+						"_0": "`bytes4(keccak256(\"onApprovalReceived(address,uint256,bytes)\"))` unless throwing"
+					}
+				}
+			},
+			"title": "IERC1363Spender Interface",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"onApprovalReceived(address,uint256,bytes)": {
+					"notice": "Handle the approval of ERC1363 tokens"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/powerful-erc20.sol": "IERC1363Spender"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/powerful-erc20.sol": {
+			"keccak256": "0x9570db30440d0d877f8e4b5076cb1328db2af6d84f27ae1a4cffc56db63172d5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://58817e6239d1d81a70605d4bbfc1ea495aadcb3b46647a2575aeb4484b0d60a3",
+				"dweb:/ipfs/QmcWsNLsEniffCVQRHwMTN6Hf8VZmPLbCpdn8krRrrQn1M"
+			]
+		}
+	},
+	"version": 1
+}
