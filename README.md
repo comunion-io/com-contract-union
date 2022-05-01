@@ -1,6 +1,20 @@
 # com-contract-union
 Next version of Comunion contract project
 
+# how to contribute code 
+
+1. develop is the development branch, not allowed push directly.
+
+2. release is the pre production branch，only merged by develop, just for the test.
+
+3. main is the production branch, only merged by release branch, 
+
+4. feat/xxx or feature/xxx is the function branch, 
+
+5. fix/xxx for fix bug
+
+6. hotfix/xxx for ambulance bug
+
 # how to start
 1. install truffle
     ```
