@@ -1,0 +1,138 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "implementation",
+						"type": "address"
+					}
+				],
+				"name": "Upgraded",
+				"type": "event"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newImpl",
+						"type": "address"
+					}
+				],
+				"name": "_upgradeTo",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "receiver",
+						"type": "address"
+					}
+				],
+				"name": "suicide0",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/base/Proxy.sol": "Proxy"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/base/Base.sol": {
+			"keccak256": "0xb8c8839491cb4120d5d37e7997703d885350f1b953dab0a7962ea41336c63b6e",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://9c6ef29412526a3c7c460da13095463547376384e47e7ed9d15778e27a5bd319",
+				"dweb:/ipfs/QmTnJNKmo1LWfbkectMpV4XPXwLBzUajzrVyvnmqXbNGV5"
+			]
+		},
+		"contracts/base/Proxy.sol": {
+			"keccak256": "0x92023d30cd6c05b91d8881da06c9d66fd520f876ef5269688f30f8ef9b8a793a",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://3f59e94e34ef3406a7a6499c766a5b7dc924ad57750826c188d849554db77906",
+				"dweb:/ipfs/QmQ7vW6ADrR9vpvK5qn74GnBeQVEX2s9SAGrp4GnrN5V8e"
+			]
+		}
+	},
+	"version": 1
+}
