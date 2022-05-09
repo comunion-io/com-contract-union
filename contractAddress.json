@@ -6,18 +6,25 @@
       "abiUrl": "/contracts/artifacts/Startup.json"
     }
   ],
-  "avaxTestNet": [
+  "main": [
+    {
+      "name": "Startup",
+      "address": "xxxxxxxxxxxxxxx",
+      "abiUrl": "/build/contracts/Startup.json"
+    }
+  ],
+  "avaxTest": [
     {
       "name": "Startup",
       "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964",
       "abiUrl": "/contracts/artifacts/Startup.json"
     }
   ],
-  "main": [
+  "avaxMain": [
     {
       "name": "Startup",
-      "address": "xxxxxxxxxxxxxxx",
-      "abiUrl": "/build/contracts/Startup.json"
+      "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964",
+      "abiUrl": "/contracts/artifacts/Startup.json"
     }
   ]
 }
