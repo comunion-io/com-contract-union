@@ -1,42 +1,28 @@
-{
-  "5": {
-    "name": "goerli",
-    "contracts": [
+[
+  {
+    "name": "Startup",
+    "abiUrl": "/contracts/artifacts/Startup.json",
+    "addresses": [
       {
-        "name": "Startup",
-        "address": "0xEdf4565af54D9508e247c044F09EddcaD91DAdED",
-        "abiUrl": "/contracts/artifacts/Startup.json"
-      }
-    ]
-  },
-  "1": {
-    "name": "main",
-    "contracts": [
+        "chainId": 1,
+        "chainName": "Ethereum",
+        "address": ""
+      },
       {
-        "name": "Startup",
-        "address": "xxxxxxxxxxxxxxx",
-        "abiUrl": "/contracts/artifacts/Startup.json"
-      }
-    ]
-  },
-  "43113": {
-    "name": "anaxTest",
-    "contracts": [
+        "chainId": 5,
+        "chainName": "Goerli",
+        "address": "0xEdf4565af54D9508e247c044F09EddcaD91DAdED"
+      },
       {
-        "fileName": "Startup",
-        "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964",
-        "abiUrl": "/contracts/artifacts/Startup.json"
-      }
-    ]
-  },
-  "43114": {
-    "name": "avaxMain",
-    "contracts": [
+        "chainId": 43113,
+        "chainName": "Ethereum",
+        "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964"
+      },
       {
-        "fileName": "Startup",
-        "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964",
-        "abiUrl": "/contracts/artifacts/Startup.json"
+        "chainId": 43114,
+        "chainName": "Ethereum",
+        "address": ""
       }
     ]
   }
-}
+]
