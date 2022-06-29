@@ -1,0 +1,193 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "discoId",
+						"type": "string"
+					}
+				],
+				"name": "createdBounty",
+				"type": "event"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "bountyAddress",
+				"outputs": [
+					{
+						"internalType": "contract BountyAddr",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "bountyId",
+						"type": "string"
+					}
+				],
+				"name": "createBounty",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "id",
+						"type": "string"
+					},
+					{
+						"internalType": "address payable",
+						"name": "oriSender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "oriVal",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					}
+				],
+				"name": "invest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "receiver",
+						"type": "address"
+					}
+				],
+				"name": "suicide0",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Bounty.sol": "Bounty"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Bounty.sol": {
+			"keccak256": "0x809658265b94371458e67468909f1379c5c45f0cb0dfa0dcf945ce93c5643b87",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://c4a0496c471fbf45c6f22ab663fdd0fb1cd37b9b7e4856a88bcb35046575dba0",
+				"dweb:/ipfs/QmWiRcWS38f8WWacSVMPFSP7wNxSc8o6WbzQ7bZ1H1ydR5"
+			]
+		},
+		"contracts/base/Base.sol": {
+			"keccak256": "0xb8c8839491cb4120d5d37e7997703d885350f1b953dab0a7962ea41336c63b6e",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://9c6ef29412526a3c7c460da13095463547376384e47e7ed9d15778e27a5bd319",
+				"dweb:/ipfs/QmTnJNKmo1LWfbkectMpV4XPXwLBzUajzrVyvnmqXbNGV5"
+			]
+		},
+		"contracts/interfaces/IErc20.sol": {
+			"keccak256": "0xaacf8b5e74c3fafb3e55abc44e4d673e8411c8460d103b5b28fb900bad2f35ca",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://37565c53a78c67b1b8bd66536f66d2837f6859fee1a04a6ad0d80b064683d656",
+				"dweb:/ipfs/QmQrYSAaRafozoqE3qRnypCmjG8Qm5mny6kGBoxoEh3tws"
+			]
+		}
+	},
+	"version": 1
+}

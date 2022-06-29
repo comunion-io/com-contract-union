@@ -24,5 +24,16 @@
         "address": "0x45BE0Eaa7076854d790A9583c6E3AE020d1A1556"
       }
     ]
+  },
+  {
+    "name": "Bounty",
+    "abiUrl": "",
+    "address": [
+      {
+        "chainId": 43113,
+        "chainName": "avaxTest",
+        "address": "0xc7ED4B5a73C00AAc07E97bF9F567DDF43187e615"
+      }
+    ]
   }
 ]
