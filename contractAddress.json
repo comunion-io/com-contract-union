@@ -27,7 +27,7 @@
   },
   {
     "name": "Bounty",
-    "abiUrl": "",
+    "abiUrl": "/contracts/artifacts/Bounty.json",
     "address": [
       {
         "chainId": 43113,
