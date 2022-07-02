@@ -28,7 +28,7 @@
   {
     "name": "Bounty",
     "abiUrl": "/contracts/artifacts/Bounty.json",
-    "address": [
+    "addresses": [
       {
         "chainId": 43113,
         "chainName": "avaxTest",
