@@ -8,11 +8,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "bountyId",
-						"type": "string"
-					},
-					{
 						"internalType": "address",
 						"name": "bountyBase",
 						"type": "address"
@@ -59,19 +54,6 @@
 						"internalType": "address payable",
 						"name": "",
 						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "id",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
 					}
 				],
 				"stateMutability": "view",
@@ -174,11 +156,11 @@
 	},
 	"sources": {
 		"contracts/Bounty.sol": {
-			"keccak256": "0x809658265b94371458e67468909f1379c5c45f0cb0dfa0dcf945ce93c5643b87",
+			"keccak256": "0xf7103ffe8618a175b379bf274d3c4dcebb8042a03abd0d720f7e561629b4c879",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://c4a0496c471fbf45c6f22ab663fdd0fb1cd37b9b7e4856a88bcb35046575dba0",
-				"dweb:/ipfs/QmWiRcWS38f8WWacSVMPFSP7wNxSc8o6WbzQ7bZ1H1ydR5"
+				"bzz-raw://8b61105c19d69f000e83bd4d9670ef1c343ea1db8149677a849e491ce47eafdd",
+				"dweb:/ipfs/QmR6quBj4ntiBHxx61vQ62LzYrQdeNf33cJajRmRxwgCdB"
 			]
 		},
 		"contracts/base/Base.sol": {

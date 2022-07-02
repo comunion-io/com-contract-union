@@ -5,18 +5,18 @@ import "../contracts/base/Base.sol";
 import "./interfaces/IErc20.sol";
 
 contract Bounty is Base { 
-    event createdBounty(string discoId);
-    mapping(string => BountyAddr) public bountyAddress;
+    event createdBounty(BountyAddr addr);
+    BountyAddr[] private bountyAddressList;
 
     constructor() Base() {
         _owner = msg.sender;
     }
 
-    function createBounty(string memory bountyId) public payable {
-        BountyAddr addr = new BountyAddr(bountyId, address(this));
+    function createBounty() public payable {
+        BountyAddr addr = new BountyAddr(address(this));
         addr.getPool().transfer(msg.value);
-        bountyAddress[bountyId] = addr;
-        emit createdBounty(bountyId);
+        bountyAddressList.push(addr);
+        emit createdBounty(addr);
     }
 
     function invest(string memory id, address payable oriSender, uint256 oriVal, uint256 time) public {
@@ -26,7 +26,6 @@ contract Bounty is Base {
 
 contract BountyAddr {
     address _bountyBase;
-    string public id;
 
     receive() external payable{
         require(address(_bountyBase) != address(0), 'need init bounty');
@@ -36,8 +35,7 @@ contract BountyAddr {
         }
     }
 
-    constructor(string memory bountyId, address bountyBase) {
-        id = bountyId;
+    constructor(address bountyBase) {
         _bountyBase = bountyBase;
     }
 
