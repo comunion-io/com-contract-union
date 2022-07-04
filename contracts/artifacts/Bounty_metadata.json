@@ -47,7 +47,13 @@
 				"type": "fallback"
 			},
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
 				"name": "createBounty",
 				"outputs": [],
 				"stateMutability": "payable",
@@ -140,11 +146,11 @@
 	},
 	"sources": {
 		"contracts/Bounty.sol": {
-			"keccak256": "0xf7103ffe8618a175b379bf274d3c4dcebb8042a03abd0d720f7e561629b4c879",
+			"keccak256": "0x4b1c2e04a79fbdb828fd93a4b0b43b5f5561d3444c7d4170b66cf35a91a3a8be",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://8b61105c19d69f000e83bd4d9670ef1c343ea1db8149677a849e491ce47eafdd",
-				"dweb:/ipfs/QmR6quBj4ntiBHxx61vQ62LzYrQdeNf33cJajRmRxwgCdB"
+				"bzz-raw://56f0283e86df26e0f91cc3e2ebe42081b541c980ea03443a21cc40b1ca42a474",
+				"dweb:/ipfs/QmT2xM9KL3gEvEkmNXbGq9aAtc1tuktzRE2eYEw9U3BumG"
 			]
 		},
 		"contracts/base/Base.sol": {

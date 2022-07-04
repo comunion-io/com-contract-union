@@ -8,13 +8,18 @@ contract Bounty is Base {
     event createdBounty(BountyAddr addr);
     BountyAddr[] private bountyAddressList;
 
+
+    // this address should be replaced for prod width USDC addr
+    address _stableAddr = address(0x8f81b9B08232F8E8981dAa87854575d7325A9439);
+
     constructor() Base() {
         _owner = msg.sender;
     }
 
-    function createBounty() public payable {
+    function createBounty(uint256 amount) public payable {
         BountyAddr addr = new BountyAddr(address(this));
-        addr.getPool().transfer(msg.value);
+         // addr.getPool().transfer(msg.value);
+        IERC20(_stableAddr).transferFrom(msg.sender, addr.getPool(), amount);
         bountyAddressList.push(addr);
         emit createdBounty(addr);
     }
