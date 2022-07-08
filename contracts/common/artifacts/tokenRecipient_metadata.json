@@ -62,11 +62,11 @@
 	},
 	"sources": {
 		"contracts/common/Erc20.sol": {
-			"keccak256": "0xeb0dac5c8f835a4239f4bf9d25daca568b639fa2ace2b9b03b96d3b8cfc47ed3",
+			"keccak256": "0x5487f0bee2ee4893200baa0a1cba8da985ae6c9600e8f566f115b6201ef585c9",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://a0f7070e5316bd717804cbad1244933c4738c63160a5854154742b08846fd51e",
-				"dweb:/ipfs/QmRNXgS7TxzLvtBHCymjcPN75Qno9y2RPu4tTrUUMgMoRF"
+				"bzz-raw://b12819776fb306c17b95e5ee2a042df2b95a501428dc7094729c083cedaf7a45",
+				"dweb:/ipfs/QmeQwtcz2tteGGLxQBtFzvaCJcr8dAet93w7c9Y4986Mgo"
 			]
 		}
 	},

@@ -10,7 +10,9 @@ contract Bounty is Base {
 
 
     // this address should be replaced for prod width USDC addr
-    address _stableAddr = address(0x8f81b9B08232F8E8981dAa87854575d7325A9439);
+    // address _stableAddr = address(0x8f81b9B08232F8E8981dAa87854575d7325A9439);
+    address _stableAddr = address(0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E);
+
 
     constructor() Base() {
         _owner = msg.sender;
