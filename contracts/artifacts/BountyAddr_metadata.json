@@ -47,6 +47,24 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "ethTransfer",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getPool",
 				"outputs": [
@@ -156,11 +174,11 @@
 	},
 	"sources": {
 		"contracts/Bounty.sol": {
-			"keccak256": "0x160d83b1ba2b7b5a95a6f2daf9de1d710cbc4830b3e3e0baacae1c8ba4001c37",
+			"keccak256": "0x7f96ef61126b443d55cd5276359d3f0dc8fd6f9db32b9720d3892dd50c7a1776",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://498b8cf61f4e4492d5b1592d1f175c593713acabfb66469d4edf2183569a8271",
-				"dweb:/ipfs/QmUyc6ing9w6VVGb4WsEDgQ26YxvVVxyejZBmTw3ufQVDr"
+				"bzz-raw://930096cf1295a8941e6bf27aab23a1854c0fb28926bb040e4fbccdba3d0f8554",
+				"dweb:/ipfs/QmdLHdVoi1tDxgDpiA7NuEARzc59rpJ4dvTv8yJLTzjkie"
 			]
 		},
 		"contracts/base/Base.sol": {
