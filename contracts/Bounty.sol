@@ -5,8 +5,21 @@ import "../contracts/base/Base.sol";
 import "./interfaces/IErc20.sol";
 
 contract Bounty is Base { 
+
+     //  质押人信息
+    struct BountyFounder {
+        // 投资人地址
+        address payable founder;
+        // 投资金额, 可以多次投资
+        uint256 value;
+    }
+
+    // 记录质押人
+    mapping(address => BountyFounder[]) public founders;
+
     event createdBounty(BountyAddr addr);
     BountyAddr[] private bountyAddressList;
+
 
 
     // this address should be replaced for prod width USDC addr
@@ -23,7 +36,18 @@ contract Bounty is Base {
          // addr.getPool().transfer(msg.value);
         IERC20(_stableAddr).transferFrom(msg.sender, addr.getPool(), amount);
         bountyAddressList.push(addr);
+        BountyFounder memory f = BountyFounder(payable(msg.sender), msg.value);
+        founders[address(addr)].push(f); 
         emit createdBounty(addr);
+    }
+
+    function refund(address payable bountyAddr) public payable {
+        require(bountyAddr != address(0), 'empty addr');
+        // refund ether
+        for (uint256 i = 0; i < founders[bountyAddr].length; i++) {
+            BountyFounder storage f = founders[bountyAddr][i];
+            BountyAddr(bountyAddr).ethTransfer(f.founder, f.value);
+        }
     }
 
     function invest(string memory id, address payable oriSender, uint256 oriVal, uint256 time) public {
@@ -64,6 +88,10 @@ contract BountyAddr {
 
     function deposit() external payable {
          // skip fallback func.
+    }
+
+    function ethTransfer(address payable to, uint256 amount) external payable {
+        to.transfer(amount);
     }
 
 
