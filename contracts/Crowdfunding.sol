@@ -5,19 +5,19 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-    struct Parameters {
-        address sellTokenAddress;
-        address buyTokenAddress;
-        uint8 buyTokenDecimals;
-        bool buyTokenIsNative;
-        uint256 raiseTotal;
-        uint256 buyPrice;
-        uint16 swapPercent;
-        uint16 sellTax;
-        uint256 maxBuyAmount;
-        uint16 maxSellPercent;
-        address teamWallet;
-    }
+struct Parameters {
+    address sellTokenAddress;
+    address buyTokenAddress;
+    uint8 buyTokenDecimals;
+    bool buyTokenIsNative;
+    uint256 raiseTotal;
+    uint256 buyPrice;
+    uint16 swapPercent;
+    uint16 sellTax;
+    uint256 maxBuyAmount;
+    uint16 maxSellPercent;
+    address teamWallet;
+}
 
 contract CrowdfundingFactory is Ownable {
 
