@@ -40,5 +40,16 @@
         "address": "0x515651e1c1A55cA468742cB5ea08Ca7c030d928a"
       }
     ]
+  },
+  {
+    "name": "CrowdfundingFactory",
+    "abiUrl": "/contracts/artifacts/CrowdfundingFactory.json",
+    "addresses": [
+      {
+        "chainId": 43113,
+        "chainName": "avaxTest",
+        "address": "0xDeFf08A806c9d481C1a1Bc67Ec97c4F10098b108"
+      }
+    ]
   }
 ]
