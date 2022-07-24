@@ -42,18 +42,13 @@
     ]
   },
   {
-    "name": "Crowdfunding",
-    "abiUrl": "/contracts/artifacts/Crowdfunding.json",
+    "name": "CrowdfundingFactory",
+    "abiUrl": "/contracts/artifacts/CrowdfundingFactory.json",
     "addresses": [
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xdBAd77b0994F262Ebf91f87F1A1975B30786Ac0c"
-      },
-      {
-        "chainId": 43114,
-        "chainName": "avaxMain",
-        "address": "0x515651e1c1A55cA468742cB5ea08Ca7c030d928a"
+        "address": "0xDeFf08A806c9d481C1a1Bc67Ec97c4F10098b108"
       }
     ]
   }
