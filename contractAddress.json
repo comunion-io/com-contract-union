@@ -51,5 +51,10 @@
         "address": "0x6eD5B9B3eB6aDc486EDB23bcE1779445b5adeB1B"
       }
     ]
+  },
+  {
+    "name": "Crowdfunding",
+    "abiUrl": "/contracts/artifacts/Crowdfunding.json",
+    "addresses": []
   }
 ]
