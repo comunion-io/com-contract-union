@@ -331,8 +331,8 @@ contract Crowdfunding is Ownable {
     function _checkPrice(uint256 _buyAmount, uint256 _sellAmount) internal view returns (bool) {
         uint256 _exactAmount = _buyAmount * _swapPrice();
         uint256 _range = 0;
-        if (paras.sellTokenDecimals >= 9) {
-            _range = 5 * 10 ** (paras.sellTokenDecimals-9);
+        if (paras.sellTokenDecimals >= 8) {
+            _range = 10 ** (paras.sellTokenDecimals-8);
         }
         if (_sellAmount >= (_exactAmount-_range) && _sellAmount <= (_exactAmount+_range)) {
             return true;
