@@ -595,6 +595,11 @@
 						"internalType": "uint256",
 						"name": "_sellTokenBalance",
 						"type": "uint256"
+					},
+					{
+						"internalType": "enum Crowdfunding.Status",
+						"name": "_status",
+						"type": "uint8"
 					}
 				],
 				"stateMutability": "view",
@@ -704,11 +709,11 @@
 			]
 		},
 		"contracts/Crowdfunding.sol": {
-			"keccak256": "0xb1e37f6e85857c803e68ecc85689fcb9e28ce40b2d0fcb3595e0b0f49dc11ca0",
+			"keccak256": "0x1cf75c83c14f3fc1198842b2a6df4a7243b71c8fe254a3544195aa327a7242b4",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://3b7a4b25e5ab7679a443151a7ed14323ad978803838c5f24d0cf0ef763247d0c",
-				"dweb:/ipfs/QmerEQxVShHAtMZbg8xJAnzhoejigpbCwZtCsTEx6ypK4e"
+				"bzz-raw://8ec6277f96863ee3834c291e8ea9958053821ea713462e87f00fad330ccac17c",
+				"dweb:/ipfs/QmcMAFErHPCZPxZ2H6PP9ewAmpcfq9sG1hHab7aUdrJcBo"
 			]
 		}
 	},
