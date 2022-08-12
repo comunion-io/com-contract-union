@@ -709,11 +709,11 @@
 			]
 		},
 		"contracts/Crowdfunding.sol": {
-			"keccak256": "0x5eb1e6bd32ec099a67ab06e8aab7be483ba6d0b6541b660fbd09fd0cf09c56d9",
+			"keccak256": "0xb82bbb72e7768a64c8ccacad97c44a394474109c85620ed551a991762b0ade56",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://0bab34030b77fdd781b7f3bcb5d8dd95d1a0159639ecbcf2a742f02d97478c31",
-				"dweb:/ipfs/QmP9PuP6GjfLL7ctcBePL7VAKnuaUAKAQ77d4b5PsPNQ7b"
+				"bzz-raw://0817e9e04769028cc83372c1f0594ef643e1d67de273ffa9275867ca5622b3e1",
+				"dweb:/ipfs/QmeL2Dk9nQQ37ySWF8XNtQhL1VshbMdUeayACg7Squ8feS"
 			]
 		}
 	},
