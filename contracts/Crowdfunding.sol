@@ -70,7 +70,7 @@ contract CrowdfundingFactory is Ownable {
 contract Crowdfunding is Ownable {
 
     enum Status {
-        Upcoming, Live, Ended, Cancel
+        Pending, Upcoming, Live, Ended, Cancel
     }
 
     IERC20 private sellToken;
@@ -219,14 +219,15 @@ contract Crowdfunding is Ownable {
     function state() public view returns (uint256 _raiseTotal, uint256 _raiseAmount, uint256 _swapPoolAmount,
         uint256 _sellTokenDeposit, uint256 _sellTokenAmount,
         uint256 _myBuyTokenAmount, uint256 _mySellTokenAmount,
-        uint256 _buyTokenBalance, uint256 _sellTokenBalance) {
+        uint256 _buyTokenBalance, uint256 _sellTokenBalance,
+        Status _status) {
         uint256 _raiseBalance = thisAccount.balance;
         if (!paras.buyTokenIsNative) {
             _raiseBalance = buyToken.balanceOf(thisAccount);
         }
         return (paras.raiseTotal, buyTokenAmount, swapPoolAmount, depositAmount, sellTokenAmount,
         amounts[msg.sender].buyAmount, amounts[msg.sender].sellAmount, _raiseBalance,
-        sellToken.balanceOf(thisAccount));
+        sellToken.balanceOf(thisAccount), status);
     }
 
     function account() public view returns (address _owner, address _factory, address _founder) {
@@ -328,7 +329,12 @@ contract Crowdfunding is Ownable {
     }
 
     function _checkPrice(uint256 _buyAmount, uint256 _sellAmount) internal view returns (bool) {
-        if (_sellAmount == _buyAmount * _swapPrice()) {
+        uint256 _exactAmount = _buyAmount * _swapPrice();
+        uint256 _range = 0;
+        if (paras.sellTokenDecimals >= 9) {
+            _range = 5 * 10 ** (paras.sellTokenDecimals-9);
+        }
+        if (_sellAmount >= (_exactAmount-_range) && _sellAmount <= (_exactAmount+_range)) {
             return true;
         } else {
             return false;
