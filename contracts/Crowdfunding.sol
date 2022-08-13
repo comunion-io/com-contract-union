@@ -49,6 +49,7 @@ contract CrowdfundingFactory is Ownable {
         endTime: _endTime});
 
         require(_sellToken != address(0) && _buyToken != address(0), "Token address is zero");
+        require(_buyPrice > 0, "Buy price must more than zero");
 
         IERC20 sellToken = IERC20(paras.sellTokenAddress);
         Crowdfunding newCrowdfunding = new Crowdfunding(address(this), msg.sender, paras);
@@ -97,6 +98,26 @@ contract Crowdfunding is Ownable {
     event Sell(address caller, uint256 buyAmount, uint256 sellAmount);
     event Receive(address sender, string func);
 
+    modifier isActive() {
+        _checkActive();
+        _;
+    }
+
+    modifier inTime() {
+        _checkInTime();
+        _;
+    }
+
+    modifier beforeStart() {
+        _checkBeforeStart();
+        _;
+    }
+
+    modifier canOver() {
+        _checkCanOver();
+        _;
+    }
+
     constructor(address _factory, address _founder, Parameters memory _parameters) {
         factory = _factory;
         founder = _founder;
@@ -118,26 +139,6 @@ contract Crowdfunding is Ownable {
         transferOwnership(_founder);
 
         emit Created(owner(), factory, founder, depositAmount, paras);
-    }
-
-    modifier isActive() {
-        _checkActive();
-        _;
-    }
-
-    modifier inTime() {
-        _checkInTime();
-        _;
-    }
-
-    modifier beforeStart() {
-        _checkBeforeStart();
-        _;
-    }
-
-    modifier canOver() {
-        _checkCanOver();
-        _;
     }
 
     function buy(uint256 _buyAmount, uint256 _sellAmount) public payable isActive inTime returns (bool) {
@@ -329,16 +330,13 @@ contract Crowdfunding is Ownable {
     }
 
     function _checkPrice(uint256 _buyAmount, uint256 _sellAmount) internal view returns (bool) {
-        uint256 _exactAmount = _buyAmount * _swapPrice();
-        uint256 _range = 0;
-        if (paras.sellTokenDecimals >= 7) {
-            _range = 10 ** (paras.sellTokenDecimals-7);
-        }
-        if (_sellAmount >= (_exactAmount-_range) && _sellAmount <= (_exactAmount+_range)) {
+        if (_reserveDecimals(_buyAmount*_swapPrice(), paras.sellTokenDecimals, 8) == _sellAmount) {
             return true;
-        } else {
-            return false;
         }
+        if (_reserveDecimals(_sellAmount/_swapPrice(), paras.buyTokenDecimals, 8) == _buyAmount) {
+            return true;
+        }
+        return false;
     }
 
     function _swapAmount(uint256 _buyAmount, uint256 _sellAmount) internal view returns (uint256, uint256) {
@@ -353,6 +351,14 @@ contract Crowdfunding is Ownable {
 
     function _swapPrice() internal view returns (uint256) {
         return paras.buyPrice / 100 * (10 ** paras.sellTokenDecimals) / (10 ** paras.buyTokenDecimals);
+    }
+
+    function _reserveDecimals(uint256 _amount, uint8 _decimals, uint8 _reserves) internal pure returns(uint256) {
+        if (_decimals < _reserves) {
+            return _amount;
+        } else {
+            return _amount / 10 ** (_decimals-_reserves) * 10 ** (_decimals-_reserves);
+        }
     }
 
     function _checkActive() internal view virtual {
