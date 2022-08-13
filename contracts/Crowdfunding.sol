@@ -49,7 +49,7 @@ contract CrowdfundingFactory is Ownable {
         endTime: _endTime});
 
         require(_sellToken != address(0) && _buyToken != address(0), "Token address is zero");
-        require(_buyPrice > 0, "Buy price is incorrect");
+        require(_buyPrice > 0, "Buy price must more than zero");
 
         IERC20 sellToken = IERC20(paras.sellTokenAddress);
         Crowdfunding newCrowdfunding = new Crowdfunding(address(this), msg.sender, paras);
