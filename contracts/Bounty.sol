@@ -169,16 +169,6 @@ contract Bounty is Ownable {
         emit Created(owner(), factory, founder, paras);
     }
 
-    function updForTest(BountyStatus _status, uint256 _applicantMinAmount, uint256 _deadline) public onlyFounder {
-        bountyStatus = _status;
-        paras.applicantDepositMinAmount = _applicantMinAmount;
-        paras.applyDeadline = _deadline;
-    }
-
-    function updFounder(address _founder) public onlyFounder {
-        founder = _founder;
-    }
-
     function deposit(uint256 _amount) public payable onlyFounder inReadyToWork {
         require(_amount > 0, "Deposit amount is zero");
         _deposit(_amount);
