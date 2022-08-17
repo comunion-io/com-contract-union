@@ -6,72 +6,18 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_factory",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_founder",
-						"type": "address"
-					},
-					{
-						"components": [
-							{
-								"internalType": "address",
-								"name": "depositToken",
-								"type": "address"
-							},
-							{
-								"internalType": "bool",
-								"name": "depositTokenIsNative",
-								"type": "bool"
-							},
-							{
-								"internalType": "uint256",
-								"name": "founderDepositAmount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "applicantDepositMinAmount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "applyDeadline",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct Parameters",
-						"name": "_paras",
-						"type": "tuple"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [
 					{
 						"indexed": false,
 						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "factory",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
 						"name": "founder",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "bounty",
 						"type": "address"
 					},
 					{
@@ -108,26 +54,7 @@
 						"type": "tuple"
 					}
 				],
-				"name": "Created",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "from",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "Deposit",
+				"name": "BountyCreated",
 				"type": "event"
 			},
 			{
@@ -150,75 +77,44 @@
 				"type": "event"
 			},
 			{
-				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
 						"internalType": "address",
-						"name": "to",
+						"name": "_depositToken",
 						"type": "address"
 					},
 					{
-						"indexed": false,
 						"internalType": "uint256",
-						"name": "amount",
+						"name": "_founderDepositAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_applicantDepositAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_applyDeadline",
 						"type": "uint256"
 					}
 				],
-				"name": "Refund",
-				"type": "event"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_amount",
-						"type": "uint256"
-					}
-				],
-				"name": "applyFor",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_address",
-						"type": "address"
-					}
-				],
-				"name": "approveApplicant",
+				"name": "createBounty",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "close",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [
+				"name": "getDeployedBounties",
+				"outputs": [
 					{
-						"internalType": "uint256",
-						"name": "_amount",
-						"type": "uint256"
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
 					}
 				],
-				"name": "deposit",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "lock",
-				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -236,93 +132,9 @@
 			},
 			{
 				"inputs": [],
-				"name": "postUpdate",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "release",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "releaseMyDeposit",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "renounceOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "state",
-				"outputs": [
-					{
-						"internalType": "uint8",
-						"name": "_bountyStatus",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_applicantCount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_depositBalance",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_founderDepositAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_applicantDepositAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_applicantDepositMinAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "_depositLock",
-						"type": "bool"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_timeLock",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint8",
-						"name": "_myRole",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_myDepositAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint8",
-						"name": "_myStatus",
-						"type": "uint8"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -336,85 +148,6 @@
 				"name": "transferOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_address",
-						"type": "address"
-					}
-				],
-				"name": "unapproveApplicant",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "unlock",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "enum Bounty.BountyStatus",
-						"name": "_status",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_applicantMinAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_deadline",
-						"type": "uint256"
-					}
-				],
-				"name": "updForTest",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_founder",
-						"type": "address"
-					}
-				],
-				"name": "updFounder",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "whoAmI",
-				"outputs": [
-					{
-						"internalType": "uint8",
-						"name": "_role",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_depositAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint8",
-						"name": "_applicantStatus",
-						"type": "uint8"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -441,7 +174,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/Bounty.sol": "Bounty"
+			"contracts/Bounty.sol": "BountyFactory"
 		},
 		"evmVersion": "london",
 		"libraries": {},
