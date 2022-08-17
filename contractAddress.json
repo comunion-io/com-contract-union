@@ -26,20 +26,20 @@
     ]
   },
   {
-    "name": "Bounty",
-    "abiUrl": "/contracts/artifacts/Bounty.json",
+    "name": "BountyFactory",
+    "abiUrl": "/contracts/artifacts/BountyFactory.json",
     "addresses": [
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xdBAd77b0994F262Ebf91f87F1A1975B30786Ac0c"
-      },
-      {
-        "chainId": 43114,
-        "chainName": "avaxMain",
-        "address": "0x515651e1c1A55cA468742cB5ea08Ca7c030d928a"
+        "address": "0x8B4Dbcc4480926577eC05FCfd1568bFf10F4288e"
       }
     ]
+  },
+  {
+    "name": "Bounty",
+    "abiUrl": "/contracts/artifacts/Bounty.json",
+    "addresses": []
   },
   {
     "name": "CrowdfundingFactory",
