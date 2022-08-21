@@ -32,12 +32,12 @@
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0x8B4Dbcc4480926577eC05FCfd1568bFf10F4288e"
+        "address": "0x4B0E34D1E3373B7BACa835f134A44ded2AA54510"
       },
       {
         "chainId": 43114,
         "chainName": "avaxMain",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": "0x6187f53e7AC4cfB95ea1c4E906e777d0d2f6763E"
       }
     ]
   },

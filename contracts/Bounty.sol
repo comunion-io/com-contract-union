@@ -5,13 +5,13 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-    struct Parameters {
-        address depositToken;
-        bool depositTokenIsNative;
-        uint256 founderDepositAmount;
-        uint256 applicantDepositMinAmount;
-        uint256 applyDeadline;
-    }
+struct Parameters {
+    address depositToken;
+    bool depositTokenIsNative;
+    uint256 founderDepositAmount;
+    uint256 applicantDepositMinAmount;
+    uint256 applyDeadline;
+}
 
 contract BountyFactory is Ownable {
     address[] private bounties;

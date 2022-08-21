@@ -237,11 +237,11 @@
 			]
 		},
 		"contracts/Bounty.sol": {
-			"keccak256": "0x764eca797d93f703e1aefe13493fb31fa0e21ca342d382fac48c99aca1421437",
+			"keccak256": "0x0d84eccbe4bfe1cee5e678c2319491b5a1f9374cf2d3ac58a32d205ce1566b36",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://b9028aeace164c45ab5bde50e1226c2ab6440996fc0c1dda827863197173c0da",
-				"dweb:/ipfs/QmNyg6b2VkDqio5Eay9B5p546J2AJnca7gQaVcgN5Nsh9g"
+				"bzz-raw://c9ab2c022b93b9bab62e9eda78fa90519b216b2889e7f9a08350bc16a4772feb",
+				"dweb:/ipfs/QmboPUJxyF7H9NiXjEagtuyTd3YXsNQnqoZkt2MDa8EhKT"
 			]
 		}
 	},
