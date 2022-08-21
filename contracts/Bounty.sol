@@ -5,13 +5,13 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-struct Parameters {
-    address depositToken;
-    bool depositTokenIsNative;
-    uint256 founderDepositAmount;
-    uint256 applicantDepositMinAmount;
-    uint256 applyDeadline;
-}
+    struct Parameters {
+        address depositToken;
+        bool depositTokenIsNative;
+        uint256 founderDepositAmount;
+        uint256 applicantDepositMinAmount;
+        uint256 applyDeadline;
+    }
 
 contract BountyFactory is Ownable {
     address[] private bounties;
@@ -20,13 +20,11 @@ contract BountyFactory is Ownable {
 
     function createBounty(address _depositToken, uint256 _founderDepositAmount, uint256 _applicantDepositAmount, uint256 _applyDeadline) public {
         require(_applyDeadline > block.timestamp, "Applicant cutoff date is expired");
-        // address _stableToken = address(0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E);   //Avalanche Mainnet
-        // address _stableToken = address(0x8f81b9B08232F8E8981dAa87854575d7325A9439);   //Avalanche Testnet
         Parameters memory paras = Parameters({depositToken: _depositToken,
-        depositTokenIsNative: false,
-        founderDepositAmount: _founderDepositAmount,
-        applicantDepositMinAmount: _applicantDepositAmount,
-        applyDeadline: _applyDeadline});
+                                              depositTokenIsNative: false,
+                                              founderDepositAmount: _founderDepositAmount,
+                                              applicantDepositMinAmount: _applicantDepositAmount,
+                                              applyDeadline: _applyDeadline});
         Bounty bounty = new Bounty(address(this), msg.sender, paras);
         if (paras.founderDepositAmount > 0) {
             IERC20 depositToken = IERC20(_depositToken);
@@ -185,10 +183,12 @@ contract Bounty is Ownable {
     }
 
     function approveApplicant(address _address) public onlyFounder inReadyToWork {
-        (,,bool _isAppliedApplicant,) = _checkApplicant(_address);
-        require(_isAppliedApplicant, "Applicant status is not applied");
+        (,,bool _isAppliedApplicant,) = _applicantState(_address);
+        require(_isAppliedApplicant || (!_isAppliedApplicant && paras.applicantDepositMinAmount == 0),
+            "To be approved must a applicant");
+
         _refuseOtherApplicants(_address);
-        mappedApplicants[_address].status = ApplicantStatus.Approved;
+        _addApplicant(_address, 0, ApplicantStatus.Approved);
         bountyStatus = BountyStatus.WorkStarted;
         depositLock = true;
         mappedDepositLockers[_address] = true;
@@ -197,7 +197,7 @@ contract Bounty is Ownable {
     }
 
     function unapproveApplicant(address _address) public onlyFounder inWorkStarted {
-        (,bool _isApprovedApplicant,,) = _checkApplicant(_address);
+        (,bool _isApprovedApplicant,,) = _applicantState(_address);
         require(_isApprovedApplicant, "Applicant status is not approved");
         mappedApplicants[_address].status = ApplicantStatus.Unapproved;
         mappedDepositLockers[_address] = false;
@@ -206,12 +206,7 @@ contract Bounty is Ownable {
     function applyFor(uint256 _amount) public payable onlyOthers inApplyTime inReadyToWork {
         require(_amount >= paras.applicantDepositMinAmount, "Deposit amount less than limit");
         _deposit(_amount);
-        (bool _isApplicant,,) = _getApplicant(msg.sender);
-        if (!_isApplicant) {
-            arrayApplicants.push(msg.sender);
-        }
-        mappedApplicants[msg.sender].depositAmount += _amount;
-        mappedApplicants[msg.sender].status = ApplicantStatus.Applied;
+        _addApplicant(msg.sender, _amount, ApplicantStatus.Applied);
         applicantDepositAmount += _amount;
     }
 
@@ -280,11 +275,7 @@ contract Bounty is Ownable {
     function _refuseOtherApplicants(address _address) internal {
         for (uint i=0;i<arrayApplicants.length;i++) {
             if (address(arrayApplicants[i]) != address(_address)) {
-                if (mappedApplicants[arrayApplicants[i]].depositAmount > 0) {
-                    require(_refundDepositToken(payable(arrayApplicants[i]), mappedApplicants[arrayApplicants[i]].depositAmount), "Refund deposit to the applicant failure");
-                    applicantDepositAmount -= mappedApplicants[arrayApplicants[i]].depositAmount;
-                    mappedApplicants[arrayApplicants[i]].depositAmount = 0;
-                }
+                _refundApplicant(arrayApplicants[i]);
                 mappedApplicants[arrayApplicants[i]].status = ApplicantStatus.Refused;
             }
         }
@@ -297,15 +288,11 @@ contract Bounty is Ownable {
 
     function _refundApplicants() internal {
         for (uint i=0;i<arrayApplicants.length;i++) {
-            if (mappedApplicants[arrayApplicants[i]].depositAmount > 0) {
-                require(_refundDepositToken(payable(arrayApplicants[i]), mappedApplicants[arrayApplicants[i]].depositAmount), "Refund deposit to the applicant failure");
-                mappedApplicants[arrayApplicants[i]].depositAmount = 0;
-                if (mappedApplicants[arrayApplicants[i]].status == ApplicantStatus.Applied) {
-                    mappedApplicants[arrayApplicants[i]].status = ApplicantStatus.Refunded;
-                }
+            _refundApplicant(arrayApplicants[i]);
+            if (mappedApplicants[arrayApplicants[i]].status == ApplicantStatus.Applied) {
+                mappedApplicants[arrayApplicants[i]].status = ApplicantStatus.Refunded;
             }
         }
-        applicantDepositAmount = 0;
     }
 
     function _refundApplicant(address _address) internal {
@@ -328,6 +315,15 @@ contract Bounty is Ownable {
             emit Refund(_to, _amount);
         }
         return isSend;
+    }
+
+    function _addApplicant(address _address, uint256 _amount, ApplicantStatus _status) internal {
+        (bool _isApplicant,,) = _getApplicant(_address);
+        if (!_isApplicant) {
+            arrayApplicants.push(_address);
+        }
+        mappedApplicants[_address].status = _status;
+        mappedApplicants[_address].depositAmount += _amount;
     }
 
     function _getBalance(address _address) internal view returns (uint256) {
@@ -385,7 +381,7 @@ contract Bounty is Ownable {
     }
 
     function _checkAppliedApplicant() internal view virtual {
-        (,,bool _isAppliedApplicant,) = _checkApplicant(msg.sender);
+        (,,bool _isAppliedApplicant,) = _applicantState(msg.sender);
         require(_isAppliedApplicant, "Please apply first");
     }
 
@@ -401,11 +397,12 @@ contract Bounty is Ownable {
         require(bountyStatus != _status, _errorMessage);
     }
 
-    function _checkApplicant(address _address) internal view returns (bool _isApplicant, bool _isApprovedApplicant,
+    function _applicantState(address _address) internal view returns (bool _isApplicant, bool _isApprovedApplicant,
         bool _isAppliedApplicant, uint256 _depositAmount) {
         (bool _isOrNot, uint256 _amount, uint8 _status) = _getApplicant(_address);
         _isApplicant = _isOrNot;
         _isApprovedApplicant = false;
+        _isAppliedApplicant = false;
         if (_isApplicant) {
             if (_status == uint8(ApplicantStatus.Approved)) {
                 _isApprovedApplicant = true;
