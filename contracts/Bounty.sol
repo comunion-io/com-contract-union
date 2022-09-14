@@ -14,17 +14,20 @@ struct Parameters {
 }
 
 contract BountyFactory is Ownable {
-    address[] private bounties;
+    address[] private arrChildren;
+    mapping(address => bool) private mapChildren;
 
-    event BountyCreated(address founder, address bounty, Parameters paras);
+    event Created(address founder, address bounty, Parameters paras);
 
     function createBounty(address _depositToken, uint256 _founderDepositAmount, uint256 _applicantDepositAmount, uint256 _applyDeadline) public {
         require(_applyDeadline > block.timestamp, "Applicant cutoff date is expired");
+        // address _stableToken = address(0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E);   //Avalanche Mainnet
+        // address _stableToken = address(0x8f81b9B08232F8E8981dAa87854575d7325A9439);   //Avalanche Testnet
         Parameters memory paras = Parameters({depositToken: _depositToken,
-                                              depositTokenIsNative: false,
-                                              founderDepositAmount: _founderDepositAmount,
-                                              applicantDepositMinAmount: _applicantDepositAmount,
-                                              applyDeadline: _applyDeadline});
+        depositTokenIsNative: false,
+        founderDepositAmount: _founderDepositAmount,
+        applicantDepositMinAmount: _applicantDepositAmount,
+        applyDeadline: _applyDeadline});
         Bounty bounty = new Bounty(address(this), msg.sender, paras);
         if (paras.founderDepositAmount > 0) {
             IERC20 depositToken = IERC20(_depositToken);
@@ -32,13 +35,18 @@ contract BountyFactory is Ownable {
             require(depositToken.allowance(msg.sender, address(this)) >= _founderDepositAmount, "Deposit token allowance is insufficient");
             require(depositToken.transferFrom(msg.sender, address(bounty), _founderDepositAmount), "Deposit token transferFrom failure");
         }
-        bounties.push(address(bounty));
 
-        emit BountyCreated(msg.sender, address(bounty), paras);
+        arrChildren.push(address(bounty));
+        mapChildren[address(bounty)] = true;
+        emit Created(msg.sender, address(bounty), paras);
     }
 
-    function getDeployedBounties() public view returns (address[] memory) {
-        return bounties;
+    function children() external view returns (address[] memory) {
+        return arrChildren;
+    }
+
+    function isChild(address _address) external view returns (bool) {
+        return mapChildren[_address];
     }
 }
 

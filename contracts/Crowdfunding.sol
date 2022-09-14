@@ -24,15 +24,15 @@ struct Parameters {
 
 contract CrowdfundingFactory is Ownable {
 
-    address[] private crowdfundingContracts;
+    address[] private arrChildren;
+    mapping(address => bool) private mapChildren;
 
-    event CrowdfundingCreated(address crowdfunding, Parameters paras);
+    event Created(address founder, address crowdfunding, Parameters paras);
 
     function createCrowdfundingContract(address _sellToken, address _buyToken, uint256 _raiseTotal,
         uint256 _buyPrice, uint16 _swapPercent, uint16 _sellTax,
         uint256 _maxBuyAmount, uint16 _maxSellPercent, address _teamWallet,
         uint256 _startTime, uint256 _endTime) public {
-
         Parameters memory paras = Parameters({sellTokenAddress: _sellToken,
         buyTokenAddress: _buyToken,
         sellTokenDecimals: 18,
@@ -49,7 +49,7 @@ contract CrowdfundingFactory is Ownable {
         endTime: _endTime});
 
         require(_sellToken != address(0) && _buyToken != address(0), "Token address is zero");
-        require(_buyPrice > 0, "Buy price must more than zero");
+        require(_buyPrice > 0, "Buy price is incorrect");
 
         IERC20 sellToken = IERC20(paras.sellTokenAddress);
         Crowdfunding newCrowdfunding = new Crowdfunding(address(this), msg.sender, paras);
@@ -59,12 +59,17 @@ contract CrowdfundingFactory is Ownable {
         require(sellToken.allowance(msg.sender, address(this)) >= _deposit, "Sell token allowance is insufficient");
         require(sellToken.transferFrom(msg.sender, address(newCrowdfunding), _deposit), "Sell token transferFrom failure");
 
-        crowdfundingContracts.push(address(newCrowdfunding));
-        emit CrowdfundingCreated(address(newCrowdfunding), paras);
+        arrChildren.push(address(newCrowdfunding));
+        mapChildren[address(newCrowdfunding)] = true;
+        emit Created(msg.sender, address(newCrowdfunding), paras);
     }
 
-    function getDeployedCrowdfundingContracts() public view returns (address[] memory) {
-        return crowdfundingContracts;
+    function children() external view returns (address[] memory) {
+        return arrChildren;
+    }
+
+    function isChild(address _address) external view returns (bool) {
+        return mapChildren[_address];
     }
 }
 
@@ -97,6 +102,7 @@ contract Crowdfunding is Ownable {
     event Buy(address caller, uint256 buyAmount, uint256 sellAmount);
     event Sell(address caller, uint256 buyAmount, uint256 sellAmount);
     event Receive(address sender, string func);
+    event UpdateParas(uint256 buyPrice, uint16 swapPercent, uint256 maxBuyAmount, uint16 maxSellPercent, uint256 endTime);
 
     modifier isActive() {
         _checkActive();
@@ -110,6 +116,11 @@ contract Crowdfunding is Ownable {
 
     modifier beforeStart() {
         _checkBeforeStart();
+        _;
+    }
+
+    modifier beforeEnd() {
+        _checkBeforeEnd();
         _;
     }
 
@@ -171,6 +182,7 @@ contract Crowdfunding is Ownable {
         amounts[msg.sender].buyAmount += _buyAmount;
         amounts[msg.sender].sellAmount += _sellAmount;
 
+        emit Buy(msg.sender, _buyAmount, _sellAmount);
         return true;
     }
 
@@ -199,6 +211,7 @@ contract Crowdfunding is Ownable {
         amounts[msg.sender].buyAmount -= _buyAmount;
         amounts[msg.sender].sellAmount -= _sellAmount;
 
+        emit Sell(msg.sender, _buyAmount, _sellAmount);
         return true;
     }
 
@@ -215,6 +228,15 @@ contract Crowdfunding is Ownable {
         require(_refundBuyToken(payable(paras.teamWallet)), "Refund buy token failure");
         require(_refundSellToken(payable(paras.teamWallet)), "Refund sell token failure");
         status = Status.Ended;
+    }
+
+    function updateParas(uint256 _buyPrice, uint16 _swapPercent, uint256 _maxBuyAmount, uint16 _maxSellPercent, uint256 _endTime) public onlyOwner isActive beforeEnd {
+        paras.buyPrice = _buyPrice;
+        paras.swapPercent = _swapPercent;
+        paras.maxBuyAmount = _maxBuyAmount;
+        paras.maxSellPercent = _maxSellPercent;
+        paras.endTime = _endTime;
+        emit UpdateParas(_buyPrice, _swapPercent, _maxBuyAmount, _maxSellPercent, _endTime);
     }
 
     function state() public view returns (uint256 _raiseTotal, uint256 _raiseAmount, uint256 _swapPoolAmount,
@@ -372,6 +394,10 @@ contract Crowdfunding is Ownable {
 
     function _checkBeforeStart() internal view virtual {
         require(block.timestamp < paras.startTime, "Crowdfunding has started");
+    }
+
+    function _checkBeforeEnd() internal view virtual {
+        require(block.timestamp <= paras.endTime, "Crowdfunding has ended");
     }
 
     function _checkCanOver() internal view virtual {
