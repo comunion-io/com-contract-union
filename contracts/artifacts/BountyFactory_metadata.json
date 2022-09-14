@@ -54,7 +54,7 @@
 						"type": "tuple"
 					}
 				],
-				"name": "BountyCreated",
+				"name": "Created",
 				"type": "event"
 			},
 			{
@@ -75,6 +75,19 @@
 				],
 				"name": "OwnershipTransferred",
 				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "children",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -105,13 +118,19 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getDeployedBounties",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "isChild",
 				"outputs": [
 					{
-						"internalType": "address[]",
+						"internalType": "bool",
 						"name": "",
-						"type": "address[]"
+						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
@@ -182,7 +201,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -237,11 +256,11 @@
 			]
 		},
 		"contracts/Bounty.sol": {
-			"keccak256": "0x0d84eccbe4bfe1cee5e678c2319491b5a1f9374cf2d3ac58a32d205ce1566b36",
+			"keccak256": "0x7c279c7de494fd342bc1a94d4a28f24d24e2027801a05caff3a8e3661cb996fc",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://c9ab2c022b93b9bab62e9eda78fa90519b216b2889e7f9a08350bc16a4772feb",
-				"dweb:/ipfs/QmboPUJxyF7H9NiXjEagtuyTd3YXsNQnqoZkt2MDa8EhKT"
+				"bzz-raw://9981d6c078c0fa4e6011bd7b0d419ed0d5cf0c33410734606b9462f46efb0a19",
+				"dweb:/ipfs/QmZBjp1ao94rSw5YyJ4wt44eqCFQNy6687oZEDW6LySur9"
 			]
 		}
 	},
