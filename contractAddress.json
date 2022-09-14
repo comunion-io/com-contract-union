@@ -11,17 +11,27 @@
       {
         "chainId": 5,
         "chainName": "Goerli",
-        "address": "0xEdf4565af54D9508e247c044F09EddcaD91DAdED"
+        "address": "0x744E0A1452F5E3Dc42E75c4C4B4de9faa16E3948"
       },
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964"
+        "address": "0xC31a16498d1B8d703883B509097f099165D5324A"
       },
       {
         "chainId": 43114,
         "chainName": "avaxMain",
-        "address": "0x45BE0Eaa7076854d790A9583c6E3AE020d1A1556"
+        "address": ""
+      },
+      {
+        "chainId": 97,
+        "chainName": "BSC Testnet",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 4002,
+        "chainName": "Fantom Testnet",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
       }
     ]
   },
@@ -30,13 +40,28 @@
     "abiUrl": "/contracts/artifacts/BountyFactory.json",
     "addresses": [
       {
+        "chainId": 5,
+        "chainName": "Goerli",
+        "address": "0x42583219DC1564D465DDD01D3327CEF942f6aB88"
+      },
+      {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0x8B4Dbcc4480926577eC05FCfd1568bFf10F4288e"
+        "address": "0x18bA7216E088816c2CA7a6Bee08Bec48F4c9e25c"
       },
       {
         "chainId": 43114,
         "chainName": "avaxMain",
+        "address": ""
+      },
+      {
+        "chainId": 97,
+        "chainName": "BSC Testnet",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+      },
+      {
+        "chainId": 4002,
+        "chainName": "Fantom Testnet",
         "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
       }
     ]
@@ -51,14 +76,29 @@
     "abiUrl": "/contracts/artifacts/CrowdfundingFactory.json",
     "addresses": [
       {
+        "chainId": 5,
+        "chainName": "Goerli",
+        "address": "0xBfD20fdB6723A466127bfe6a7eD7926571B32B4d"
+      },
+      {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0x36B2B4db5B81a7D329e67d8eaE9041F9A75c8930"
+        "address": "0x665B6cEa0615F2B0Fbf025830e08B661B4A6bE4B"
       },
       {
         "chainId": 43114,
         "chainName": "avaxMain",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": ""
+      },
+      {
+        "chainId": 97,
+        "chainName": "BSC Testnet",
+        "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
+      },
+      {
+        "chainId": 4002,
+        "chainName": "Fantom Testnet",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
       }
     ]
   },

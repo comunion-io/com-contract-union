@@ -413,7 +413,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -468,11 +468,11 @@
 			]
 		},
 		"contracts/Bounty.sol": {
-			"keccak256": "0x764eca797d93f703e1aefe13493fb31fa0e21ca342d382fac48c99aca1421437",
+			"keccak256": "0x7c279c7de494fd342bc1a94d4a28f24d24e2027801a05caff3a8e3661cb996fc",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://b9028aeace164c45ab5bde50e1226c2ab6440996fc0c1dda827863197173c0da",
-				"dweb:/ipfs/QmNyg6b2VkDqio5Eay9B5p546J2AJnca7gQaVcgN5Nsh9g"
+				"bzz-raw://9981d6c078c0fa4e6011bd7b0d419ed0d5cf0c33410734606b9462f46efb0a19",
+				"dweb:/ipfs/QmZBjp1ao94rSw5YyJ4wt44eqCFQNy6687oZEDW6LySur9"
 			]
 		}
 	},

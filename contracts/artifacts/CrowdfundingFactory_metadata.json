@@ -11,6 +11,12 @@
 					{
 						"indexed": false,
 						"internalType": "address",
+						"name": "founder",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
 						"name": "crowdfunding",
 						"type": "address"
 					},
@@ -93,7 +99,7 @@
 						"type": "tuple"
 					}
 				],
-				"name": "CrowdfundingCreated",
+				"name": "Created",
 				"type": "event"
 			},
 			{
@@ -114,6 +120,19 @@
 				],
 				"name": "OwnershipTransferred",
 				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "children",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -179,13 +198,19 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getDeployedCrowdfundingContracts",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "isChild",
 				"outputs": [
 					{
-						"internalType": "address[]",
+						"internalType": "bool",
 						"name": "",
-						"type": "address[]"
+						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
@@ -311,11 +336,11 @@
 			]
 		},
 		"contracts/Crowdfunding.sol": {
-			"keccak256": "0x642043202361807b1e3929743d793dd37b8ba8a5d44b2824e42ea4c2c5d63c44",
+			"keccak256": "0x07036a89c179db28d872a425ac57777ea42852840e4f53763c85654193d1f518",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://b36a28a3fd04d7374f69a32403939ca5ef6a61d4e3a05193f33e607a02e6de73",
-				"dweb:/ipfs/QmVgbfgMm6ypa9wTVY25AHPmAihwEtHSH2vo6jC8CDw5wm"
+				"bzz-raw://4ada02720ed8a825152fb4e376eefd153cfa90720fa11d4a5d6c0b48138e85f4",
+				"dweb:/ipfs/QmRNoDb3wLfN9X9r7SqVK118wX3ChpH47LBLyQeqpdH89G"
 			]
 		}
 	},

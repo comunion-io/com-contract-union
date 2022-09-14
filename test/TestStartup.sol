@@ -2,7 +2,7 @@ pragma solidity >=0.4.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/Startup.sol";
+import "../contracts/Startup_v1.sol";
 
 contract TestStartup {
     Startup startup = Startup(DeployedAddresses.Startup());
