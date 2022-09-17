@@ -37,6 +37,16 @@
         "chainId": 80001,
         "chainName": "Mumbai",
         "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 5700,
+        "chainName": "Syscoin Tanenbaum Testnet",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 2814,
+        "chainName": "Rollux OPv1 Private",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
       }
     ]
   },
@@ -73,6 +83,11 @@
         "chainId": 80001,
         "chainName": "Mumbai",
         "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 2814,
+        "chainName": "Rollux OPv1 Private",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
       }
     ]
   },
@@ -114,6 +129,11 @@
         "chainId": 80001,
         "chainName": "Mumbai",
         "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+      },
+      {
+        "chainId": 2814,
+        "chainName": "Rollux OPv1 Private",
+        "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
       }
     ]
   },
