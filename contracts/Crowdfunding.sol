@@ -365,7 +365,7 @@ contract Crowdfunding is Ownable {
 
     function _swapAmount(uint256 _buyAmount, uint256 _sellAmount) internal view returns (uint256, uint256) {
         if (_buyAmount != 0) {
-            return (_buyAmount, _buyAmount * _swapPrice()) / priceDecimal;
+            return (_buyAmount, _buyAmount * _swapPrice() / priceDecimal);
         } else if (_sellAmount != 0) {
             return (_sellAmount * priceDecimal / _swapPrice(), _sellAmount);
         } else {
