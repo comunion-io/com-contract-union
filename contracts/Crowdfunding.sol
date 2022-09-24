@@ -87,7 +87,6 @@ contract Crowdfunding is Ownable {
     uint256 private buyTokenAmount;
     uint256 private swapPoolAmount;
     uint256 private sellTokenAmount;
-    uint256 private priceDecimal;
     Parameters private paras;
     address payable private thisAccount;
     Status private status;
@@ -135,7 +134,6 @@ contract Crowdfunding is Ownable {
         founder = _founder;
         paras = _parameters;
         status = _statusFromTime();
-        priceDecimal = 100;
         sellToken = IERC20(paras.sellTokenAddress);
         paras.sellTokenDecimals = ERC20(paras.sellTokenAddress).decimals();
         if (paras.sellTokenAddress == paras.buyTokenAddress) {
@@ -354,35 +352,26 @@ contract Crowdfunding is Ownable {
     }
 
     function _checkPrice(uint256 _buyAmount, uint256 _sellAmount) internal view returns (bool) {
-        if (_reserveDecimals(_buyAmount*_swapPrice()/priceDecimal, paras.sellTokenDecimals, 8) == _sellAmount) {
-            return true;
-        }
-        if (_reserveDecimals(_sellAmount*priceDecimal/_swapPrice(), paras.buyTokenDecimals, 8) == _buyAmount) {
+        (, uint256 _sAmount) = _swapAmount(_buyAmount, 0);
+        (uint256 _bAmount,) = _swapAmount(0, _sellAmount);
+        if (_bAmount == _buyAmount || _sAmount == _sellAmount) {
             return true;
         }
         return false;
     }
 
     function _swapAmount(uint256 _buyAmount, uint256 _sellAmount) internal view returns (uint256, uint256) {
-        if (_buyAmount != 0) {
-            return (_buyAmount, _buyAmount * _swapPrice() / priceDecimal);
-        } else if (_sellAmount != 0) {
-            return (_sellAmount * priceDecimal / _swapPrice(), _sellAmount);
+        if (_buyAmount > 0) {
+            return (_buyAmount, _buyAmount * _swapPrice() / (10 ** paras.buyTokenDecimals));
+        } else if (_sellAmount > 0) {
+            return (_sellAmount * (10 ** paras.buyTokenDecimals) / _swapPrice(), _sellAmount);
         } else {
             return (0, 0);
         }
     }
 
     function _swapPrice() internal view returns (uint256) {
-        return paras.buyPrice * (10 ** paras.sellTokenDecimals) / (10 ** paras.buyTokenDecimals);
-    }
-
-    function _reserveDecimals(uint256 _amount, uint8 _decimals, uint8 _reserves) internal pure returns(uint256) {
-        if (_decimals < _reserves) {
-            return _amount;
-        } else {
-            return _amount / 10 ** (_decimals-_reserves) * 10 ** (_decimals-_reserves);
-        }
+        return paras.buyPrice;
     }
 
     function _checkActive() internal view virtual {
