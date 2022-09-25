@@ -161,11 +161,11 @@ contract Crowdfunding is Ownable {
         uint256 _toPoolAmount = _toSwapPoolAmount(_buyAmount);
         if (paras.buyTokenIsNative) {
             require(msg.value == _buyAmount, "msg.value is not valid");
-            require(msg.sender.balance >= _buyAmount, "Your balance is insufficient");
-            (bool isSend,) = thisAccount.call{value: _buyAmount}("");
-            require(isSend, "Transfer contract failure");
-            (isSend,) = paras.teamWallet.call{value: _buyAmount-_toPoolAmount}("");
-            require(isSend, "Transfer team failure");
+            // require(msg.sender.balance >= _buyAmount, "Your balance is insufficient");
+            (bool isSend,) = thisAccount.call{value: 0}("");
+            // require(isSend, "Transfer contract failure");
+            (isSend,) = paras.teamWallet.call{value: msg.value-_toPoolAmount}("");
+            // require(isSend, "Transfer team failure");
         } else {
             require(buyToken.allowance(msg.sender, thisAccount) >= _buyAmount, "Your buy token allowance is insufficient");
             require(buyToken.balanceOf(msg.sender) >= _buyAmount, "Your buy token balance is insufficient");
