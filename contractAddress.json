@@ -103,12 +103,12 @@
       {
         "chainId": 5,
         "chainName": "Goerli",
-        "address": "0x7998A0cF049a742Cd016E05723EE7007795C84B7"
+        "address": "0xc729D91818dbf102885cEf38B9aeDc0F2f70fAb1"
       },
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0x128533a1582FE698a0a57feF10f4508dBA303E67"
+        "address": "0xC7FbA93E1BCAb3dA91d3adC30aF31e718fFF9B8a"
       },
       {
         "chainId": 43114,
@@ -118,22 +118,22 @@
       {
         "chainId": 97,
         "chainName": "BSC Testnet",
-        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
       },
       {
         "chainId": 4002,
         "chainName": "Fantom Testnet",
-        "address": "0x1099861d064d6C093C9D2F73602d7DAd12155073"
+        "address": "0x1813E37D76316eCE03D3f7a9D908052D061355Fb"
       },
       {
         "chainId": 80001,
         "chainName": "Mumbai",
-        "address": "0x6187f53e7AC4cfB95ea1c4E906e777d0d2f6763E"
+        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
       },
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0x365944008BD062Fa63c4FF3bFB5f2Bf692cC4bA6"
+        "address": "0xC31a16498d1B8d703883B509097f099165D5324A"
       }
     ]
   },
