@@ -3,6 +3,7 @@ pragma solidity >=0.8.x <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 struct Parameters {
@@ -51,6 +52,8 @@ contract BountyFactory is Ownable {
 }
 
 contract Bounty is Ownable {
+    using SafeMath for uint;
+
     enum BountyStatus {
         Pending, ReadyToWork, WorkStarted, Completed, Expired
     }
@@ -75,6 +78,7 @@ contract Bounty is Ownable {
     uint256 private applicantDepositAmount;
     uint256 private timeLock;
     bool private depositLock;
+    bool internal locked;
     BountyStatus private bountyStatus;
     address[] arrayApplicants;
     mapping(address => Applicant) mappedApplicants;
@@ -155,6 +159,13 @@ contract Bounty is Ownable {
         _;
     }
 
+    modifier noReentrant() {
+        require(!locked, "No re-entrancy");
+        locked = true;
+        _;
+        locked = false;
+    }
+
     constructor(address _factory, address _founder, Parameters memory _paras) {
         factory = _factory;
         founder = _founder;
@@ -178,7 +189,7 @@ contract Bounty is Ownable {
     function deposit(uint256 _amount) public payable onlyFounder inReadyToWork {
         require(_amount > 0, "Deposit amount is zero");
         _deposit(_amount);
-        founderDepositAmount += _amount;
+        founderDepositAmount = founderDepositAmount.add(_amount);
     }
 
     function release() public payable onlyFounder depositUnlock nonzeroDeposit {
@@ -211,14 +222,14 @@ contract Bounty is Ownable {
         mappedDepositLockers[_address] = false;
     }
 
-    function applyFor(uint256 _amount) public payable onlyOthers inApplyTime inReadyToWork {
+    function applyFor(uint256 _amount) public payable onlyOthers inApplyTime inReadyToWork noReentrant {
         require(_amount >= paras.applicantDepositMinAmount, "Deposit amount less than limit");
         _deposit(_amount);
         _addApplicant(msg.sender, _amount, ApplicantStatus.Applied);
-        applicantDepositAmount += _amount;
+        applicantDepositAmount = applicantDepositAmount.add(_amount);
     }
 
-    function releaseMyDeposit() public payable onlyApplied depositUnlock inReadyToWork {
+    function releaseMyDeposit() public payable onlyApplied depositUnlock inReadyToWork noReentrant {
         _refundApplicant(msg.sender);
         mappedApplicants[msg.sender].status = ApplicantStatus.Withdraw;
     }
@@ -305,7 +316,7 @@ contract Bounty is Ownable {
 
     function _refundApplicant(address _address) internal {
         require(_refundDepositToken(payable(_address), mappedApplicants[_address].depositAmount), "Refund deposit to applicant failure");
-        applicantDepositAmount -= mappedApplicants[_address].depositAmount;
+        applicantDepositAmount = applicantDepositAmount.sub(mappedApplicants[_address].depositAmount);
         mappedApplicants[_address].depositAmount = 0;
     }
 
@@ -331,7 +342,7 @@ contract Bounty is Ownable {
             arrayApplicants.push(_address);
         }
         mappedApplicants[_address].status = _status;
-        mappedApplicants[_address].depositAmount += _amount;
+        mappedApplicants[_address].depositAmount = mappedApplicants[_address].depositAmount.add(_amount);
     }
 
     function _getBalance(address _address) internal view returns (uint256) {

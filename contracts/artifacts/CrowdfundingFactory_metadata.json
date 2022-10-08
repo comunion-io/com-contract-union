@@ -335,12 +335,20 @@
 				"dweb:/ipfs/QmU4WfM28A1nDqghuuGeFmN3CnVrk6opWtiF65K4vhFPeC"
 			]
 		},
+		"@openzeppelin/contracts/utils/math/SafeMath.sol": {
+			"keccak256": "0x0f633a0223d9a1dcccfcf38a64c9de0874dfcbfac0c6941ccf074d63a2ce0e1e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://864a40efcffdf408044c332a5aa38ec5618ed7b4eecb8f65faf45671bd6cdc65",
+				"dweb:/ipfs/QmQJquTMtc6fgm5JQzGdsGpA2fqBe3MHWEdt2qzaLySMdN"
+			]
+		},
 		"contracts/Crowdfunding.sol": {
-			"keccak256": "0x1ddcc1b0b726413c9427e263f011a6158259ff200bf7a17b84ec44eba290ed27",
+			"keccak256": "0xd4afd69692cae9bda0d160d060b983cd0eb5ab73589aea17b11555479c38400e",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://82bce9b581d29a445f339e610e212a943b94405641256910dbd2a7d17841954a",
-				"dweb:/ipfs/QmS4Lxgww7k1QeRe5nSobg5PKKGY5XFfx7fZMZ3AMtSvxk"
+				"bzz-raw://68512d9f9cb6e08687e8b57fd30a3fc72e8e321cc0a4000d4d99dded073399bd",
+				"dweb:/ipfs/QmSPCxh8PM5zecGdPVCZRLdyMw1nMuFcZiPwjd3SoNoAVx"
 			]
 		}
 	},
