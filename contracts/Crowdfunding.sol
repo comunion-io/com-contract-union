@@ -3,6 +3,7 @@ pragma solidity >=0.8.x <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 struct Parameters {
@@ -74,6 +75,7 @@ contract CrowdfundingFactory is Ownable {
 }
 
 contract Crowdfunding is Ownable {
+    using SafeMath for uint;
 
     enum Status {
         Pending, Upcoming, Live, Ended, Cancel
@@ -90,6 +92,7 @@ contract Crowdfunding is Ownable {
     Parameters private paras;
     address payable private thisAccount;
     Status private status;
+    bool internal locked;
 
     struct PairAmount {
         uint256 buyAmount;
@@ -129,6 +132,13 @@ contract Crowdfunding is Ownable {
         _;
     }
 
+    modifier noReentrant() {
+        require(!locked, "No re-entrancy");
+        locked = true;
+        _;
+        locked = false;
+    }
+
     constructor(address _factory, address _founder, Parameters memory _parameters) {
         factory = _factory;
         founder = _founder;
@@ -152,7 +162,7 @@ contract Crowdfunding is Ownable {
         emit Created(owner(), factory, founder, depositAmount, paras);
     }
 
-    function buy(uint256 _buyAmount, uint256 _sellAmount) public payable isActive inTime returns (bool) {
+    function buy(uint256 _buyAmount, uint256 _sellAmount) public payable isActive inTime noReentrant returns (bool) {
         require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
         require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
         require(_checkMaxBuyAmount(msg.sender, _buyAmount), "Amount exceeds maximum");
@@ -164,29 +174,29 @@ contract Crowdfunding is Ownable {
             // require(msg.sender.balance >= _buyAmount, "Your balance is insufficient");
             (bool isSend,) = thisAccount.call{value: 0}("");
             // require(isSend, "Transfer contract failure");
-            (isSend,) = paras.teamWallet.call{value: msg.value-_toPoolAmount}("");
+            (isSend,) = paras.teamWallet.call{value: msg.value.sub(_toPoolAmount)}("");
             // require(isSend, "Transfer team failure");
         } else {
             require(buyToken.allowance(msg.sender, thisAccount) >= _buyAmount, "Your buy token allowance is insufficient");
             require(buyToken.balanceOf(msg.sender) >= _buyAmount, "Your buy token balance is insufficient");
             require(buyToken.transferFrom(msg.sender, thisAccount, _buyAmount), "Buy token transferFrom failure");
-            require(buyToken.transfer(paras.teamWallet, _buyAmount-_toPoolAmount), "Buy token transfer team failure");
+            require(buyToken.transfer(paras.teamWallet, _buyAmount.sub(_toPoolAmount)), "Buy token transfer team failure");
         }
         require(sellToken.transfer(msg.sender, _sellAmount), "Sell token transfer failure");
 
-        buyTokenAmount += _buyAmount;
-        sellTokenAmount -= _sellAmount;
-        swapPoolAmount += _toPoolAmount;
-        totals[msg.sender].buyAmount += _buyAmount;
-        totals[msg.sender].sellAmount += _sellAmount;
-        amounts[msg.sender].buyAmount += _buyAmount;
-        amounts[msg.sender].sellAmount += _sellAmount;
+        buyTokenAmount = buyTokenAmount.add(_buyAmount);
+        sellTokenAmount = sellTokenAmount.sub(_sellAmount);
+        swapPoolAmount = swapPoolAmount.add(_toPoolAmount);
+        totals[msg.sender].buyAmount = totals[msg.sender].buyAmount.add(_buyAmount);
+        totals[msg.sender].sellAmount = totals[msg.sender].sellAmount.add(_sellAmount);
+        amounts[msg.sender].buyAmount = amounts[msg.sender].buyAmount.add(_buyAmount);
+        amounts[msg.sender].sellAmount = amounts[msg.sender].sellAmount.add(_sellAmount);
 
         emit Buy(msg.sender, _buyAmount, _sellAmount);
         return true;
     }
 
-    function sell(uint256 _buyAmount, uint256 _sellAmount) public payable isActive inTime returns (bool) {
+    function sell(uint256 _buyAmount, uint256 _sellAmount) public payable isActive inTime noReentrant returns (bool) {
         require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
         require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
         require(_checkMaxSellAmount(msg.sender, _sellAmount), "Amount exceeds maximum");
@@ -205,11 +215,11 @@ contract Crowdfunding is Ownable {
             require(buyToken.transfer(msg.sender, _buyAmountAfterTax), "Buy token transfer buyer failure");
         }
 
-        buyTokenAmount -= _buyAmount;
-        sellTokenAmount += _sellAmount;
-        swapPoolAmount -= _buyAmountAfterTax;
-        amounts[msg.sender].buyAmount -= _buyAmount;
-        amounts[msg.sender].sellAmount -= _sellAmount;
+        buyTokenAmount = buyTokenAmount.sub(_buyAmount);
+        sellTokenAmount = sellTokenAmount.add(_sellAmount);
+        swapPoolAmount = swapPoolAmount.sub(_buyAmountAfterTax);
+        amounts[msg.sender].buyAmount = amounts[msg.sender].buyAmount.sub(_buyAmount);
+        amounts[msg.sender].sellAmount = amounts[msg.sender].sellAmount.sub(_sellAmount);
 
         emit Sell(msg.sender, _buyAmount, _sellAmount);
         return true;
@@ -308,7 +318,7 @@ contract Crowdfunding is Ownable {
     }
 
     function _amountAfterTax(uint256 _amount) internal view returns (uint256) {
-        return _amount - _amount * paras.sellTax / 10000;
+        return _amount.sub(_amount * paras.sellTax / 10000);
     }
 
     function _toSwapPoolAmount(uint256 _amount) internal view returns (uint256) {
@@ -334,14 +344,13 @@ contract Crowdfunding is Ownable {
     }
 
     function _getBuyMaxAmount(address buyer) internal view returns (uint256, uint256) {
-        uint256 _buyMaxAmount = Math.min(paras.maxBuyAmount-amounts[buyer].buyAmount, paras.raiseTotal-buyTokenAmount);
+        uint256 _buyMaxAmount = Math.min(paras.maxBuyAmount.sub(amounts[buyer].buyAmount), paras.raiseTotal.sub(buyTokenAmount));
         (uint256 _remainBuyAmount,) = _swapAmount(0, sellTokenAmount);
         return _swapAmount(Math.min(_buyMaxAmount, _remainBuyAmount), 0);
     }
 
     function _getSellMaxAmount(address seller) internal view returns (uint256, uint256) {
-        uint256 _sellMaxAmount = Math.min(totals[seller].sellAmount*paras.maxSellPercent/10000+amounts[seller].sellAmount-
-            totals[seller].sellAmount, amounts[seller].sellAmount);
+        uint256 _sellMaxAmount = Math.min(amounts[seller].sellAmount.add(totals[seller].sellAmount*paras.maxSellPercent/10000).sub(totals[seller].sellAmount), amounts[seller].sellAmount);
         (,uint256 _remainSellAmount) = _swapAmount(swapPoolAmount, 0);
         return _swapAmount(0, Math.min(_sellMaxAmount, _remainSellAmount));
     }
