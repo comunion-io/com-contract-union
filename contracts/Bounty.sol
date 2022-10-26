@@ -86,8 +86,16 @@ contract Bounty is Ownable {
     mapping(address => bool) mappedDepositUnlockers;
 
     event Created(address owner, address factory, address founder, Parameters paras);
-    event Deposit(address from, uint256 amount);
-    event Refund(address to, uint256 amount);
+    event Deposit(address from, uint256 amount, uint256 founderBalance);
+    event Close(address caller, BountyStatus bountyStatus);
+    event Approve(address caller, address applicant);
+    event Unapprove(address caller, address applicant);
+    event Apply(address applicant, uint256 amount, uint256 balance, uint256 applicantsBalance);
+    event ReleaseFounderDeposit(address founder, uint256 amount, uint256 balance);
+    event ReleaseApplicantDeposit(address applicant, uint256 amount, uint256 balance, uint256 applicantsBalance);
+    event Lock(address caller);
+    event Unlock(address caller);
+    event PostUpdate(address caller, uint256 expiredTime);
 
     modifier onlyFounder() {
         _checkFounder();
@@ -190,6 +198,7 @@ contract Bounty is Ownable {
         require(_amount > 0, "Deposit amount is zero");
         _deposit(_amount);
         founderDepositAmount = founderDepositAmount.add(_amount);
+        emit Deposit(msg.sender, _amount, founderDepositAmount);
     }
 
     function release() public payable onlyFounder depositUnlock nonzeroDeposit {
@@ -199,6 +208,7 @@ contract Bounty is Ownable {
     function close() public payable onlyFounder zeroDeposit notCompleted notExpired {
         require(_refundDepositToken(payable(founder), _getBalance(thisAccount)), "Transfer balance to the founder failure");
         bountyStatus = BountyStatus.Completed;
+        emit Close(msg.sender, bountyStatus);
     }
 
     function approveApplicant(address _address) public onlyFounder inReadyToWork {
@@ -213,6 +223,7 @@ contract Bounty is Ownable {
         mappedDepositLockers[_address] = true;
         mappedDepositUnlockers[_address] = true;
         _startTimer();
+        emit Approve(msg.sender, _address);
     }
 
     function unapproveApplicant(address _address) public onlyFounder inWorkStarted {
@@ -220,6 +231,7 @@ contract Bounty is Ownable {
         require(_isApprovedApplicant, "Applicant status is not approved");
         mappedApplicants[_address].status = ApplicantStatus.Unapproved;
         mappedDepositLockers[_address] = false;
+        emit Unapprove(msg.sender, _address);
     }
 
     function applyFor(uint256 _amount) public payable onlyOthers inApplyTime inReadyToWork noReentrant {
@@ -227,6 +239,7 @@ contract Bounty is Ownable {
         _deposit(_amount);
         _addApplicant(msg.sender, _amount, ApplicantStatus.Applied);
         applicantDepositAmount = applicantDepositAmount.add(_amount);
+        emit Apply(msg.sender, _amount, mappedApplicants[msg.sender].depositAmount, applicantDepositAmount);
     }
 
     function releaseMyDeposit() public payable onlyApplied depositUnlock inReadyToWork noReentrant {
@@ -236,14 +249,17 @@ contract Bounty is Ownable {
 
     function lock() public payable depositLocker depositUnlock {
         depositLock = true;
+        emit Lock(msg.sender);
     }
 
     function unlock() public payable depositUnlocker depositLocked {
         depositLock = false;
+        emit Unlock(msg.sender);
     }
 
     function postUpdate() public depositLocker inWorkStarted {
         _startTimer();
+        emit PostUpdate(msg.sender, timeLock);
     }
 
     function state() public view returns (uint8 _bountyStatus, uint _applicantCount, uint256 _depositBalance,
@@ -282,7 +298,6 @@ contract Bounty is Ownable {
                 require(depositToken.balanceOf(msg.sender) >= _amount, "Your deposit token balance is insufficient");
                 require(depositToken.transferFrom(msg.sender, thisAccount, _amount), "Deposit token transferFrom failure");
             }
-            emit Deposit(msg.sender, _amount);
         }
     }
 
@@ -301,8 +316,10 @@ contract Bounty is Ownable {
     }
 
     function _refundFounder() internal {
-        require(_refundDepositToken(payable(founder), founderDepositAmount), "Refund deposit to the founder failure");
+        uint256 _amount = founderDepositAmount;
+        require(_refundDepositToken(payable(founder), _amount), "Refund deposit to the founder failure");
         founderDepositAmount = 0;
+        emit ReleaseFounderDeposit(msg.sender, _amount, founderDepositAmount);
     }
 
     function _refundApplicants() internal {
@@ -315,9 +332,11 @@ contract Bounty is Ownable {
     }
 
     function _refundApplicant(address _address) internal {
-        require(_refundDepositToken(payable(_address), mappedApplicants[_address].depositAmount), "Refund deposit to applicant failure");
+        uint256 _amount = mappedApplicants[_address].depositAmount;
+        require(_refundDepositToken(payable(_address), _amount), "Refund deposit to applicant failure");
         applicantDepositAmount = applicantDepositAmount.sub(mappedApplicants[_address].depositAmount);
         mappedApplicants[_address].depositAmount = 0;
+        emit ReleaseApplicantDeposit(_address, _amount, mappedApplicants[_address].depositAmount, applicantDepositAmount);
     }
 
     function _refundDepositToken(address payable _to, uint256 _amount) internal returns (bool) {
@@ -331,7 +350,6 @@ contract Bounty is Ownable {
                 isSend = depositToken.transfer(_to, _amount);
                 require(isSend, "Refund failure");
             }
-            emit Refund(_to, _amount);
         }
         return isSend;
     }
