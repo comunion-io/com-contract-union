@@ -6,22 +6,22 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-struct Parameters {
-    address sellTokenAddress;
-    address buyTokenAddress;
-    uint8 sellTokenDecimals;
-    uint8 buyTokenDecimals;
-    bool buyTokenIsNative;
-    uint256 raiseTotal;
-    uint256 buyPrice;
-    uint16 swapPercent;
-    uint16 sellTax;
-    uint256 maxBuyAmount;
-    uint16 maxSellPercent;
-    address teamWallet;
-    uint256 startTime;
-    uint256 endTime;
-}
+    struct Parameters {
+        address sellTokenAddress;
+        address buyTokenAddress;
+        uint8 sellTokenDecimals;
+        uint8 buyTokenDecimals;
+        bool buyTokenIsNative;
+        uint256 raiseTotal;
+        uint256 buyPrice;
+        uint16 swapPercent;
+        uint16 sellTax;
+        uint256 maxBuyAmount;
+        uint16 maxSellPercent;
+        address teamWallet;
+        uint256 startTime;
+        uint256 endTime;
+    }
 
 contract CrowdfundingFactory is Ownable {
 
@@ -102,10 +102,12 @@ contract Crowdfunding is Ownable {
     mapping(address => PairAmount) amounts;
 
     event Created(address owner, address factory, address founder, uint256 deposit, Parameters paras);
-    event Buy(address caller, uint256 buyAmount, uint256 sellAmount);
-    event Sell(address caller, uint256 buyAmount, uint256 sellAmount);
+    event Buy(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
+    event Sell(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
+    event Cancel(address caller, Status status);
+    event Remove(address caller, Status status);
     event Receive(address sender, string func);
-    event UpdateParas(uint256 buyPrice, uint16 swapPercent, uint256 maxBuyAmount, uint16 maxSellPercent, uint256 endTime);
+    event UpdateParas(address caller, uint256 buyPrice, uint16 swapPercent, uint256 maxBuyAmount, uint16 maxSellPercent, uint256 endTime);
 
     modifier isActive() {
         _checkActive();
@@ -192,7 +194,7 @@ contract Crowdfunding is Ownable {
         amounts[msg.sender].buyAmount = amounts[msg.sender].buyAmount.add(_buyAmount);
         amounts[msg.sender].sellAmount = amounts[msg.sender].sellAmount.add(_sellAmount);
 
-        emit Buy(msg.sender, _buyAmount, _sellAmount);
+        emit Buy(msg.sender, _buyAmount, _sellAmount, buyTokenAmount, sellTokenAmount, swapPoolAmount);
         return true;
     }
 
@@ -221,7 +223,7 @@ contract Crowdfunding is Ownable {
         amounts[msg.sender].buyAmount = amounts[msg.sender].buyAmount.sub(_buyAmount);
         amounts[msg.sender].sellAmount = amounts[msg.sender].sellAmount.sub(_sellAmount);
 
-        emit Sell(msg.sender, _buyAmount, _sellAmount);
+        emit Sell(msg.sender, _buyAmount, _sellAmount, buyTokenAmount, sellTokenAmount, swapPoolAmount);
         return true;
     }
 
@@ -232,12 +234,14 @@ contract Crowdfunding is Ownable {
     function cancel() public onlyOwner isActive beforeStart {
         require(_refundSellToken(payable(paras.teamWallet)), "Refund sell token failure");
         status = Status.Cancel;
+        emit Cancel(msg.sender, status);
     }
 
     function remove() public onlyOwner isActive canOver {
         require(_refundBuyToken(payable(paras.teamWallet)), "Refund buy token failure");
         require(_refundSellToken(payable(paras.teamWallet)), "Refund sell token failure");
         status = Status.Ended;
+        emit Remove(msg.sender, status);
     }
 
     function updateParas(uint256 _buyPrice, uint16 _swapPercent, uint256 _maxBuyAmount, uint16 _maxSellPercent, uint256 _endTime) public onlyOwner isActive beforeEnd {
@@ -246,7 +250,7 @@ contract Crowdfunding is Ownable {
         paras.maxBuyAmount = _maxBuyAmount;
         paras.maxSellPercent = _maxSellPercent;
         paras.endTime = _endTime;
-        emit UpdateParas(_buyPrice, _swapPercent, _maxBuyAmount, _maxSellPercent, _endTime);
+        emit UpdateParas(msg.sender, _buyPrice, _swapPercent, _maxBuyAmount, _maxSellPercent, _endTime);
     }
 
     function state() public view returns (uint256 _raiseTotal, uint256 _raiseAmount, uint256 _swapPoolAmount,
