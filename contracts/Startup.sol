@@ -1,29 +1,60 @@
 // SPDX-License-Identifier: SimPL-2.0
 pragma solidity >=0.8.x <0.9.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "../contracts/base/Base.sol";
 
-contract Startup is Ownable {
-    struct Profile {
+contract Startup is Base
+{
+    enum Mode{
+        NONE, ESG, NGO, DAO, COM
+    }
+
+    struct wallet {
         string name;
-        uint256 chainId;
-        bool used;
+        address walletAddress;
     }
 
-    event Created(address founder, Profile startup);
 
-    mapping(string => Profile) private startups;
-
-    function createStartup(Profile calldata p) public {
-        require(bytes(p.name).length > 0, "Name can not be null");
-        require(!startups[p.name].used, "Name has been used");
-
-        Profile memory profile = Profile({name: p.name, chainId: p.chainId, used: true});
-        startups[p.name] = profile;
-        emit Created(msg.sender, profile);
+    struct Profile {
+        /** startup name */
+        string name;
+        /** startup type */
+        Mode mode;
+        /** startup hash */
+        // string[] hashtag;
+        /** startup logo src */
+        string logo;
+        /** startup mission */
+        string mission;
+        /** startup token contract */
+        // address tokenContract;
+        /** startup compose wallet */
+        // wallet[] wallets;
+        string overview;
+        /** is validate the startup name is only */
+        bool isValidate;
     }
 
-    function getStartup(string memory name) public view returns (Profile memory) {
-        return startups[name];
+    event created(string name, Profile startUp, address msg);
+
+    //public name mappong to startup
+    mapping(string => Profile) public startups;
+
+    constructor() Base()
+    {
+        _owner = msg.sender;
+    }
+
+    // for web front, ["zehui",1,"avatar","mission","overview",true]
+    function newStartup(Profile calldata p) public payable {
+        // require(_coinbase != address(0), "the address can not be the smart contract address");
+        require(bytes(p.name).length != 0, "name can not be null");
+        //名称唯一
+        require(!startups[p.name].isValidate, "startup name has been used");
+        // require(startups[p.name].tokenContract != p.tokenContract, "token contract has been used");
+        // p.isValidate = true;
+        startups[p.name] = p;
+        emit created(p.name, p, msg.sender);
     }
 }
+
