@@ -1,42 +1,215 @@
-{
-  "5": {
-    "name": "goerli",
-    "contracts": [
+[
+  {
+    "name": "Startup",
+    "abiUrl": "/contracts/artifacts/Startup.json",
+    "addresses": [
       {
-        "name": "Startup",
-        "address": "0xEdf4565af54D9508e247c044F09EddcaD91DAdED",
-        "abiUrl": "/contracts/artifacts/Startup.json"
+        "chainId": 1,
+        "chainName": "Ethereum",
+        "address": "0x5b85A9c63C6d03055ACdbd88E6a2f9b2672293F2"
+      },
+      {
+        "chainId": 5,
+        "chainName": "Goerli",
+        "address": "0x744E0A1452F5E3Dc42E75c4C4B4de9faa16E3948"
+      },
+      {
+        "chainId": 43113,
+        "chainName": "avaxTest",
+        "address": "0xC31a16498d1B8d703883B509097f099165D5324A"
+      },
+      {
+        "chainId": 43114,
+        "chainName": "avaxMain",
+        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
+      },
+      {
+        "chainId": 97,
+        "chainName": "BSC Testnet",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 56,
+        "chainName": "Binance Smart Chain",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 4002,
+        "chainName": "Fantom Testnet",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 250,
+        "chainName": "Fantom",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 80001,
+        "chainName": "Mumbai",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 137,
+        "chainName": "Polygon",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 5700,
+        "chainName": "Syscoin Tanenbaum Testnet",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+      },
+      {
+        "chainId": 2814,
+        "chainName": "Rollux OPv1 Private",
+        "address": "0xf829d1C41d88479f8E3Df53d5677B8c784362558"
+      },
+      {
+        "chainId": 57,
+        "chainName": "Syscoin Mainnet",
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
       }
     ]
   },
-  "1": {
-    "name": "main",
-    "contracts": [
+  {
+    "name": "BountyFactory",
+    "abiUrl": "/contracts/artifacts/BountyFactory.json",
+    "addresses": [
       {
-        "name": "Startup",
-        "address": "xxxxxxxxxxxxxxx",
-        "abiUrl": "/contracts/artifacts/Startup.json"
+        "chainId": 1,
+        "chainName": "Ethereum",
+        "address": "0xC77391269e20568954cd24654f173E1cb1792b78"
+      },
+      {
+        "chainId": 5,
+        "chainName": "Goerli",
+        "address": "0x42583219DC1564D465DDD01D3327CEF942f6aB88"
+      },
+      {
+        "chainId": 43113,
+        "chainName": "avaxTest",
+        "address": "0x18bA7216E088816c2CA7a6Bee08Bec48F4c9e25c"
+      },
+      {
+        "chainId": 43114,
+        "chainName": "avaxMain",
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
+      },
+      {
+        "chainId": 97,
+        "chainName": "BSC Testnet",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+      },
+      {
+        "chainId": 56,
+        "chainName": "Binance Smart Chain",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 4002,
+        "chainName": "Fantom Testnet",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 250,
+        "chainName": "Fantom",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 80001,
+        "chainName": "Mumbai",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 137,
+        "chainName": "Polygon",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+      },
+      {
+        "chainId": 2814,
+        "chainName": "Rollux OPv1 Private",
+        "address": "0xdbf9855b1e080E1B81b2071436c7185C00AF276E"
+      },
+      {
+        "chainId": 57,
+        "chainName": "Syscoin Mainnet",
+        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
       }
     ]
   },
-  "43113": {
-    "name": "anaxTest",
-    "contracts": [
+  {
+    "name": "Bounty",
+    "abiUrl": "/contracts/artifacts/Bounty.json",
+    "addresses": []
+  },
+  {
+    "name": "CrowdfundingFactory",
+    "abiUrl": "/contracts/artifacts/CrowdfundingFactory.json",
+    "addresses": [
       {
-        "fileName": "Startup",
-        "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964",
-        "abiUrl": "/contracts/artifacts/Startup.json"
+        "chainId": 1,
+        "chainName": "Ethereum",
+        "address": "0x9937945015A434cEC5f0D7d60127777872c7fC5d"
+      },
+      {
+        "chainId": 5,
+        "chainName": "Goerli",
+        "address": "0xc729D91818dbf102885cEf38B9aeDc0F2f70fAb1"
+      },
+      {
+        "chainId": 43113,
+        "chainName": "avaxTest",
+        "address": "0xC7FbA93E1BCAb3dA91d3adC30aF31e718fFF9B8a"
+      },
+      {
+        "chainId": 43114,
+        "chainName": "avaxMain",
+        "address": "0xEDD8b1e92c6584AFc0A4509f1122244195e0157B"
+      },
+      {
+        "chainId": 97,
+        "chainName": "BSC Testnet",
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
+      },
+      {
+        "chainId": 56,
+        "chainName": "Binance Smart Chain",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+      },
+      {
+        "chainId": 4002,
+        "chainName": "Fantom Testnet",
+        "address": "0x1813E37D76316eCE03D3f7a9D908052D061355Fb"
+      },
+      {
+        "chainId": 250,
+        "chainName": "Fantom",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+      },
+      {
+        "chainId": 80001,
+        "chainName": "Mumbai",
+        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
+      },
+      {
+        "chainId": 137,
+        "chainName": "Polygon",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+      },
+      {
+        "chainId": 2814,
+        "chainName": "Rollux OPv1 Private",
+        "address": "0xC7FbA93E1BCAb3dA91d3adC30aF31e718fFF9B8a"
+      },
+      {
+        "chainId": 57,
+        "chainName": "Syscoin Mainnet",
+        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
       }
     ]
   },
-  "43114": {
-    "name": "avaxMain",
-    "contracts": [
-      {
-        "fileName": "Startup",
-        "address": "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964",
-        "abiUrl": "/contracts/artifacts/Startup.json"
-      }
-    ]
+  {
+    "name": "Crowdfunding",
+    "abiUrl": "/contracts/artifacts/Crowdfunding.json",
+    "addresses": []
   }
-}
+]
