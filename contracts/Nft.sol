@@ -41,6 +41,16 @@ contract GameItem is ERC721URIStorage {
         return newItemId;
     }
 
+    function setTokenURI (uint256 itemId , string memory tokenURI )
+        public
+        byOwner()
+        returns (uint256)
+    {
+        _setTokenURI(itemId, tokenURI);
+        return itemId;
+    }
+    
+
     function setWhiteLists (address _userAddress , bool _whiteState) public byOwner(){
         whiteLists[_userAddress] = _whiteState;
     }
