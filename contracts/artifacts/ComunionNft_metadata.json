@@ -119,6 +119,24 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_tokenURI",
+						"type": "string"
+					}
+				],
+				"name": "_setSBTNFTAddressLists",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "to",
 						"type": "address"
 					},
@@ -204,6 +222,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getTokenIdTotal",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -233,6 +264,33 @@
 						"internalType": "address",
 						"name": "player",
 						"type": "address"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "title",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "image",
+								"type": "string"
+							}
+						],
+						"internalType": "struct ComunionNft.NFTInfo",
+						"name": "p",
+						"type": "tuple"
 					}
 				],
 				"name": "mint",
@@ -343,24 +401,6 @@
 					}
 				],
 				"name": "setApprovalForAll",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_userAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "_tokenURI",
-						"type": "string"
-					}
-				],
-				"name": "setSBTNFTAddressLists",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -665,11 +705,11 @@
 			]
 		},
 		"contracts/1_Storage.sol": {
-			"keccak256": "0x0fa20bec42eb2b9646dfa081041038c86f54242180f4cfc5471c97957e9644be",
+			"keccak256": "0xea69ad48c2a02dc7cc083b69a5ff71e7b0776937ca8c49dfa36408b90bd983b1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://eb55fffb5f773e449485755407f6be12bda357f0f17c19b3e36f89e38b5bebf7",
-				"dweb:/ipfs/QmfQHCBmDUSMtLCvXu2n1jSoZCJSW1eL66dZei72jvGFpX"
+				"bzz-raw://1d8c6726b3c3128b5f7a367fbfa758ac11f08fee5d3fec5f71747f7ff0ee32dc",
+				"dweb:/ipfs/QmaSedvErEARQP4eXTKHEFvnA7vSPLyoQRpwAU3RMUTNeS"
 			]
 		}
 	},

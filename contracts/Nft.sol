@@ -8,9 +8,15 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract GameItem is ERC721URIStorage {
+contract ComunionNft is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    struct NFTInfo {
+        string title;
+        string name;
+        string description;
+        string image;
+    }
 
     bool isSBT = true;
 
@@ -26,13 +32,13 @@ contract GameItem is ERC721URIStorage {
 
     mapping(address => string) public SBTNFTAddressLists;
 
-    constructor(string memory _baseURI, string memory _contractMetadata) ERC721("GameItem", "ITM") {
+    constructor(string memory _baseURI, string memory _contractMetadata) ERC721("ComunionNft", "CNFT") {
         baseURI = _baseURI;
         contractMetadata = _contractMetadata;
         owner = msg.sender;
     }
 
-    function mint(address player)
+    function mint(address player,NFTInfo calldata p)
         public
         returns (uint256)
     {
@@ -40,9 +46,10 @@ contract GameItem is ERC721URIStorage {
         uint256 newItemId = _tokenIds.current();
         // string memory tokenURI = getTokenURI(newItemId);
         require(MintMaxTotal >= newItemId, "Max overflow !");
+        require(balanceOf(player) < 1, "You can only have one NFT");
         _mint(player, newItemId);
-        _setTokenURI(newItemId, getStaticJsonTokenURI(0));
-        setSBTNFTAddressLists(player, getStaticJsonTokenURI(0));
+        _setTokenURI(newItemId, getStaticJsonTokenURI(p));
+        _setSBTNFTAddressLists(player, getStaticJsonTokenURI(p));
         _tokenIds.increment();
         return newItemId;
     }
@@ -55,14 +62,17 @@ contract GameItem is ERC721URIStorage {
         return itemId;
     }
 
-    function setSBTNFTAddressLists (address _userAddress , string memory _tokenURI) public {
+    function _setSBTNFTAddressLists (address _userAddress , string memory _tokenURI) public {
         SBTNFTAddressLists[_userAddress] = _tokenURI;
     }
 
     function getSBTNFTAddressLists (address _userAddress) public view returns (string memory) {
         return SBTNFTAddressLists[_userAddress];
     }
-
+    function getTokenIdTotal() public view returns (uint256){
+        uint256 tokenId = _tokenIds.current();
+        return tokenId;
+    }
     function setWhiteLists (address _userAddress , bool _whiteState) public byOwner(){
         whiteLists[_userAddress] = _whiteState;
     }
@@ -76,24 +86,32 @@ contract GameItem is ERC721URIStorage {
         return tokenURI;
     }
 
-    function getStaticJsonTokenURI (uint256 index) private pure returns(string memory) {
+    function getStaticJsonTokenURI (NFTInfo calldata p) private pure returns(string memory) {
         string memory tokenURI =  string(bytes(
             abi.encodePacked(
                 "{",
-                    '"title":"nft-njl Metadata",',
+                    '"title":"',
+                    p.title,
+                    '",',
                     '"type":"object",',
                     '"properties": {',
                         '"name": {',
                             '"type": "string",',
-                            '"description": "nft-njl-metadata-name"',
+                            '"description": "',
+                            p.name,
+                            '"',
                         '},',
                         '"description": {',
                             '"type": "string",',
-                            '"description": "nft-njl-metadata-description"',
+                            '"description": "',
+                            p.description,
+                            '"',
                         '},',
                         '"image": {',
                             '"type": "string",',
-                            '"description": "https://docs.openzeppelin.com/_/images/social.png"',
+                            '"description": "',
+                            p.image,
+                            '"',
                         '}',
                     '}',
                 "}"
