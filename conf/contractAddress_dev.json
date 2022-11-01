@@ -26,7 +26,7 @@
       {
         "chainId": 97,
         "chainName": "BSC Testnet",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": "0xEDD8b1e92c6584AFc0A4509f1122244195e0157B"
       },
       {
         "chainId": 56,
@@ -36,7 +36,7 @@
       {
         "chainId": 4002,
         "chainName": "Fantom Testnet",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": "0x3e94b5b6fE0C0e6bd70015C44E0887E2EB6Ea870"
       },
       {
         "chainId": 250,
@@ -46,7 +46,7 @@
       {
         "chainId": 80001,
         "chainName": "Mumbai",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
       },
       {
         "chainId": 137,
