@@ -46,7 +46,6 @@ contract ComunionNft is ERC721URIStorage {
         uint256 newItemId = _tokenIds.current();
         // string memory tokenURI = getTokenURI(newItemId);
         require(MintMaxTotal >= newItemId, "Max overflow !");
-        require(balanceOf(player) < 1, "You can only have one NFT");
         _mint(player, newItemId);
         _setTokenURI(newItemId, getStaticJsonTokenURI(p));
         _setSBTNFTAddressLists(player, getStaticJsonTokenURI(p));
