@@ -16,38 +16,6 @@
 						"internalType": "address",
 						"name": "_founder",
 						"type": "address"
-					},
-					{
-						"components": [
-							{
-								"internalType": "address",
-								"name": "depositToken",
-								"type": "address"
-							},
-							{
-								"internalType": "bool",
-								"name": "depositTokenIsNative",
-								"type": "bool"
-							},
-							{
-								"internalType": "uint256",
-								"name": "founderDepositAmount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "applicantDepositMinAmount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "applyDeadline",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct Parameters",
-						"name": "_paras",
-						"type": "tuple"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -392,6 +360,59 @@
 			},
 			{
 				"inputs": [],
+				"name": "getStore",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "depositToken",
+								"type": "address"
+							},
+							{
+								"internalType": "bool",
+								"name": "depositTokenIsNative",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint256",
+								"name": "founderDepositAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applicantDepositMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applyDeadline",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Parameters",
+						"name": "_paras",
+						"type": "tuple"
+					}
+				],
+				"name": "init",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "lock",
 				"outputs": [],
 				"stateMutability": "payable",
@@ -518,6 +539,32 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "newBounty",
+						"type": "address"
+					}
+				],
+				"name": "transferPrimary",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newStore",
+						"type": "address"
+					}
+				],
+				"name": "transferStore",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "_address",
 						"type": "address"
 					}
@@ -532,6 +579,19 @@
 				"name": "unlock",
 				"outputs": [],
 				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "vaultAccount",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -581,7 +641,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/Bounty.sol": "Bounty"
+			"contracts/comunion/Bounty.sol": "Bounty"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -589,7 +649,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -651,12 +711,36 @@
 				"dweb:/ipfs/QmQJquTMtc6fgm5JQzGdsGpA2fqBe3MHWEdt2qzaLySMdN"
 			]
 		},
-		"contracts/Bounty.sol": {
-			"keccak256": "0x7a2b7e1f6eebd10804f8e04fcb2a212a7377483f2717346b720d61a4e146a890",
+		"contracts/comunion/Bounty.sol": {
+			"keccak256": "0xc3c74db1489d13b83fb99416935dfc6ac0f4e4e39ec5b0ae2e84da0ff7b69e3c",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://0f463b16b75af06cd5d637f1a7952837caa9be0f7c172ee750e5d555603ca5c4",
-				"dweb:/ipfs/Qmavg2KNbXjacUcubLkGcaQydjkKmVbBkdUtiGXWmQNuR4"
+				"bzz-raw://07288575499d6f1c76e5ebd4ecb555af741a1aa355f37c4bf04b6861a7b33a7f",
+				"dweb:/ipfs/Qmc4Gj1Eh4VR8M9tGqueZbge49urxhEppm1dq4RL6S9EAq"
+			]
+		},
+		"contracts/comunion/BountyStore.sol": {
+			"keccak256": "0x57c8d7c25e619017fa33a451913aca81fca6fcb17c02adb1b4ae1e79244015c9",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://1d46ccf47845a9b71a02c0d6e9009724c214a0542bad1abbbf527b9ac59298d2",
+				"dweb:/ipfs/Qmd2p2RGuB4bMccY1QFN1LJsNtCHusmv9QVH4ACt1wUCw2"
+			]
+		},
+		"contracts/comunion/FactoryStore.sol": {
+			"keccak256": "0x2ae7d89e61d29b9d92adc5ce44abba75de22621c048c191e926b896b7597b222",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://052c3e419f6e298607b44dd998653b62ec3801538fe56f8db40a0eb8c9fd1c87",
+				"dweb:/ipfs/QmTC9rMZYisZ3QgqjWfZky4tFwCWJJdMLpbeG4RUv1vP4u"
+			]
+		},
+		"contracts/comunion/ownership/Secondary.sol": {
+			"keccak256": "0xa24430372a76ab00989d6397d2b7cb2b3060fc3078047bf485d08eaf7a161630",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://f07f4d21fb4411c51e0a83a8ad7ab4584b426501905a4f774b5b1de00a222048",
+				"dweb:/ipfs/QmW17w29HPYfdwD718w6qB3sxnpK4HqeMiMqgTAbFJVL7z"
 			]
 		}
 	},

@@ -1,0 +1,158 @@
+{
+  "compiler": {
+    "version": "0.8.7+commit.e28d00a7"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "PrimaryTransferred",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "children",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "childAddr",
+            "type": "address"
+          }
+        ],
+        "name": "isChild",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "primary",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "child",
+            "type": "address"
+          }
+        ],
+        "name": "push",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "transferPrimary",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "primary()": {
+          "returns": {
+            "_0": "the address of the primary."
+          }
+        },
+        "transferPrimary(address)": {
+          "details": "Transfers contract to a new primary.",
+          "params": {
+            "recipient": "The address of new primary."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {},
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/comunion/FactoryStore.sol": "FactoryStore"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@openzeppelin/contracts/utils/Context.sol": {
+      "keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+        "dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+      ]
+    },
+    "contracts/comunion/FactoryStore.sol": {
+      "keccak256": "0x2ae7d89e61d29b9d92adc5ce44abba75de22621c048c191e926b896b7597b222",
+      "license": "SimPL-2.0",
+      "urls": [
+        "bzz-raw://052c3e419f6e298607b44dd998653b62ec3801538fe56f8db40a0eb8c9fd1c87",
+        "dweb:/ipfs/QmTC9rMZYisZ3QgqjWfZky4tFwCWJJdMLpbeG4RUv1vP4u"
+      ]
+    },
+    "contracts/comunion/ownership/Secondary.sol": {
+      "keccak256": "0xe9138ef3920eeb6d665589ff4075c080dff84b621ea3569a89e665c05c219ba6",
+      "license": "SimPL-2.0",
+      "urls": [
+        "bzz-raw://5d42a57332016ce6b2c47ee55f95628bc46df6f960abf71ef00e2e79b8851cc4",
+        "dweb:/ipfs/QmWmdj4cjQ7Y9h5PCPoVJi3fyVK514LtAobXCKbGpCT5kb"
+      ]
+    }
+  },
+  "version": 1
+}
