@@ -127,7 +127,7 @@
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0xdbf9855b1e080E1B81b2071436c7185C00AF276E"
+        "address": "0xf1fC81580C5844F57662029B68159e930E553E1f"
       },
       {
         "chainId": 57,
@@ -139,6 +139,26 @@
   {
     "name": "Bounty",
     "abiUrl": "/contracts/artifacts/Bounty.json",
+    "addresses": []
+  },
+  {
+    "name": "BountyStore",
+    "abiUrl": "/contracts/artifacts/BountyStore.json",
+    "addresses": []
+  },
+  {
+    "name": "FactoryStore",
+    "abiUrl": "/contracts/artifacts/FactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "BountyFactoryStore",
+    "abiUrl": "/contracts/artifacts/BountyFactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "Secondary",
+    "abiUrl": "/contracts/ownership/artifacts/Secondary.json",
     "addresses": []
   },
   {

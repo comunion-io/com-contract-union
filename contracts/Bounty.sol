@@ -5,6 +5,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./ownership/Secondary.sol";
+import "./FactoryStore.sol";
+import "./BountyStore.sol";
 
 struct Parameters {
     address depositToken;
@@ -15,39 +18,56 @@ struct Parameters {
 }
 
 contract BountyFactory is Ownable {
-    address[] private arrChildren;
-    mapping(address => bool) private mapChildren;
-
     event Created(address founder, address bounty, Parameters paras);
+
+    FactoryStore store;
+
+    constructor() {
+        store = new FactoryStore();
+    }
 
     function createBounty(address _depositToken, uint256 _founderDepositAmount, uint256 _applicantDepositAmount, uint256 _applyDeadline) public {
         require(_applyDeadline > block.timestamp, "Applicant cutoff date is expired");
-        // address _stableToken = address(0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E);   //Avalanche Mainnet
-        // address _stableToken = address(0x8f81b9B08232F8E8981dAa87854575d7325A9439);   //Avalanche Testnet
         Parameters memory paras = Parameters({depositToken: _depositToken,
         depositTokenIsNative: false,
         founderDepositAmount: _founderDepositAmount,
         applicantDepositMinAmount: _applicantDepositAmount,
         applyDeadline: _applyDeadline});
-        Bounty bounty = new Bounty(address(this), msg.sender, paras);
+        Bounty bounty = new Bounty(address(this), msg.sender);
+        bounty.init(paras);
         if (paras.founderDepositAmount > 0) {
             IERC20 depositToken = IERC20(_depositToken);
             require(depositToken.balanceOf(msg.sender) >= _founderDepositAmount, "Deposit token balance is insufficient");
             require(depositToken.allowance(msg.sender, address(this)) >= _founderDepositAmount, "Deposit token allowance is insufficient");
-            require(depositToken.transferFrom(msg.sender, address(bounty), _founderDepositAmount), "Deposit token transferFrom failure");
+            require(depositToken.transferFrom(msg.sender, bounty.vaultAccount(), _founderDepositAmount), "Deposit token transferFrom failure");
         }
+        bounty.transferOwnership(msg.sender);
 
-        arrChildren.push(address(bounty));
-        mapChildren[address(bounty)] = true;
+        store.push(address(bounty));
         emit Created(msg.sender, address(bounty), paras);
     }
 
     function children() external view returns (address[] memory) {
-        return arrChildren;
+        return store.children();
     }
 
-    function isChild(address _address) external view returns (bool) {
-        return mapChildren[_address];
+    function isChild(address childAddr) external view returns (bool) {
+        return store.isChild(childAddr);
+    }
+
+    function transferPrimary(address newFactory) external onlyOwner {
+        store.transferPrimary(newFactory);
+    }
+
+    function getStore() external onlyOwner view returns (address) {
+        return address(store);
+    }
+
+    function transferStore(address newStore) external onlyOwner {
+        store = FactoryStore(newStore);
+    }
+
+    function renounceOwnership() public override onlyOwner {
     }
 }
 
@@ -69,10 +89,12 @@ contract Bounty is Ownable {
         ApplicantStatus status;
     }
 
+    BountyStore store;
     IERC20 private depositToken;
     address private factory;
     address private founder;
-    address payable private thisAccount;
+    address private thisAccount;
+    address payable private vault;
     Parameters private paras;
     uint256 private founderDepositAmount;
     uint256 private applicantDepositAmount;
@@ -174,9 +196,21 @@ contract Bounty is Ownable {
         locked = false;
     }
 
-    constructor(address _factory, address _founder, Parameters memory _paras) {
+    modifier zeroStore() {
+        require(address(store) == address(0), "Store is not zero");
+        _;
+    }
+
+    constructor(address _factory, address _founder) {
         factory = _factory;
         founder = _founder;
+        thisAccount = address(this);
+    }
+
+    function init(Parameters memory _paras) public payable onlyOwner zeroStore {
+        store = new BountyStore();
+        vault = payable(address(store));
+
         paras = _paras;
         bountyStatus = _statusFromTime();
         founderDepositAmount = paras.founderDepositAmount;
@@ -188,9 +222,6 @@ contract Bounty is Ownable {
             paras.depositTokenIsNative = false;
             depositToken = IERC20(paras.depositToken);
         }
-        thisAccount = payable(address(this));
-        transferOwnership(_founder);
-
         emit Created(owner(), factory, founder, paras);
     }
 
@@ -206,7 +237,7 @@ contract Bounty is Ownable {
     }
 
     function close() public payable onlyFounder zeroDeposit notCompleted notExpired {
-        require(_refundDepositToken(payable(founder), _getBalance(thisAccount)), "Transfer balance to the founder failure");
+        require(_refundDepositToken(payable(founder), _getBalance(vault)), "Transfer balance to the founder failure");
         bountyStatus = BountyStatus.Completed;
         emit Close(msg.sender, bountyStatus);
     }
@@ -262,20 +293,45 @@ contract Bounty is Ownable {
         emit PostUpdate(msg.sender, timeLock);
     }
 
+    function vaultAccount() public view onlyOwner returns (address) {
+        return vault;
+    }
+
     function state() public view returns (uint8 _bountyStatus, uint _applicantCount, uint256 _depositBalance,
         uint256 _founderDepositAmount, uint256 _applicantDepositAmount,
         uint256 _applicantDepositMinAmount, bool _depositLock,
-        uint256 _timeLock, uint8 _myRole,
-        uint256 _myDepositAmount, uint8 _myStatus) {
+        uint256 _timeLock, uint8 _myRole, uint256 _myDepositAmount, uint8 _myStatus) {
 
         (uint8 _role, uint256 _depositAmount, uint8 _status) = whoAmI();
 
-        return (uint8(bountyStatus), arrayApplicants.length, _getBalance(thisAccount), founderDepositAmount, applicantDepositAmount,
+        return (uint8(bountyStatus), arrayApplicants.length, _getBalance(vault), founderDepositAmount, applicantDepositAmount,
         paras.applicantDepositMinAmount, depositLock, timeLock, _role, _depositAmount, _status);
     }
+    // IERC20 depositToken;
+    // bool locked;
+    // Parameters private paras;
+    // address[] arrayApplicants;
+    // mapping(address => Applicant) mappedApplicants;
+    // mapping(address => bool) mappedDepositLockers;
+    // mapping(address => bool) mappedDepositUnlockers;
 
     function whoAmI() public view returns (uint8 _role, uint256 _depositAmount, uint8 _applicantStatus) {
         return _whoIs(msg.sender);
+    }
+
+    function transferPrimary(address newBounty) external onlyOwner {
+        store.transferPrimary(newBounty);
+    }
+
+    function getStore() external onlyOwner view returns (address) {
+        return address(store);
+    }
+
+    function transferStore(address newStore) external onlyOwner {
+        store = BountyStore(newStore);
+    }
+
+    function renounceOwnership() public override onlyOwner {
     }
 
     function _depositIsLocked() internal view returns (bool) {
@@ -291,12 +347,12 @@ contract Bounty is Ownable {
             if (paras.depositTokenIsNative) {
                 require(msg.value == _amount, "msg.value is not valid");
                 require(msg.sender.balance >= _amount, "Your balance is insufficient");
-                (bool isSend,) = thisAccount.call{value: _amount}("");
+                (bool isSend,) = vault.call{value: _amount}("");
                 require(isSend, "Transfer contract failure");
             } else {
                 require(depositToken.allowance(msg.sender, thisAccount) >= _amount, "Your deposit token allowance is insufficient");
                 require(depositToken.balanceOf(msg.sender) >= _amount, "Your deposit token balance is insufficient");
-                require(depositToken.transferFrom(msg.sender, thisAccount, _amount), "Deposit token transferFrom failure");
+                require(depositToken.transferFrom(msg.sender, vault, _amount), "Deposit token transferFrom failure");
             }
         }
     }
@@ -344,12 +400,11 @@ contract Bounty is Ownable {
         if (_amount > 0) {
             isSend = false;
             if (paras.depositTokenIsNative) {
-                (isSend,) = _to.call{value: _amount}("");
-                require(isSend, "Refund failure");
+                isSend = store.transfer(_to, _amount);
             } else {
-                isSend = depositToken.transfer(_to, _amount);
-                require(isSend, "Refund failure");
+                isSend = store.transferToken(depositToken, _to, _amount);
             }
+            require(isSend, "Refund failure");
         }
         return isSend;
     }

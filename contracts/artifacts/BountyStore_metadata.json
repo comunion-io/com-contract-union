@@ -1,0 +1,174 @@
+{
+  "compiler": {
+    "version": "0.8.7+commit.e28d00a7"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "PrimaryTransferred",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "primary",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "transferPrimary",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferToken",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "primary()": {
+          "returns": {
+            "_0": "the address of the primary."
+          }
+        },
+        "transferPrimary(address)": {
+          "details": "Transfers contract to a new primary.",
+          "params": {
+            "recipient": "The address of new primary."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {},
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/comunion/BountyStore.sol": "BountyStore"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+        "dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Context.sol": {
+      "keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+        "dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+      ]
+    },
+    "contracts/comunion/BountyStore.sol": {
+      "keccak256": "0x57c8d7c25e619017fa33a451913aca81fca6fcb17c02adb1b4ae1e79244015c9",
+      "license": "SimPL-2.0",
+      "urls": [
+        "bzz-raw://1d46ccf47845a9b71a02c0d6e9009724c214a0542bad1abbbf527b9ac59298d2",
+        "dweb:/ipfs/Qmd2p2RGuB4bMccY1QFN1LJsNtCHusmv9QVH4ACt1wUCw2"
+      ]
+    },
+    "contracts/comunion/ownership/Secondary.sol": {
+      "keccak256": "0xa24430372a76ab00989d6397d2b7cb2b3060fc3078047bf485d08eaf7a161630",
+      "license": "SimPL-2.0",
+      "urls": [
+        "bzz-raw://f07f4d21fb4411c51e0a83a8ad7ab4584b426501905a4f774b5b1de00a222048",
+        "dweb:/ipfs/QmW17w29HPYfdwD718w6qB3sxnpK4HqeMiMqgTAbFJVL7z"
+      ]
+    }
+  },
+  "version": 1
+}
