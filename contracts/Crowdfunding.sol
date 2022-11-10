@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./FactoryStore.sol";
+import "./CrowdfundingStore.sol";
 
     struct Parameters {
         address sellTokenAddress;
@@ -24,11 +26,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
     }
 
 contract CrowdfundingFactory is Ownable {
-
-    address[] private arrChildren;
-    mapping(address => bool) private mapChildren;
-
     event Created(address founder, address crowdfunding, Parameters paras);
+
+    FactoryStore store;
+
+    constructor() {
+        store = new FactoryStore();
+    }
 
     function createCrowdfundingContract(address _sellToken, address _buyToken, uint256 _raiseTotal,
         uint256 _buyPrice, uint16 _swapPercent, uint16 _sellTax,
@@ -53,24 +57,41 @@ contract CrowdfundingFactory is Ownable {
         require(_buyPrice > 0, "Buy price is incorrect");
 
         IERC20 sellToken = IERC20(paras.sellTokenAddress);
-        Crowdfunding newCrowdfunding = new Crowdfunding(address(this), msg.sender, paras);
+        Crowdfunding newCrowdfunding = new Crowdfunding(address(this), msg.sender);
+        newCrowdfunding.init(paras);
         uint256 _deposit = newCrowdfunding.deposit();
         require(_deposit > 0, "Sell token deposit is zero");
         require(sellToken.balanceOf(msg.sender) >= _deposit, "Sell token balance is insufficient");
         require(sellToken.allowance(msg.sender, address(this)) >= _deposit, "Sell token allowance is insufficient");
-        require(sellToken.transferFrom(msg.sender, address(newCrowdfunding), _deposit), "Sell token transferFrom failure");
+        require(sellToken.transferFrom(msg.sender, newCrowdfunding.vaultAccount(), _deposit), "Sell token transferFrom failure");
 
-        arrChildren.push(address(newCrowdfunding));
-        mapChildren[address(newCrowdfunding)] = true;
-        emit Created(msg.sender, address(newCrowdfunding), paras);
+        newCrowdfunding.transferOwnership(msg.sender);
+        address _address = address(newCrowdfunding);
+        store.push(_address);
+        emit Created(msg.sender, _address, paras);
     }
 
     function children() external view returns (address[] memory) {
-        return arrChildren;
+        return store.children();
     }
 
     function isChild(address _address) external view returns (bool) {
-        return mapChildren[_address];
+        return store.isChild(_address);
+    }
+
+    function getStore() external onlyOwner view returns (address) {
+        return address(store);
+    }
+
+    function transferPrimary(address newFactory) external onlyOwner {
+        store.transferPrimary(newFactory);
+    }
+
+    function transferStore(address newStore) external onlyOwner {
+        store = FactoryStore(newStore);
+    }
+
+    function renounceOwnership() public override onlyOwner {
     }
 }
 
@@ -81,6 +102,15 @@ contract Crowdfunding is Ownable {
         Pending, Upcoming, Live, Ended, Cancel
     }
 
+    event Created(address owner, address factory, address founder, uint256 deposit, Parameters paras);
+    event Buy(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
+    event Sell(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
+    event Cancel(address caller, Status status);
+    event Remove(address caller, Status status);
+    event Receive(address sender, string func);
+    event UpdateParas(address caller, uint256 buyPrice, uint16 swapPercent, uint256 maxBuyAmount, uint16 maxSellPercent, uint256 endTime);
+
+    CrowdfundingStore store;
     IERC20 private sellToken;
     IERC20 private buyToken;
     address private factory;
@@ -90,24 +120,10 @@ contract Crowdfunding is Ownable {
     uint256 private swapPoolAmount;
     uint256 private sellTokenAmount;
     Parameters private paras;
-    address payable private thisAccount;
+    address private thisAccount;
+    address payable private vault;
     Status private status;
     bool internal locked;
-
-    struct PairAmount {
-        uint256 buyAmount;
-        uint256 sellAmount;
-    }
-    mapping(address => PairAmount) totals;
-    mapping(address => PairAmount) amounts;
-
-    event Created(address owner, address factory, address founder, uint256 deposit, Parameters paras);
-    event Buy(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
-    event Sell(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
-    event Cancel(address caller, Status status);
-    event Remove(address caller, Status status);
-    event Receive(address sender, string func);
-    event UpdateParas(address caller, uint256 buyPrice, uint16 swapPercent, uint256 maxBuyAmount, uint16 maxSellPercent, uint256 endTime);
 
     modifier isActive() {
         _checkActive();
@@ -141,9 +157,21 @@ contract Crowdfunding is Ownable {
         locked = false;
     }
 
-    constructor(address _factory, address _founder, Parameters memory _parameters) {
+    modifier zeroStore() {
+        require(address(store) == address(0), "Store is not zero");
+        _;
+    }
+
+    constructor(address _factory, address _founder) {
         factory = _factory;
         founder = _founder;
+        thisAccount = address(this);
+    }
+
+    function init(Parameters memory _parameters) public payable onlyOwner zeroStore {
+        store = new CrowdfundingStore();
+        vault = payable(address(store));
+
         paras = _parameters;
         status = _statusFromTime();
         sellToken = IERC20(paras.sellTokenAddress);
@@ -158,9 +186,6 @@ contract Crowdfunding is Ownable {
         }
         depositAmount = _calculateDeposit();
         sellTokenAmount = depositAmount;
-        thisAccount = payable(address(this));
-        transferOwnership(_founder);
-
         emit Created(owner(), factory, founder, depositAmount, paras);
     }
 
@@ -168,31 +193,29 @@ contract Crowdfunding is Ownable {
         require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
         require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
         require(_checkMaxBuyAmount(msg.sender, _buyAmount), "Amount exceeds maximum");
-        require(sellToken.balanceOf(thisAccount) >= _sellAmount, "Sell token balance is insufficient");
+        require(sellToken.balanceOf(vault) >= _sellAmount, "Sell token balance is insufficient");
 
         uint256 _toPoolAmount = _toSwapPoolAmount(_buyAmount);
         if (paras.buyTokenIsNative) {
             require(msg.value == _buyAmount, "msg.value is not valid");
             // require(msg.sender.balance >= _buyAmount, "Your balance is insufficient");
-            (bool isSend,) = thisAccount.call{value: 0}("");
+            (bool isSend,) = vault.call{value: 0}("");
             // require(isSend, "Transfer contract failure");
             (isSend,) = paras.teamWallet.call{value: msg.value.sub(_toPoolAmount)}("");
             // require(isSend, "Transfer team failure");
         } else {
             require(buyToken.allowance(msg.sender, thisAccount) >= _buyAmount, "Your buy token allowance is insufficient");
             require(buyToken.balanceOf(msg.sender) >= _buyAmount, "Your buy token balance is insufficient");
-            require(buyToken.transferFrom(msg.sender, thisAccount, _buyAmount), "Buy token transferFrom failure");
+            require(buyToken.transferFrom(msg.sender, vault, _buyAmount), "Buy token transferFrom failure");
             require(buyToken.transfer(paras.teamWallet, _buyAmount.sub(_toPoolAmount)), "Buy token transfer team failure");
         }
-        require(sellToken.transfer(msg.sender, _sellAmount), "Sell token transfer failure");
+        require(store.transferToken(sellToken, msg.sender, _sellAmount), "Sell token transfer failure");
 
         buyTokenAmount = buyTokenAmount.add(_buyAmount);
         sellTokenAmount = sellTokenAmount.sub(_sellAmount);
         swapPoolAmount = swapPoolAmount.add(_toPoolAmount);
-        totals[msg.sender].buyAmount = totals[msg.sender].buyAmount.add(_buyAmount);
-        totals[msg.sender].sellAmount = totals[msg.sender].sellAmount.add(_sellAmount);
-        amounts[msg.sender].buyAmount = amounts[msg.sender].buyAmount.add(_buyAmount);
-        amounts[msg.sender].sellAmount = amounts[msg.sender].sellAmount.add(_sellAmount);
+        store.addTotal(msg.sender, _buyAmount, _sellAmount);
+        store.addAmount(msg.sender, _buyAmount, _sellAmount);
 
         emit Buy(msg.sender, _buyAmount, _sellAmount, buyTokenAmount, sellTokenAmount, swapPoolAmount);
         return true;
@@ -207,21 +230,19 @@ contract Crowdfunding is Ownable {
 
         require(sellToken.allowance(msg.sender, thisAccount) >= _sellAmount, "Your sell token allowance is insufficient");
         require(sellToken.balanceOf(msg.sender) >= _sellAmount, "Your sell token balance is insufficient");
-        require(sellToken.transferFrom(msg.sender, thisAccount, _sellAmount), "Sell token transferFrom failure");
+        require(sellToken.transferFrom(msg.sender, vault, _sellAmount), "Sell token transferFrom failure");
         if (paras.buyTokenIsNative) {
-            require(thisAccount.balance >= _buyAmountAfterTax, "Balance is insufficient");
-            (bool isSend,) = msg.sender.call{value: _buyAmountAfterTax}("");
-            require(isSend, "Transfer buyer failure");
+            require(vault.balance >= _buyAmountAfterTax, "Balance is insufficient");
+            require(store.transfer(msg.sender, _buyAmountAfterTax), "Transfer buyer failure");
         } else {
-            require(buyToken.balanceOf(thisAccount) >= _buyAmountAfterTax, "Buy token balance is insufficient");
-            require(buyToken.transfer(msg.sender, _buyAmountAfterTax), "Buy token transfer buyer failure");
+            require(buyToken.balanceOf(vault) >= _buyAmountAfterTax, "Buy token balance is insufficient");
+            require(store.transferToken(buyToken, msg.sender, _buyAmountAfterTax), "Buy token transfer buyer failure");
         }
 
         buyTokenAmount = buyTokenAmount.sub(_buyAmount);
         sellTokenAmount = sellTokenAmount.add(_sellAmount);
         swapPoolAmount = swapPoolAmount.sub(_buyAmountAfterTax);
-        amounts[msg.sender].buyAmount = amounts[msg.sender].buyAmount.sub(_buyAmount);
-        amounts[msg.sender].sellAmount = amounts[msg.sender].sellAmount.sub(_sellAmount);
+        store.subAmount(msg.sender, _buyAmount, _sellAmount);
 
         emit Sell(msg.sender, _buyAmount, _sellAmount, buyTokenAmount, sellTokenAmount, swapPoolAmount);
         return true;
@@ -253,18 +274,22 @@ contract Crowdfunding is Ownable {
         emit UpdateParas(msg.sender, _buyPrice, _swapPercent, _maxBuyAmount, _maxSellPercent, _endTime);
     }
 
+    function vaultAccount() public view onlyOwner returns (address) {
+        return vault;
+    }
+
     function state() public view returns (uint256 _raiseTotal, uint256 _raiseAmount, uint256 _swapPoolAmount,
         uint256 _sellTokenDeposit, uint256 _sellTokenAmount,
         uint256 _myBuyTokenAmount, uint256 _mySellTokenAmount,
         uint256 _buyTokenBalance, uint256 _sellTokenBalance,
         Status _status) {
-        uint256 _raiseBalance = thisAccount.balance;
+        uint256 _raiseBalance = vault.balance;
         if (!paras.buyTokenIsNative) {
-            _raiseBalance = buyToken.balanceOf(thisAccount);
+            _raiseBalance = buyToken.balanceOf(vault);
         }
+        (uint256 _buyAmount, uint256 _sellAmount) = store.getAmount(msg.sender);
         return (paras.raiseTotal, buyTokenAmount, swapPoolAmount, depositAmount, sellTokenAmount,
-        amounts[msg.sender].buyAmount, amounts[msg.sender].sellAmount, _raiseBalance,
-        sellToken.balanceOf(thisAccount), status);
+        _buyAmount, _sellAmount, _raiseBalance, sellToken.balanceOf(vault), status);
     }
 
     function account() public view returns (address _owner, address _factory, address _founder) {
@@ -291,15 +316,30 @@ contract Crowdfunding is Ownable {
         return paras.buyTokenIsNative;
     }
 
+    function getStore() external onlyOwner view returns (address) {
+        return address(store);
+    }
+
+    function transferPrimary(address newCrowdfunding) external onlyOwner {
+        store.transferPrimary(newCrowdfunding);
+    }
+
+    function transferStore(address newStore) external onlyOwner {
+        store = CrowdfundingStore(newStore);
+    }
+
+    function renounceOwnership() public override onlyOwner {
+    }
+
     function _refundBuyToken(address payable _to) internal returns (bool) {
         bool isSend = true;
         if (paras.buyTokenIsNative) {
-            if (thisAccount.balance > 0) {
-                (isSend,) = _to.call{value: thisAccount.balance}("");
+            if (vault.balance > 0) {
+                isSend = store.transfer(_to, vault.balance);
             }
         } else {
-            if (buyToken.balanceOf(thisAccount) > 0) {
-                isSend = buyToken.transfer(_to, buyToken.balanceOf(thisAccount));
+            if (buyToken.balanceOf(vault) > 0) {
+                isSend = store.transferToken(buyToken, _to, buyToken.balanceOf(vault));
             }
         }
         return isSend;
@@ -307,17 +347,17 @@ contract Crowdfunding is Ownable {
 
     function _refundSellToken(address payable _to) internal returns (bool) {
         bool isSend = true;
-        if (sellToken.balanceOf(thisAccount) > 0) {
-            isSend = sellToken.transfer(_to, sellToken.balanceOf(thisAccount));
+        if (sellToken.balanceOf(vault) > 0) {
+            isSend = store.transferToken(sellToken, _to, sellToken.balanceOf(vault));
         }
         return isSend;
     }
 
     function _buyBalance() internal view returns (uint256) {
         if (paras.buyTokenIsNative) {
-            return thisAccount.balance;
+            return vault.balance;
         } else {
-            return buyToken.balanceOf(thisAccount);
+            return buyToken.balanceOf(vault);
         }
     }
 
@@ -348,13 +388,16 @@ contract Crowdfunding is Ownable {
     }
 
     function _getBuyMaxAmount(address buyer) internal view returns (uint256, uint256) {
-        uint256 _buyMaxAmount = Math.min(paras.maxBuyAmount.sub(amounts[buyer].buyAmount), paras.raiseTotal.sub(buyTokenAmount));
+        (uint256 _buyAmount,) = store.getAmount(buyer);
+        uint256 _buyMaxAmount = Math.min(paras.maxBuyAmount.sub(_buyAmount), paras.raiseTotal.sub(buyTokenAmount));
         (uint256 _remainBuyAmount,) = _swapAmount(0, sellTokenAmount);
         return _swapAmount(Math.min(_buyMaxAmount, _remainBuyAmount), 0);
     }
 
     function _getSellMaxAmount(address seller) internal view returns (uint256, uint256) {
-        uint256 _sellMaxAmount = Math.min(amounts[seller].sellAmount.add(totals[seller].sellAmount*paras.maxSellPercent/10000).sub(totals[seller].sellAmount), amounts[seller].sellAmount);
+        (, uint256 _tSellAmount) = store.getTotal(seller);
+        (, uint256 _aSellAmount) = store.getAmount(seller);
+        uint256 _sellMaxAmount = Math.min(_aSellAmount.add(_tSellAmount*paras.maxSellPercent/10000).sub(_tSellAmount), _aSellAmount);
         (,uint256 _remainSellAmount) = _swapAmount(swapPoolAmount, 0);
         return _swapAmount(0, Math.min(_sellMaxAmount, _remainSellAmount));
     }
