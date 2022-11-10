@@ -237,7 +237,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/comunion/Bounty.sol": "BountyFactory"
+			"contracts/Bounty.sol": "BountyFactory"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -260,11 +260,11 @@
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-			"keccak256": "0x24b04b8aacaaf1a4a0719117b29c9c3647b1f479c5ac2a60f5ff1bb6d839c238",
+			"keccak256": "0x4ffc0547c02ad22925310c585c0f166f8759e2648a09e9b489100c42f15dd98d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://43e46da9d9f49741ecd876a269e71bc7494058d7a8e9478429998adb5bc3eaa0",
-				"dweb:/ipfs/QmUtp4cqzf22C5rJ76AabKADquGWcjsc33yjYXxXC4sDvy"
+				"bzz-raw://15f52f51413a9de1ff191e2f6367c62178e1df7806d7880fe857a98b0b66253d",
+				"dweb:/ipfs/QmaQG1fwfgUt5E9nu2cccFiV47B2V78MM1tCy1qB7n4MsH"
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
@@ -292,11 +292,11 @@
 			]
 		},
 		"@openzeppelin/contracts/utils/math/Math.sol": {
-			"keccak256": "0xd15c3e400531f00203839159b2b8e7209c5158b35618f570c695b7e47f12e9f0",
+			"keccak256": "0xa1e8e83cd0087785df04ac79fb395d9f3684caeaf973d9e2c71caef723a3a5d6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b600b852e0597aa69989cc263111f02097e2827edc1bdc70306303e3af5e9929",
-				"dweb:/ipfs/QmU4WfM28A1nDqghuuGeFmN3CnVrk6opWtiF65K4vhFPeC"
+				"bzz-raw://33bbf48cc069be677705037ba7520c22b1b622c23b33e1a71495f2d36549d40b",
+				"dweb:/ipfs/Qmct36zWXv3j7LZB83uwbg7TXwnZSN1fqHNDZ93GG98bGz"
 			]
 		},
 		"@openzeppelin/contracts/utils/math/SafeMath.sol": {
@@ -307,36 +307,36 @@
 				"dweb:/ipfs/QmQJquTMtc6fgm5JQzGdsGpA2fqBe3MHWEdt2qzaLySMdN"
 			]
 		},
-		"contracts/comunion/Bounty.sol": {
-			"keccak256": "0xc3c74db1489d13b83fb99416935dfc6ac0f4e4e39ec5b0ae2e84da0ff7b69e3c",
+		"contracts/Bounty.sol": {
+			"keccak256": "0xaa8cdac5a77856a8d8ec7c1bd496d2cddd977d1bf12ca7fab266c0fc877fd9c4",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://07288575499d6f1c76e5ebd4ecb555af741a1aa355f37c4bf04b6861a7b33a7f",
-				"dweb:/ipfs/Qmc4Gj1Eh4VR8M9tGqueZbge49urxhEppm1dq4RL6S9EAq"
+				"bzz-raw://c09046768169576f3685c2459c4da2f0966b1c56dd4573bf890918d4f9a02528",
+				"dweb:/ipfs/QmUUmiMePPqiJS8BiBLGx8mn7UFVFaRLBJuAZzEZMfwpan"
 			]
 		},
-		"contracts/comunion/BountyStore.sol": {
-			"keccak256": "0x57c8d7c25e619017fa33a451913aca81fca6fcb17c02adb1b4ae1e79244015c9",
+		"contracts/BountyStore.sol": {
+			"keccak256": "0x5819863adb72f7d6a3b84c97c6221c2e1c5b8c7aed401682e6045598744c9f83",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://1d46ccf47845a9b71a02c0d6e9009724c214a0542bad1abbbf527b9ac59298d2",
-				"dweb:/ipfs/Qmd2p2RGuB4bMccY1QFN1LJsNtCHusmv9QVH4ACt1wUCw2"
+				"bzz-raw://3924e17bb3f03b54af4a04c9494d330a5545811549df21e7b50d789e2c7b1a22",
+				"dweb:/ipfs/QmXitzgdT9qR3sebK5WUyKCv2bd6Vu7ur8mRLwBFXuPSmd"
 			]
 		},
-		"contracts/comunion/FactoryStore.sol": {
-			"keccak256": "0x2ae7d89e61d29b9d92adc5ce44abba75de22621c048c191e926b896b7597b222",
+		"contracts/FactoryStore.sol": {
+			"keccak256": "0x918285506e0510ad246409e617486666dd520f8893c5985392080bb2c39df9b1",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://052c3e419f6e298607b44dd998653b62ec3801538fe56f8db40a0eb8c9fd1c87",
-				"dweb:/ipfs/QmTC9rMZYisZ3QgqjWfZky4tFwCWJJdMLpbeG4RUv1vP4u"
+				"bzz-raw://fac92c0d846610cd0b154907adb26d657575fbb7ff942261ce6413851d398e82",
+				"dweb:/ipfs/QmUEV5vkzrjePPhGEUa96quztnnVfU7fCgxvwcer2HhWhX"
 			]
 		},
-		"contracts/comunion/ownership/Secondary.sol": {
-			"keccak256": "0xa24430372a76ab00989d6397d2b7cb2b3060fc3078047bf485d08eaf7a161630",
+		"contracts/ownership/Secondary.sol": {
+			"keccak256": "0x6fa40a3bea213043c45d4b453aedd8a0b1a575408660c8cb957ff8a426024c26",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://f07f4d21fb4411c51e0a83a8ad7ab4584b426501905a4f774b5b1de00a222048",
-				"dweb:/ipfs/QmW17w29HPYfdwD718w6qB3sxnpK4HqeMiMqgTAbFJVL7z"
+				"bzz-raw://35be5abea69ef1a02c701da098354c371bd716f09333a96e73e7461fd7c03eb7",
+				"dweb:/ipfs/QmUbw8sxSGtVtsBZARXX71F1AdNe8rvdgzxVpDAHoEeK4T"
 			]
 		}
 	},
