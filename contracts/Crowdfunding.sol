@@ -8,22 +8,22 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./FactoryStore.sol";
 import "./CrowdfundingStore.sol";
 
-    struct Parameters {
-        address sellTokenAddress;
-        address buyTokenAddress;
-        uint8 sellTokenDecimals;
-        uint8 buyTokenDecimals;
-        bool buyTokenIsNative;
-        uint256 raiseTotal;
-        uint256 buyPrice;
-        uint16 swapPercent;
-        uint16 sellTax;
-        uint256 maxBuyAmount;
-        uint16 maxSellPercent;
-        address teamWallet;
-        uint256 startTime;
-        uint256 endTime;
-    }
+struct Parameters {
+    address sellTokenAddress;
+    address buyTokenAddress;
+    uint8 sellTokenDecimals;
+    uint8 buyTokenDecimals;
+    bool buyTokenIsNative;
+    uint256 raiseTotal;
+    uint256 buyPrice;
+    uint16 swapPercent;
+    uint16 sellTax;
+    uint256 maxBuyAmount;
+    uint16 maxSellPercent;
+    address teamWallet;
+    uint256 startTime;
+    uint256 endTime;
+}
 
 contract CrowdfundingFactory is Ownable {
     event Created(address founder, address crowdfunding, Parameters paras);
@@ -198,11 +198,10 @@ contract Crowdfunding is Ownable {
         uint256 _toPoolAmount = _toSwapPoolAmount(_buyAmount);
         if (paras.buyTokenIsNative) {
             require(msg.value == _buyAmount, "msg.value is not valid");
-            // require(msg.sender.balance >= _buyAmount, "Your balance is insufficient");
-            (bool isSend,) = vault.call{value: 0}("");
-            // require(isSend, "Transfer contract failure");
+            (bool isSend,) = vault.call{value: _toPoolAmount}("");
+            require(isSend, "Transfer failure");
             (isSend,) = paras.teamWallet.call{value: msg.value.sub(_toPoolAmount)}("");
-            // require(isSend, "Transfer team failure");
+            require(isSend, "Transfer team failure");
         } else {
             require(buyToken.allowance(msg.sender, thisAccount) >= _buyAmount, "Your buy token allowance is insufficient");
             require(buyToken.balanceOf(msg.sender) >= _buyAmount, "Your buy token balance is insufficient");
@@ -324,7 +323,7 @@ contract Crowdfunding is Ownable {
         store.transferPrimary(newCrowdfunding);
     }
 
-    function transferStore(address newStore) external onlyOwner {
+    function transferStore(address payable newStore) external onlyOwner {
         store = CrowdfundingStore(newStore);
     }
 
