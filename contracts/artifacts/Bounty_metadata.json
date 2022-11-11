@@ -433,6 +433,46 @@
 			},
 			{
 				"inputs": [],
+				"name": "parameters",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "depositToken",
+								"type": "address"
+							},
+							{
+								"internalType": "bool",
+								"name": "depositTokenIsNative",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint256",
+								"name": "founderDepositAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applicantDepositMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applyDeadline",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Parameters",
+						"name": "_paras",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "postUpdate",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -551,7 +591,7 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
+						"internalType": "address payable",
 						"name": "newStore",
 						"type": "address"
 					}
@@ -649,7 +689,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -712,19 +752,19 @@
 			]
 		},
 		"contracts/Bounty.sol": {
-			"keccak256": "0xaa8cdac5a77856a8d8ec7c1bd496d2cddd977d1bf12ca7fab266c0fc877fd9c4",
+			"keccak256": "0x4e6fde8d9cdcafd891cdb1f88c07c3c422b4482b5d4500bf35d2f4e6ecf76a5f",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://c09046768169576f3685c2459c4da2f0966b1c56dd4573bf890918d4f9a02528",
-				"dweb:/ipfs/QmUUmiMePPqiJS8BiBLGx8mn7UFVFaRLBJuAZzEZMfwpan"
+				"bzz-raw://08b4d02ee5d9f543466196b8170e73c7f3f8e7bf90701a3c8d024b2e422785f5",
+				"dweb:/ipfs/QmcTLGihAdMQj4Kq7FKzSBoaw2KnnygfDqq5qNJ3JCZBqP"
 			]
 		},
 		"contracts/BountyStore.sol": {
-			"keccak256": "0x5819863adb72f7d6a3b84c97c6221c2e1c5b8c7aed401682e6045598744c9f83",
+			"keccak256": "0x276d8e284920f4d3de0c6cba1586ad7895e025f3da432f494eb3661e70d4117c",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://3924e17bb3f03b54af4a04c9494d330a5545811549df21e7b50d789e2c7b1a22",
-				"dweb:/ipfs/QmXitzgdT9qR3sebK5WUyKCv2bd6Vu7ur8mRLwBFXuPSmd"
+				"bzz-raw://62ddba29e2fd50ef5e49feece54b88806f9da4ca6cb6588507d04f4fc2dc958a",
+				"dweb:/ipfs/QmR8eNFbB4dLZZwbV9rejJRuZVTCf7RgEd23UTg4B6vkUp"
 			]
 		},
 		"contracts/FactoryStore.sol": {

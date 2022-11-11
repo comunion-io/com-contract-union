@@ -8,22 +8,22 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./FactoryStore.sol";
 import "./CrowdfundingStore.sol";
 
-    struct Parameters {
-        address sellTokenAddress;
-        address buyTokenAddress;
-        uint8 sellTokenDecimals;
-        uint8 buyTokenDecimals;
-        bool buyTokenIsNative;
-        uint256 raiseTotal;
-        uint256 buyPrice;
-        uint16 swapPercent;
-        uint16 sellTax;
-        uint256 maxBuyAmount;
-        uint16 maxSellPercent;
-        address teamWallet;
-        uint256 startTime;
-        uint256 endTime;
-    }
+struct Parameters {
+    address sellTokenAddress;
+    address buyTokenAddress;
+    uint8 sellTokenDecimals;
+    uint8 buyTokenDecimals;
+    bool buyTokenIsNative;
+    uint256 raiseTotal;
+    uint256 buyPrice;
+    uint16 swapPercent;
+    uint16 sellTax;
+    uint256 maxBuyAmount;
+    uint16 maxSellPercent;
+    address teamWallet;
+    uint256 startTime;
+    uint256 endTime;
+}
 
 contract CrowdfundingFactory is Ownable {
     event Created(address founder, address crowdfunding, Parameters paras);

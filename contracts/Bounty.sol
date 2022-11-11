@@ -9,13 +9,13 @@ import "./ownership/Secondary.sol";
 import "./FactoryStore.sol";
 import "./BountyStore.sol";
 
-    struct Parameters {
-        address depositToken;
-        bool depositTokenIsNative;
-        uint256 founderDepositAmount;
-        uint256 applicantDepositMinAmount;
-        uint256 applyDeadline;
-    }
+struct Parameters {
+    address depositToken;
+    bool depositTokenIsNative;
+    uint256 founderDepositAmount;
+    uint256 applicantDepositMinAmount;
+    uint256 applyDeadline;
+}
 
 contract BountyFactory is Ownable {
     event Created(address founder, address bounty, Parameters paras);
