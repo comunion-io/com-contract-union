@@ -9,13 +9,13 @@ import "./ownership/Secondary.sol";
 import "./FactoryStore.sol";
 import "./BountyStore.sol";
 
-struct Parameters {
-    address depositToken;
-    bool depositTokenIsNative;
-    uint256 founderDepositAmount;
-    uint256 applicantDepositMinAmount;
-    uint256 applyDeadline;
-}
+    struct Parameters {
+        address depositToken;
+        bool depositTokenIsNative;
+        uint256 founderDepositAmount;
+        uint256 applicantDepositMinAmount;
+        uint256 applyDeadline;
+    }
 
 contract BountyFactory is Ownable {
     event Created(address founder, address bounty, Parameters paras);
@@ -102,10 +102,6 @@ contract Bounty is Ownable {
     bool private depositLock;
     bool internal locked;
     BountyStatus private bountyStatus;
-    address[] arrayApplicants;
-    mapping(address => Applicant) mappedApplicants;
-    mapping(address => bool) mappedDepositLockers;
-    mapping(address => bool) mappedDepositUnlockers;
 
     event Created(address owner, address factory, address founder, Parameters paras);
     event Deposit(address from, uint256 amount, uint256 founderBalance);
@@ -251,8 +247,8 @@ contract Bounty is Ownable {
         _addApplicant(_address, 0, ApplicantStatus.Approved);
         bountyStatus = BountyStatus.WorkStarted;
         depositLock = true;
-        mappedDepositLockers[_address] = true;
-        mappedDepositUnlockers[_address] = true;
+        store.putDepositLocker(_address, true);
+        store.putDepositUnlocker(_address, true);
         _startTimer();
         emit Approve(msg.sender, _address);
     }
@@ -260,8 +256,8 @@ contract Bounty is Ownable {
     function unapproveApplicant(address _address) public onlyFounder inWorkStarted {
         (,bool _isApprovedApplicant,,) = _applicantState(_address);
         require(_isApprovedApplicant, "Applicant status is not approved");
-        mappedApplicants[_address].status = ApplicantStatus.Unapproved;
-        mappedDepositLockers[_address] = false;
+        store.putApplicantStatus(_address, uint8(ApplicantStatus.Unapproved));
+        store.putDepositLocker(_address, false);
         emit Unapprove(msg.sender, _address);
     }
 
@@ -270,12 +266,13 @@ contract Bounty is Ownable {
         _deposit(_amount);
         _addApplicant(msg.sender, _amount, ApplicantStatus.Applied);
         applicantDepositAmount = applicantDepositAmount.add(_amount);
-        emit Apply(msg.sender, _amount, mappedApplicants[msg.sender].depositAmount, applicantDepositAmount);
+        (uint256 _depositAmount,) = store.getApplicant(msg.sender);
+        emit Apply(msg.sender, _amount, _depositAmount, applicantDepositAmount);
     }
 
     function releaseMyDeposit() public payable onlyApplied depositUnlock inReadyToWork noReentrant {
         _refundApplicant(msg.sender);
-        mappedApplicants[msg.sender].status = ApplicantStatus.Withdraw;
+        store.putApplicantStatus(msg.sender, uint8(ApplicantStatus.Withdraw));
     }
 
     function lock() public payable depositLocker depositUnlock {
@@ -303,20 +300,18 @@ contract Bounty is Ownable {
         uint256 _timeLock, uint8 _myRole, uint256 _myDepositAmount, uint8 _myStatus) {
 
         (uint8 _role, uint256 _depositAmount, uint8 _status) = whoAmI();
+        address[] memory _applicants = store.applicants();
 
-        return (uint8(bountyStatus), arrayApplicants.length, _getBalance(vault), founderDepositAmount, applicantDepositAmount,
+        return (uint8(bountyStatus), _applicants.length, _getBalance(vault), founderDepositAmount, applicantDepositAmount,
         paras.applicantDepositMinAmount, depositLock, timeLock, _role, _depositAmount, _status);
     }
-    // IERC20 depositToken;
-    // bool locked;
-    // Parameters private paras;
-    // address[] arrayApplicants;
-    // mapping(address => Applicant) mappedApplicants;
-    // mapping(address => bool) mappedDepositLockers;
-    // mapping(address => bool) mappedDepositUnlockers;
 
     function whoAmI() public view returns (uint8 _role, uint256 _depositAmount, uint8 _applicantStatus) {
         return _whoIs(msg.sender);
+    }
+
+    function parameters() public view returns (Parameters memory _paras) {
+        return paras;
     }
 
     function transferPrimary(address newBounty) external onlyOwner {
@@ -327,7 +322,7 @@ contract Bounty is Ownable {
         return address(store);
     }
 
-    function transferStore(address newStore) external onlyOwner {
+    function transferStore(address payable newStore) external onlyOwner {
         store = BountyStore(newStore);
     }
 
@@ -363,10 +358,11 @@ contract Bounty is Ownable {
     }
 
     function _refuseOtherApplicants(address _address) internal {
-        for (uint i=0;i<arrayApplicants.length;i++) {
-            if (address(arrayApplicants[i]) != address(_address)) {
-                _refundApplicant(arrayApplicants[i]);
-                mappedApplicants[arrayApplicants[i]].status = ApplicantStatus.Refused;
+        address[] memory _applicants = store.applicants();
+        for (uint i=0;i<_applicants.length;i++) {
+            if (address(_applicants[i]) != address(_address)) {
+                _refundApplicant(_applicants[i]);
+                store.putApplicantStatus(_applicants[i], uint8(ApplicantStatus.Refused));
             }
         }
     }
@@ -379,20 +375,23 @@ contract Bounty is Ownable {
     }
 
     function _refundApplicants() internal {
-        for (uint i=0;i<arrayApplicants.length;i++) {
-            _refundApplicant(arrayApplicants[i]);
-            if (mappedApplicants[arrayApplicants[i]].status == ApplicantStatus.Applied) {
-                mappedApplicants[arrayApplicants[i]].status = ApplicantStatus.Refunded;
+        address[] memory _applicants = store.applicants();
+        for (uint i=0;i<_applicants.length;i++) {
+            address _address = _applicants[i];
+            _refundApplicant(_address);
+            (,uint8 _status) = store.getApplicant(_address);
+            if (_status == uint8(ApplicantStatus.Applied)) {
+                store.putApplicantStatus(_address, uint8(ApplicantStatus.Refunded));
             }
         }
     }
 
     function _refundApplicant(address _address) internal {
-        uint256 _amount = mappedApplicants[_address].depositAmount;
+        (uint256 _amount,) = store.getApplicant(_address);
         require(_refundDepositToken(payable(_address), _amount), "Refund deposit to applicant failure");
-        applicantDepositAmount = applicantDepositAmount.sub(mappedApplicants[_address].depositAmount);
-        mappedApplicants[_address].depositAmount = 0;
-        emit ReleaseApplicantDeposit(_address, _amount, mappedApplicants[_address].depositAmount, applicantDepositAmount);
+        applicantDepositAmount = applicantDepositAmount.sub(_amount);
+        store.putApplicantAmount(_address, 0);
+        emit ReleaseApplicantDeposit(_address, _amount, 0, applicantDepositAmount);
     }
 
     function _refundDepositToken(address payable _to, uint256 _amount) internal returns (bool) {
@@ -412,10 +411,10 @@ contract Bounty is Ownable {
     function _addApplicant(address _address, uint256 _amount, ApplicantStatus _status) internal {
         (bool _isApplicant,,) = _getApplicant(_address);
         if (!_isApplicant) {
-            arrayApplicants.push(_address);
+            store.pushApplicant(_address);
         }
-        mappedApplicants[_address].status = _status;
-        mappedApplicants[_address].depositAmount = mappedApplicants[_address].depositAmount.add(_amount);
+        (uint256 _mapAmount,) = store.getApplicant(_address);
+        store.putApplicant(_address, _mapAmount.add(_amount), uint8(_status));
     }
 
     function _getBalance(address _address) internal view returns (uint256) {
@@ -440,7 +439,7 @@ contract Bounty is Ownable {
 
     function _checkDepositLocker(address _address) internal view virtual {
         bool _isLocker = false;
-        if (mappedDepositLockers[_address]) {
+        if (store.getDepositLocker(_address)) {
             if (timeLock == 0 || (timeLock > 0 && block.timestamp <= timeLock)) {
                 _isLocker = true;
             }
@@ -450,7 +449,7 @@ contract Bounty is Ownable {
 
     function _checkDepositUnlocker(address _address) internal view virtual {
         bool _isUnlocker = false;
-        if (mappedDepositUnlockers[_address]) {
+        if (store.getDepositUnlocker(_address)) {
             if (timeLock == 0 || (timeLock > 0 && block.timestamp <= timeLock)) {
                 _isUnlocker = true;
             }
@@ -519,8 +518,7 @@ contract Bounty is Ownable {
 
     function _getApplicant(address _address) internal view returns (bool, uint256, uint8) {
         bool _isApplicant = true;
-        uint256 _amount = mappedApplicants[_address].depositAmount;
-        uint8 _status = uint8(mappedApplicants[_address].status);
+        (uint256 _amount, uint8 _status) = store.getApplicant(_address);
         if (_amount == 0 && _status == 0) {
             _isApplicant = false;
         }

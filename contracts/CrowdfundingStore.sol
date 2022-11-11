@@ -13,8 +13,14 @@ contract CrowdfundingStore is Secondary {
         uint256 sellAmount;
     }
 
+    event Receive(address sender, string func);
+
     mapping(address => PairAmount) totals;
     mapping(address => PairAmount) amounts;
+
+    receive() external payable {
+        emit Receive(msg.sender, "receive");
+    }
 
     function transfer(address _to, uint256 _amount) public onlyPrimary returns(bool) {
         (bool isSend,) = _to.call{value: _amount}("");
