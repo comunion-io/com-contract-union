@@ -6,6 +6,11 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -128,6 +133,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "getStore",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "owner",
 				"outputs": [
 					{
@@ -155,6 +173,32 @@
 					}
 				],
 				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newPrimary",
+						"type": "address"
+					}
+				],
+				"name": "transferPrimary",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newStore",
+						"type": "address"
+					}
+				],
+				"name": "transferStore",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -191,7 +235,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -214,11 +258,27 @@
 			]
 		},
 		"contracts/Startup.sol": {
-			"keccak256": "0x09d87020be40e1601c63eea3e5c28463f0e1bf03595abc274f84db405cd86a31",
+			"keccak256": "0x629d9eeff679eed359c8080fc101562d3cf5387a9e257bed2b61059266e36759",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://f5ed4c1dde72e6f974fcf79aed80d9010434506875a356ce4cd2f86dc07d77c5",
-				"dweb:/ipfs/Qmc9bMvzE1VHjK6Fw8SpbuhFu2Ai7yRqUJF4VefEcMcwwm"
+				"bzz-raw://c5044e2b8bf632b646b24f1163bafb23dada31c1f38966b1c93ee3c59c8b02ea",
+				"dweb:/ipfs/QmU9Ew18qT8eYVbCfKbyEY5meoAd7Ud6NJuZCChcQb72XQ"
+			]
+		},
+		"contracts/StartupStore.sol": {
+			"keccak256": "0xcfdef8f4c42aaa011022218f61625ad115e376fa855aa10efc1eb3187b6e694e",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://344520b6aeff0e31f0510547cd3798eb483452d25b2d62495452d33c365848a3",
+				"dweb:/ipfs/QmY5itccaTF47jYnC1f7DvMWuXzfMCSs2BX882o8vGRLPT"
+			]
+		},
+		"contracts/ownership/Secondary.sol": {
+			"keccak256": "0x6fa40a3bea213043c45d4b453aedd8a0b1a575408660c8cb957ff8a426024c26",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://35be5abea69ef1a02c701da098354c371bd716f09333a96e73e7461fd7c03eb7",
+				"dweb:/ipfs/QmUbw8sxSGtVtsBZARXX71F1AdNe8rvdgzxVpDAHoEeK4T"
 			]
 		}
 	},
