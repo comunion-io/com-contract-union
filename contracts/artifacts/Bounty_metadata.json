@@ -16,38 +16,6 @@
 						"internalType": "address",
 						"name": "_founder",
 						"type": "address"
-					},
-					{
-						"components": [
-							{
-								"internalType": "address",
-								"name": "depositToken",
-								"type": "address"
-							},
-							{
-								"internalType": "bool",
-								"name": "depositTokenIsNative",
-								"type": "bool"
-							},
-							{
-								"internalType": "uint256",
-								"name": "founderDepositAmount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "applicantDepositMinAmount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "applyDeadline",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct Parameters",
-						"name": "_paras",
-						"type": "tuple"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -392,6 +360,59 @@
 			},
 			{
 				"inputs": [],
+				"name": "getStore",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "depositToken",
+								"type": "address"
+							},
+							{
+								"internalType": "bool",
+								"name": "depositTokenIsNative",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint256",
+								"name": "founderDepositAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applicantDepositMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applyDeadline",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Parameters",
+						"name": "_paras",
+						"type": "tuple"
+					}
+				],
+				"name": "init",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "lock",
 				"outputs": [],
 				"stateMutability": "payable",
@@ -405,6 +426,46 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "parameters",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "depositToken",
+								"type": "address"
+							},
+							{
+								"internalType": "bool",
+								"name": "depositTokenIsNative",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint256",
+								"name": "founderDepositAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applicantDepositMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "applyDeadline",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Parameters",
+						"name": "_paras",
+						"type": "tuple"
 					}
 				],
 				"stateMutability": "view",
@@ -518,6 +579,32 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "newBounty",
+						"type": "address"
+					}
+				],
+				"name": "transferPrimary",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "newStore",
+						"type": "address"
+					}
+				],
+				"name": "transferStore",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "_address",
 						"type": "address"
 					}
@@ -532,6 +619,19 @@
 				"name": "unlock",
 				"outputs": [],
 				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "vaultAccount",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -604,11 +704,11 @@
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-			"keccak256": "0x24b04b8aacaaf1a4a0719117b29c9c3647b1f479c5ac2a60f5ff1bb6d839c238",
+			"keccak256": "0x4ffc0547c02ad22925310c585c0f166f8759e2648a09e9b489100c42f15dd98d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://43e46da9d9f49741ecd876a269e71bc7494058d7a8e9478429998adb5bc3eaa0",
-				"dweb:/ipfs/QmUtp4cqzf22C5rJ76AabKADquGWcjsc33yjYXxXC4sDvy"
+				"bzz-raw://15f52f51413a9de1ff191e2f6367c62178e1df7806d7880fe857a98b0b66253d",
+				"dweb:/ipfs/QmaQG1fwfgUt5E9nu2cccFiV47B2V78MM1tCy1qB7n4MsH"
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
@@ -636,11 +736,11 @@
 			]
 		},
 		"@openzeppelin/contracts/utils/math/Math.sol": {
-			"keccak256": "0xd15c3e400531f00203839159b2b8e7209c5158b35618f570c695b7e47f12e9f0",
+			"keccak256": "0xa1e8e83cd0087785df04ac79fb395d9f3684caeaf973d9e2c71caef723a3a5d6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b600b852e0597aa69989cc263111f02097e2827edc1bdc70306303e3af5e9929",
-				"dweb:/ipfs/QmU4WfM28A1nDqghuuGeFmN3CnVrk6opWtiF65K4vhFPeC"
+				"bzz-raw://33bbf48cc069be677705037ba7520c22b1b622c23b33e1a71495f2d36549d40b",
+				"dweb:/ipfs/Qmct36zWXv3j7LZB83uwbg7TXwnZSN1fqHNDZ93GG98bGz"
 			]
 		},
 		"@openzeppelin/contracts/utils/math/SafeMath.sol": {
@@ -652,11 +752,35 @@
 			]
 		},
 		"contracts/Bounty.sol": {
-			"keccak256": "0x7a2b7e1f6eebd10804f8e04fcb2a212a7377483f2717346b720d61a4e146a890",
+			"keccak256": "0x4e6fde8d9cdcafd891cdb1f88c07c3c422b4482b5d4500bf35d2f4e6ecf76a5f",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://0f463b16b75af06cd5d637f1a7952837caa9be0f7c172ee750e5d555603ca5c4",
-				"dweb:/ipfs/Qmavg2KNbXjacUcubLkGcaQydjkKmVbBkdUtiGXWmQNuR4"
+				"bzz-raw://08b4d02ee5d9f543466196b8170e73c7f3f8e7bf90701a3c8d024b2e422785f5",
+				"dweb:/ipfs/QmcTLGihAdMQj4Kq7FKzSBoaw2KnnygfDqq5qNJ3JCZBqP"
+			]
+		},
+		"contracts/BountyStore.sol": {
+			"keccak256": "0x276d8e284920f4d3de0c6cba1586ad7895e025f3da432f494eb3661e70d4117c",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://62ddba29e2fd50ef5e49feece54b88806f9da4ca6cb6588507d04f4fc2dc958a",
+				"dweb:/ipfs/QmR8eNFbB4dLZZwbV9rejJRuZVTCf7RgEd23UTg4B6vkUp"
+			]
+		},
+		"contracts/FactoryStore.sol": {
+			"keccak256": "0x918285506e0510ad246409e617486666dd520f8893c5985392080bb2c39df9b1",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://fac92c0d846610cd0b154907adb26d657575fbb7ff942261ce6413851d398e82",
+				"dweb:/ipfs/QmUEV5vkzrjePPhGEUa96quztnnVfU7fCgxvwcer2HhWhX"
+			]
+		},
+		"contracts/ownership/Secondary.sol": {
+			"keccak256": "0x6fa40a3bea213043c45d4b453aedd8a0b1a575408660c8cb957ff8a426024c26",
+			"license": "SimPL-2.0",
+			"urls": [
+				"bzz-raw://35be5abea69ef1a02c701da098354c371bd716f09333a96e73e7461fd7c03eb7",
+				"dweb:/ipfs/QmUbw8sxSGtVtsBZARXX71F1AdNe8rvdgzxVpDAHoEeK4T"
 			]
 		}
 	},

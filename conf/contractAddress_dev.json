@@ -6,7 +6,7 @@
       {
         "chainId": 1,
         "chainName": "Ethereum",
-        "address": "0x5b85A9c63C6d03055ACdbd88E6a2f9b2672293F2"
+        "address": ""
       },
       {
         "chainId": 5,
@@ -16,42 +16,42 @@
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xC31a16498d1B8d703883B509097f099165D5324A"
+        "address": "0xeb0900e96fcc5dfb5CE8a3EB2a138bf3ca3A0d5e"
       },
       {
         "chainId": 43114,
         "chainName": "avaxMain",
-        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
+        "address": ""
       },
       {
         "chainId": 97,
         "chainName": "BSC Testnet",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": "0xEDD8b1e92c6584AFc0A4509f1122244195e0157B"
       },
       {
         "chainId": 56,
         "chainName": "Binance Smart Chain",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": ""
       },
       {
         "chainId": 4002,
         "chainName": "Fantom Testnet",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": "0x3e94b5b6fE0C0e6bd70015C44E0887E2EB6Ea870"
       },
       {
         "chainId": 250,
         "chainName": "Fantom",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": ""
       },
       {
         "chainId": 80001,
         "chainName": "Mumbai",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
       },
       {
         "chainId": 137,
         "chainName": "Polygon",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": ""
       },
       {
         "chainId": 5700,
@@ -61,12 +61,12 @@
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0xf829d1C41d88479f8E3Df53d5677B8c784362558"
+        "address": "0xFaA67922D07bbe135462C55Dd74a708D7d55C96C"
       },
       {
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": ""
       }
     ]
   },
@@ -77,7 +77,7 @@
       {
         "chainId": 1,
         "chainName": "Ethereum",
-        "address": "0xC77391269e20568954cd24654f173E1cb1792b78"
+        "address": ""
       },
       {
         "chainId": 5,
@@ -87,12 +87,12 @@
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0x18bA7216E088816c2CA7a6Bee08Bec48F4c9e25c"
+        "address": "0xbfb1756788c5A85155af774a4Da65CD1DF146D7D"
       },
       {
         "chainId": 43114,
         "chainName": "avaxMain",
-        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
+        "address": ""
       },
       {
         "chainId": 97,
@@ -102,7 +102,7 @@
       {
         "chainId": 56,
         "chainName": "Binance Smart Chain",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": ""
       },
       {
         "chainId": 4002,
@@ -112,7 +112,7 @@
       {
         "chainId": 250,
         "chainName": "Fantom",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": ""
       },
       {
         "chainId": 80001,
@@ -122,17 +122,17 @@
       {
         "chainId": 137,
         "chainName": "Polygon",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": ""
       },
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0xdbf9855b1e080E1B81b2071436c7185C00AF276E"
+        "address": "0x7BAd7a252D35C5bfD577976C98BA81c211a48897"
       },
       {
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": ""
       }
     ]
   },
@@ -142,13 +142,33 @@
     "addresses": []
   },
   {
+    "name": "BountyStore",
+    "abiUrl": "/contracts/artifacts/BountyStore.json",
+    "addresses": []
+  },
+  {
+    "name": "FactoryStore",
+    "abiUrl": "/contracts/artifacts/FactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "BountyFactoryStore",
+    "abiUrl": "/contracts/artifacts/BountyFactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "Secondary",
+    "abiUrl": "/contracts/ownership/artifacts/Secondary.json",
+    "addresses": []
+  },
+  {
     "name": "CrowdfundingFactory",
     "abiUrl": "/contracts/artifacts/CrowdfundingFactory.json",
     "addresses": [
       {
         "chainId": 1,
         "chainName": "Ethereum",
-        "address": "0x9937945015A434cEC5f0D7d60127777872c7fC5d"
+        "address": ""
       },
       {
         "chainId": 5,
@@ -158,12 +178,12 @@
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xC7FbA93E1BCAb3dA91d3adC30aF31e718fFF9B8a"
+        "address": "0x7618a079FbcCe67Df3F500D3c642caAbB5ab248f"
       },
       {
         "chainId": 43114,
         "chainName": "avaxMain",
-        "address": "0xEDD8b1e92c6584AFc0A4509f1122244195e0157B"
+        "address": ""
       },
       {
         "chainId": 97,
@@ -173,7 +193,7 @@
       {
         "chainId": 56,
         "chainName": "Binance Smart Chain",
-        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+        "address": ""
       },
       {
         "chainId": 4002,
@@ -183,7 +203,7 @@
       {
         "chainId": 250,
         "chainName": "Fantom",
-        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+        "address": ""
       },
       {
         "chainId": 80001,
@@ -193,17 +213,17 @@
       {
         "chainId": 137,
         "chainName": "Polygon",
-        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+        "address": ""
       },
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0xC7FbA93E1BCAb3dA91d3adC30aF31e718fFF9B8a"
+        "address": "0x4B834f076F6546bB16Ae586836fcCE4d1bcBB02e"
       },
       {
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
-        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+        "address": ""
       }
     ]
   },
