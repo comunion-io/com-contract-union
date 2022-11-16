@@ -38,7 +38,7 @@ contract ComunionNft is ERC721URIStorage {
         owner = msg.sender;
     }
 
-    function mint(address player,NFTInfo calldata p)
+    function mint(address player)
         public
         returns (uint256)
     {
@@ -47,8 +47,8 @@ contract ComunionNft is ERC721URIStorage {
         // string memory tokenURI = getTokenURI(newItemId);
         require(MintMaxTotal >= newItemId, "Max overflow !");
         _mint(player, newItemId);
-        _setTokenURI(newItemId, getStaticJsonTokenURI(p));
-        _setSBTNFTAddressLists(player, getStaticJsonTokenURI(p));
+        _setTokenURI(newItemId, getStaticJsonTokenURI(newItemId));
+        _setSBTNFTAddressLists(player, getStaticJsonTokenURI(newItemId));
         _tokenIds.increment();
         return newItemId;
     }
@@ -68,10 +68,12 @@ contract ComunionNft is ERC721URIStorage {
     function getSBTNFTAddressLists (address _userAddress) public view returns (string memory) {
         return SBTNFTAddressLists[_userAddress];
     }
+    
     function getTokenIdTotal() public view returns (uint256){
         uint256 tokenId = _tokenIds.current();
         return tokenId;
     }
+
     function setWhiteLists (address _userAddress , bool _whiteState) public byOwner(){
         whiteLists[_userAddress] = _whiteState;
     }
@@ -85,32 +87,33 @@ contract ComunionNft is ERC721URIStorage {
         return tokenURI;
     }
 
-    function getStaticJsonTokenURI (NFTInfo calldata p) private pure returns(string memory) {
+    function getStaticJsonTokenURI (uint256 tokenId) private pure returns(string memory) {
+        string memory stringTokenId = Strings.toString(tokenId);
         string memory tokenURI =  string(bytes(
             abi.encodePacked(
                 "{",
                     '"title":"',
-                    p.title,
+                    stringTokenId,
                     '",',
                     '"type":"object",',
                     '"properties": {',
                         '"name": {',
                             '"type": "string",',
                             '"description": "',
-                            p.name,
+                            stringTokenId,
                             '"',
                         '},',
                         '"description": {',
                             '"type": "string",',
                             '"description": "',
-                            p.description,
+                            stringTokenId,
                             '"',
                         '},',
                         '"image": {',
                             '"type": "string",',
-                            '"description": "',
-                            p.image,
-                            '"',
+                            '"description": "http://rlfo5a1zu.hn-bkt.clouddn.com/sbt/',
+                            stringTokenId,
+                            '.png"',
                         '}',
                     '}',
                 "}"
@@ -119,10 +122,12 @@ contract ComunionNft is ERC721URIStorage {
         return tokenURI;
     }
 
+
     modifier byOwner(){
         require(msg.sender == owner, "Not owner!");
         _;
     }
+
     function transferFrom(
         address from,
         address to,
