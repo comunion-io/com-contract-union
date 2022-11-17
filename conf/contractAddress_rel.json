@@ -4,69 +4,39 @@
     "abiUrl": "/contracts/artifacts/Startup.json",
     "addresses": [
       {
-        "chainId": 1,
-        "chainName": "Ethereum",
-        "address": ""
-      },
-      {
         "chainId": 5,
         "chainName": "Goerli",
-        "address": "0x744E0A1452F5E3Dc42E75c4C4B4de9faa16E3948"
+        "address": ""
       },
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xC31a16498d1B8d703883B509097f099165D5324A"
-      },
-      {
-        "chainId": 43114,
-        "chainName": "avaxMain",
-        "address": ""
+        "address": "0x92FCb2d49E9ab8be888D3c853715a221b9289832"
       },
       {
         "chainId": 97,
         "chainName": "BSC Testnet",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
-      },
-      {
-        "chainId": 56,
-        "chainName": "Binance Smart Chain",
         "address": ""
       },
       {
         "chainId": 4002,
         "chainName": "Fantom Testnet",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
-      },
-      {
-        "chainId": 250,
-        "chainName": "Fantom",
         "address": ""
       },
       {
         "chainId": 80001,
         "chainName": "Mumbai",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
-      },
-      {
-        "chainId": 137,
-        "chainName": "Polygon",
         "address": ""
       },
       {
         "chainId": 5700,
         "chainName": "Syscoin Tanenbaum Testnet",
-        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
+        "address": ""
       },
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0xf829d1C41d88479f8E3Df53d5677B8c784362558"
-      },
-      {
-        "chainId": 57,
-        "chainName": "Syscoin Mainnet",
-        "address": ""
+        "address": "0xF2969E322C8a2615eD81bd0B50FD1481C4c3f276"
       }
     ]
   },
@@ -75,64 +45,39 @@
     "abiUrl": "/contracts/artifacts/BountyFactory.json",
     "addresses": [
       {
-        "chainId": 1,
-        "chainName": "Ethereum",
-        "address": ""
-      },
-      {
         "chainId": 5,
         "chainName": "Goerli",
-        "address": "0x42583219DC1564D465DDD01D3327CEF942f6aB88"
+        "address": ""
       },
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0x18bA7216E088816c2CA7a6Bee08Bec48F4c9e25c"
-      },
-      {
-        "chainId": 43114,
-        "chainName": "avaxMain",
-        "address": ""
+        "address": "0x479f1068d35a5b8bf3287170959f9C2de1d59604"
       },
       {
         "chainId": 97,
         "chainName": "BSC Testnet",
-        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
-      },
-      {
-        "chainId": 56,
-        "chainName": "Binance Smart Chain",
         "address": ""
       },
       {
         "chainId": 4002,
         "chainName": "Fantom Testnet",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
-      },
-      {
-        "chainId": 250,
-        "chainName": "Fantom",
         "address": ""
       },
       {
         "chainId": 80001,
         "chainName": "Mumbai",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": ""
       },
       {
-        "chainId": 137,
-        "chainName": "Polygon",
+        "chainId": 5700,
+        "chainName": "Syscoin Tanenbaum Testnet",
         "address": ""
       },
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0xdbf9855b1e080E1B81b2071436c7185C00AF276E"
-      },
-      {
-        "chainId": 57,
-        "chainName": "Syscoin Mainnet",
-        "address": ""
+        "address": "0xDb5453b54cd219d013d840C853a97Ba7347C73A9"
       }
     ]
   },
@@ -142,68 +87,63 @@
     "addresses": []
   },
   {
+    "name": "BountyStore",
+    "abiUrl": "/contracts/artifacts/BountyStore.json",
+    "addresses": []
+  },
+  {
+    "name": "FactoryStore",
+    "abiUrl": "/contracts/artifacts/FactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "BountyFactoryStore",
+    "abiUrl": "/contracts/artifacts/BountyFactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "Secondary",
+    "abiUrl": "/contracts/ownership/artifacts/Secondary.json",
+    "addresses": []
+  },
+  {
     "name": "CrowdfundingFactory",
     "abiUrl": "/contracts/artifacts/CrowdfundingFactory.json",
     "addresses": [
       {
-        "chainId": 1,
-        "chainName": "Ethereum",
-        "address": ""
-      },
-      {
         "chainId": 5,
         "chainName": "Goerli",
-        "address": "0xc729D91818dbf102885cEf38B9aeDc0F2f70fAb1"
+        "address": ""
       },
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xC7FbA93E1BCAb3dA91d3adC30aF31e718fFF9B8a"
-      },
-      {
-        "chainId": 43114,
-        "chainName": "avaxMain",
-        "address": ""
+        "address": "0x3c2Bdc7fe51657cDed1b2dD5Bc29FcB9B5a166D0"
       },
       {
         "chainId": 97,
         "chainName": "BSC Testnet",
-        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
-      },
-      {
-        "chainId": 56,
-        "chainName": "Binance Smart Chain",
         "address": ""
       },
       {
         "chainId": 4002,
         "chainName": "Fantom Testnet",
-        "address": "0x1813E37D76316eCE03D3f7a9D908052D061355Fb"
-      },
-      {
-        "chainId": 250,
-        "chainName": "Fantom",
         "address": ""
       },
       {
         "chainId": 80001,
         "chainName": "Mumbai",
-        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
+        "address": ""
       },
       {
-        "chainId": 137,
-        "chainName": "Polygon",
+        "chainId": 5700,
+        "chainName": "Syscoin Tanenbaum Testnet",
         "address": ""
       },
       {
         "chainId": 2814,
         "chainName": "Rollux OPv1 Private",
-        "address": "0xC7FbA93E1BCAb3dA91d3adC30aF31e718fFF9B8a"
-      },
-      {
-        "chainId": 57,
-        "chainName": "Syscoin Mainnet",
-        "address": ""
+        "address": "0x830C78a8859DA6d2AADf2EC65F70249354fce2b6"
       }
     ]
   },
