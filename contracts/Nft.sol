@@ -44,13 +44,22 @@ contract ComunionNft is ERC721URIStorage {
     {
         // require(whiteLists[player], "This address is not white");
         uint256 newItemId = _tokenIds.current();
-        // string memory tokenURI = getTokenURI(newItemId);
-        require(MintMaxTotal >= newItemId, "Max overflow !");
         _mint(player, newItemId);
         _setTokenURI(newItemId, getStaticJsonTokenURI(newItemId));
         _setSBTNFTAddressLists(player, getStaticJsonTokenURI(newItemId));
         _tokenIds.increment();
         return newItemId;
+    }
+    function mintBatch(address account, uint256 amount) 
+        external 
+        returns (uint256[] memory)
+    {
+        uint256[] memory arrMint;
+        arrMint = new uint256[](amount);
+        for(uint256 i=0; i < amount; i++){
+            arrMint[i] = mint(account);
+        }
+        return arrMint;
     }
     function setTokenURI (uint256 itemId , string memory tokenURI )
         public
@@ -96,26 +105,6 @@ contract ComunionNft is ERC721URIStorage {
                     stringTokenId,
                     '",',
                     '"type":"sring"',
-                    // '"properties": {',
-                    //     '"name": {',
-                    //         '"type": "string",',
-                    //         '"description": "',
-                    //         stringTokenId,
-                    //         '"',
-                    //     '},',
-                    //     '"description": {',
-                    //         '"type": "string",',
-                    //         '"description": "',
-                    //         stringTokenId,
-                    //         '"',
-                    //     '},',
-                    //     '"image": {',
-                    //         '"type": "string",',
-                    //         '"description": "http://rlfo5a1zu.hn-bkt.clouddn.com/sbt/',
-                    //         stringTokenId,
-                    //         '.png"',
-                    //     '}',
-                    // '}',
                 "}"
             )
         ));
