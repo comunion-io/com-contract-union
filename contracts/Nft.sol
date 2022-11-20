@@ -61,6 +61,13 @@ contract ComunionNft is ERC721URIStorage {
         }
         return arrMint;
     }
+    function isOwner(address account)
+        public
+        returns (address)
+    {
+        require(account == owner, "Not owner!");
+        return account;
+    }
     function setTokenURI (uint256 itemId , string memory tokenURI )
         public
         byOwner()
