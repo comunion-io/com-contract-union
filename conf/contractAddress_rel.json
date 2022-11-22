@@ -29,6 +29,11 @@
         "address": ""
       },
       {
+        "chainId": 137,
+        "chainName": "Polygon",
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
+      },
+      {
         "chainId": 5700,
         "chainName": "Syscoin Tanenbaum Testnet",
         "address": ""
