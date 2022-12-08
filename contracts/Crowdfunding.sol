@@ -205,8 +205,8 @@ contract Crowdfunding is Ownable {
         } else {
             require(buyToken.allowance(msg.sender, thisAccount) >= _buyAmount, "Your buy token allowance is insufficient");
             require(buyToken.balanceOf(msg.sender) >= _buyAmount, "Your buy token balance is insufficient");
-            require(buyToken.transferFrom(msg.sender, vault, _buyAmount), "Buy token transferFrom failure");
-            require(buyToken.transfer(paras.teamWallet, _buyAmount.sub(_toPoolAmount)), "Buy token transfer team failure");
+            require(buyToken.transferFrom(msg.sender, vault, _toPoolAmount), "Buy token transferFrom failure");
+            require(buyToken.transferFrom(msg.sender, paras.teamWallet, _buyAmount.sub(_toPoolAmount)), "Buy token transfer team failure");
         }
         require(store.transferToken(sellToken, msg.sender, _sellAmount), "Sell token transfer failure");
 
