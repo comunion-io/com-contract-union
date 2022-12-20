@@ -927,11 +927,11 @@
 			]
 		},
 		"contracts/comunion/Crowdfunding.sol": {
-			"keccak256": "0xd7d8dece73b3688ef3f68997a7b23549cb970258108dc6aad8d22520747aa479",
+			"keccak256": "0xf6caa079ec869ec935cb84a1d9c458ce7de6214b406e477f99aa8cc1495e1ac2",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://83fb7b61f40eaa11d4022cb481d3aefc8374a2f5c261ba58626d545fb49ed737",
-				"dweb:/ipfs/Qma23oGGtXczqf4UDWRvq9S4fdUBCpJXmdwNR85HbfVa8F"
+				"bzz-raw://f346d30e0e5406abe6d4ad15dc3d1bc17fbb2c5b49f81b964776d6dbb044b273",
+				"dweb:/ipfs/QmV6Rjd6M6L9KuxgrJgTgm7GxfL95byKJg7ES99ug6Rpni"
 			]
 		},
 		"contracts/comunion/CrowdfundingStore.sol": {
