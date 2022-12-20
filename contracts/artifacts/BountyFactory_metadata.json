@@ -237,7 +237,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/Bounty.sol": "BountyFactory"
+			"contracts/comunion/Bounty.sol": "BountyFactory"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -245,7 +245,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -260,11 +260,11 @@
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-			"keccak256": "0x4ffc0547c02ad22925310c585c0f166f8759e2648a09e9b489100c42f15dd98d",
+			"keccak256": "0x24b04b8aacaaf1a4a0719117b29c9c3647b1f479c5ac2a60f5ff1bb6d839c238",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://15f52f51413a9de1ff191e2f6367c62178e1df7806d7880fe857a98b0b66253d",
-				"dweb:/ipfs/QmaQG1fwfgUt5E9nu2cccFiV47B2V78MM1tCy1qB7n4MsH"
+				"bzz-raw://43e46da9d9f49741ecd876a269e71bc7494058d7a8e9478429998adb5bc3eaa0",
+				"dweb:/ipfs/QmUtp4cqzf22C5rJ76AabKADquGWcjsc33yjYXxXC4sDvy"
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
@@ -292,11 +292,11 @@
 			]
 		},
 		"@openzeppelin/contracts/utils/math/Math.sol": {
-			"keccak256": "0xa1e8e83cd0087785df04ac79fb395d9f3684caeaf973d9e2c71caef723a3a5d6",
+			"keccak256": "0xd15c3e400531f00203839159b2b8e7209c5158b35618f570c695b7e47f12e9f0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://33bbf48cc069be677705037ba7520c22b1b622c23b33e1a71495f2d36549d40b",
-				"dweb:/ipfs/Qmct36zWXv3j7LZB83uwbg7TXwnZSN1fqHNDZ93GG98bGz"
+				"bzz-raw://b600b852e0597aa69989cc263111f02097e2827edc1bdc70306303e3af5e9929",
+				"dweb:/ipfs/QmU4WfM28A1nDqghuuGeFmN3CnVrk6opWtiF65K4vhFPeC"
 			]
 		},
 		"@openzeppelin/contracts/utils/math/SafeMath.sol": {
@@ -307,36 +307,36 @@
 				"dweb:/ipfs/QmQJquTMtc6fgm5JQzGdsGpA2fqBe3MHWEdt2qzaLySMdN"
 			]
 		},
-		"contracts/Bounty.sol": {
-			"keccak256": "0x4e6fde8d9cdcafd891cdb1f88c07c3c422b4482b5d4500bf35d2f4e6ecf76a5f",
+		"contracts/comunion/Bounty.sol": {
+			"keccak256": "0xbda2048a9c81a3632b4701b2c453b973eaa159c04d26efda383668f6438ad53b",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://08b4d02ee5d9f543466196b8170e73c7f3f8e7bf90701a3c8d024b2e422785f5",
-				"dweb:/ipfs/QmcTLGihAdMQj4Kq7FKzSBoaw2KnnygfDqq5qNJ3JCZBqP"
+				"bzz-raw://f01cb43b7c6463df233e5d9c82f1a1babf148e5bd56fb324a88a47f3d1ed5e7d",
+				"dweb:/ipfs/QmP1HSQw2P6ysx38bbBKw8TCEqLnNhCkLh3RWH6RBnQ7uM"
 			]
 		},
-		"contracts/BountyStore.sol": {
-			"keccak256": "0x276d8e284920f4d3de0c6cba1586ad7895e025f3da432f494eb3661e70d4117c",
+		"contracts/comunion/BountyStore.sol": {
+			"keccak256": "0xceeac3548dcdc81191b8dc86cacdc5bbc5dc27793e897ca9523401e4fd24e205",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://62ddba29e2fd50ef5e49feece54b88806f9da4ca6cb6588507d04f4fc2dc958a",
-				"dweb:/ipfs/QmR8eNFbB4dLZZwbV9rejJRuZVTCf7RgEd23UTg4B6vkUp"
+				"bzz-raw://f67e004020288996b2be6878d88bbd724362f79fa4f795d3611cddf719f533d1",
+				"dweb:/ipfs/QmfZVWwgB1aWpF12pBJAuLbZ7tEuDiKm5SrFJw7rHPEXZn"
 			]
 		},
-		"contracts/FactoryStore.sol": {
-			"keccak256": "0x918285506e0510ad246409e617486666dd520f8893c5985392080bb2c39df9b1",
+		"contracts/comunion/FactoryStore.sol": {
+			"keccak256": "0x2ae7d89e61d29b9d92adc5ce44abba75de22621c048c191e926b896b7597b222",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://fac92c0d846610cd0b154907adb26d657575fbb7ff942261ce6413851d398e82",
-				"dweb:/ipfs/QmUEV5vkzrjePPhGEUa96quztnnVfU7fCgxvwcer2HhWhX"
+				"bzz-raw://052c3e419f6e298607b44dd998653b62ec3801538fe56f8db40a0eb8c9fd1c87",
+				"dweb:/ipfs/QmTC9rMZYisZ3QgqjWfZky4tFwCWJJdMLpbeG4RUv1vP4u"
 			]
 		},
-		"contracts/ownership/Secondary.sol": {
-			"keccak256": "0x6fa40a3bea213043c45d4b453aedd8a0b1a575408660c8cb957ff8a426024c26",
+		"contracts/comunion/ownership/Secondary.sol": {
+			"keccak256": "0xa24430372a76ab00989d6397d2b7cb2b3060fc3078047bf485d08eaf7a161630",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://35be5abea69ef1a02c701da098354c371bd716f09333a96e73e7461fd7c03eb7",
-				"dweb:/ipfs/QmUbw8sxSGtVtsBZARXX71F1AdNe8rvdgzxVpDAHoEeK4T"
+				"bzz-raw://f07f4d21fb4411c51e0a83a8ad7ab4584b426501905a4f774b5b1de00a222048",
+				"dweb:/ipfs/QmW17w29HPYfdwD718w6qB3sxnpK4HqeMiMqgTAbFJVL7z"
 			]
 		}
 	},

@@ -6,7 +6,7 @@
       {
         "chainId": 1,
         "chainName": "Ethereum",
-        "address": ""
+        "address": "0x5951a4dd023De202F6b34e92b7A0412e487dd258"
       },
       {
         "chainId": 43114,
@@ -21,7 +21,7 @@
       {
         "chainId": 250,
         "chainName": "Fantom",
-        "address": ""
+        "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
       },
       {
         "chainId": 137,
@@ -42,7 +42,7 @@
       {
         "chainId": 1,
         "chainName": "Ethereum",
-        "address": ""
+        "address": "0x7B5f3fFD2018D9d0B6f1b5b0d8D3E7384d324884"
       },
       {
         "chainId": 43114,
@@ -57,7 +57,7 @@
       {
         "chainId": 250,
         "chainName": "Fantom",
-        "address": ""
+        "address": "0x0c9Fe2A4D3FFDe1Ee416Ed6814F380663006E879"
       },
       {
         "chainId": 137,
@@ -103,7 +103,7 @@
       {
         "chainId": 1,
         "chainName": "Ethereum",
-        "address": ""
+        "address": "0x53EAe2DD9be90b254481Aa865063B612dd501fEF"
       },
       {
         "chainId": 43114,
@@ -118,7 +118,7 @@
       {
         "chainId": 250,
         "chainName": "Fantom",
-        "address": ""
+        "address": "0x78Fef7b7C0a87D8A142936388ee64d09325CBBF0"
       },
       {
         "chainId": 137,
