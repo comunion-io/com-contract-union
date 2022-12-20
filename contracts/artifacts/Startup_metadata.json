@@ -227,7 +227,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/Startup.sol": "Startup"
+			"contracts/comunion/Startup.sol": "Startup"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -257,28 +257,28 @@
 				"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
 			]
 		},
-		"contracts/Startup.sol": {
-			"keccak256": "0x629d9eeff679eed359c8080fc101562d3cf5387a9e257bed2b61059266e36759",
+		"contracts/comunion/Startup.sol": {
+			"keccak256": "0x68759079b9cacbd5eb7b58cbef3820f54d289e0be39853de5431d2443432a749",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://c5044e2b8bf632b646b24f1163bafb23dada31c1f38966b1c93ee3c59c8b02ea",
-				"dweb:/ipfs/QmU9Ew18qT8eYVbCfKbyEY5meoAd7Ud6NJuZCChcQb72XQ"
+				"bzz-raw://c0da15654f2e6a9817b3bb0f6c25e4d41daca00037c4071a7b0a9660433f3cbd",
+				"dweb:/ipfs/QmaoWkLtqhPXWmhEiyafcWptNfsY24LtkgfLxAuLqKfAw5"
 			]
 		},
-		"contracts/StartupStore.sol": {
-			"keccak256": "0xcfdef8f4c42aaa011022218f61625ad115e376fa855aa10efc1eb3187b6e694e",
+		"contracts/comunion/StartupStore.sol": {
+			"keccak256": "0xee82f598175b2c3e34bd02f20e2df52140aa81c6bb664980875727c654b1867d",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://344520b6aeff0e31f0510547cd3798eb483452d25b2d62495452d33c365848a3",
-				"dweb:/ipfs/QmY5itccaTF47jYnC1f7DvMWuXzfMCSs2BX882o8vGRLPT"
+				"bzz-raw://8d49ac6ce9c20018dc6721722e4d196d96347d0134b8ccec3658eaae9535504a",
+				"dweb:/ipfs/Qmcp6RPq3ydF8MmwpNWENgddXiGzndUDzKzNcQJaZWctwn"
 			]
 		},
-		"contracts/ownership/Secondary.sol": {
-			"keccak256": "0x6fa40a3bea213043c45d4b453aedd8a0b1a575408660c8cb957ff8a426024c26",
+		"contracts/comunion/ownership/Secondary.sol": {
+			"keccak256": "0xa24430372a76ab00989d6397d2b7cb2b3060fc3078047bf485d08eaf7a161630",
 			"license": "SimPL-2.0",
 			"urls": [
-				"bzz-raw://35be5abea69ef1a02c701da098354c371bd716f09333a96e73e7461fd7c03eb7",
-				"dweb:/ipfs/QmUbw8sxSGtVtsBZARXX71F1AdNe8rvdgzxVpDAHoEeK4T"
+				"bzz-raw://f07f4d21fb4411c51e0a83a8ad7ab4584b426501905a4f774b5b1de00a222048",
+				"dweb:/ipfs/QmW17w29HPYfdwD718w6qB3sxnpK4HqeMiMqgTAbFJVL7z"
 			]
 		}
 	},
