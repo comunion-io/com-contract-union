@@ -36,10 +36,17 @@ contract BountyFactory is Ownable {
         Bounty bounty = new Bounty(address(this), msg.sender);
         bounty.init(paras);
         if (paras.founderDepositAmount > 0) {
-            IERC20 depositToken = IERC20(_depositToken);
-            require(depositToken.balanceOf(msg.sender) >= _founderDepositAmount, "Deposit token balance is insufficient");
-            require(depositToken.allowance(msg.sender, address(this)) >= _founderDepositAmount, "Deposit token allowance is insufficient");
-            require(depositToken.transferFrom(msg.sender, bounty.vaultAccount(), _founderDepositAmount), "Deposit token transferFrom failure");
+            if (_depositToken == address(0)) {
+                require(msg.value == paras.founderDepositAmount, "msg.value is not valid");
+                require(msg.sender.balance >= paras.founderDepositAmount, "Your balance is insufficient");
+                (bool isSend,) = bounty.vaultAccount().call{value: paras.founderDepositAmount}("");
+                require(isSend, "Transfer contract failure");
+            } else {
+                IERC20 depositToken = IERC20(_depositToken);
+                require(depositToken.balanceOf(msg.sender) >= _founderDepositAmount, "Deposit token balance is insufficient");
+                require(depositToken.allowance(msg.sender, address(this)) >= _founderDepositAmount, "Deposit token allowance is insufficient");
+                require(depositToken.transferFrom(msg.sender, bounty.vaultAccount(), _founderDepositAmount), "Deposit token transferFrom failure");
+            }
         }
         bounty.transferOwnership(msg.sender);
 
