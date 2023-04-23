@@ -82,12 +82,12 @@
       {
         "chainId": 5,
         "chainName": "Goerli",
-        "address": "0x42583219DC1564D465DDD01D3327CEF942f6aB88"
+        "address": "0xC950a9dDa0B66C319248c0B99bEBc29CCA398a9c"
       },
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xe5370D4226CF2Cbbe8D9592647527299c33f5505"
+        "address": "0x34b939cc2C9c5F600761220EF34FC53cF0A2b511"
       },
       {
         "chainId": 43114,
@@ -97,7 +97,7 @@
       {
         "chainId": 97,
         "chainName": "BSC Testnet",
-        "address": "0xAAb8FCD8DD22a5de73550F8e67fF9Ca970d1257E"
+        "address": "0x1099861d064d6C093C9D2F73602d7DAd12155073"
       },
       {
         "chainId": 56,
@@ -107,7 +107,7 @@
       {
         "chainId": 4002,
         "chainName": "Fantom Testnet",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": "0x5EF58fc4051d73aa461D09418ab6Dfca89cEA5ad"
       },
       {
         "chainId": 250,
@@ -117,7 +117,7 @@
       {
         "chainId": 80001,
         "chainName": "Mumbai",
-        "address": "0xd8461714Ab1C2E051073520E6c8db8eE15f6147C"
+        "address": "0xEDD8b1e92c6584AFc0A4509f1122244195e0157B"
       },
       {
         "chainId": 137,
