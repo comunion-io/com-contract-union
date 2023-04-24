@@ -41,6 +41,7 @@ contract BountyFactory is Ownable {
                 require(msg.sender.balance >= paras.founderDepositAmount, "Your balance is insufficient");
                 (bool isSend,) = bounty.vaultAccount().call{value: paras.founderDepositAmount}("");
                 require(isSend, "Transfer contract failure");
+                paras.depositTokenIsNative = true;
             } else {
                 IERC20 depositToken = IERC20(_depositToken);
                 require(depositToken.balanceOf(msg.sender) >= _founderDepositAmount, "Deposit token balance is insufficient");

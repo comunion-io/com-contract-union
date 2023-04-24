@@ -47,12 +47,12 @@
       {
         "chainId": 43114,
         "chainName": "avaxMain",
-        "address": "0x1813E37D76316eCE03D3f7a9D908052D061355Fb"
+        "address": "0x5EF58fc4051d73aa461D09418ab6Dfca89cEA5ad"
       },
       {
         "chainId": 56,
         "chainName": "Binance Smart Chain",
-        "address": "0x6187f53e7AC4cfB95ea1c4E906e777d0d2f6763E"
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
       },
       {
         "chainId": 250,
@@ -67,7 +67,7 @@
       {
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
-        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
+        "address": "0xe3f80B82ef0de5b6C779f008B79FD96fA27EE6C7"
       }
     ]
   },
