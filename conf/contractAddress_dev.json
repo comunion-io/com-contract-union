@@ -56,7 +56,7 @@
       {
         "chainId": 5700,
         "chainName": "Syscoin Tanenbaum Testnet",
-        "address": "0x001547114664D1050271943eaC4657bE2c15EFcC"
+        "address": "0xc7a1bAe0Db6203F3Ee3C721909B3b959a1b437Ca"
       },
       {
         "chainId": 2814,
@@ -224,6 +224,11 @@
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
         "address": ""
+      },
+      {
+        "chainId": 5700,
+        "chainName": "Syscoin Tanenbaum Testnet",
+        "address": "0x001547114664D1050271943eaC4657bE2c15EFcC"
       }
     ]
   },
