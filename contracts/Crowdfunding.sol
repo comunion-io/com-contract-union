@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: SimPL-2.0
-pragma solidity >=0.8.x <0.9.0;
+pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./interface/ICrowdfundingFactory.sol";
 import "./FactoryStore.sol";
 import "./CrowdfundingStore.sol";
+import "./Whitelist.sol";
+import "./Error.sol";
+// import "hardhat/console.sol";
 
 struct Parameters {
     address sellTokenAddress;
@@ -19,102 +23,117 @@ struct Parameters {
     uint16 swapPercent;
     uint16 sellTax;
     uint256 maxBuyAmount;
+    uint256 minBuyAmount;
     uint16 maxSellPercent;
     address teamWallet;
     uint256 startTime;
     uint256 endTime;
+    address router;
+    uint256 dexInitPrice;
 }
 
-contract CrowdfundingFactory is Ownable {
+contract CrowdfundingFactory is Ownable,Whitelist {
     event Created(address founder, address crowdfunding, Parameters paras);
-
     FactoryStore store;
-
-    constructor() {
+    Whitelist dexRouters;
+    uint24 public fee;
+    address public feeTo;
+    address public feeToSetter;
+    constructor(address _feeToSetter, address _feeTo) {
         store = new FactoryStore();
+        dexRouters = new Whitelist();        
+        feeToSetter = _feeToSetter;
+        feeTo = _feeTo;
+        fee = 300;
     }
-
-    function createCrowdfundingContract(address _sellToken, address _buyToken, uint256 _raiseTotal,
-        uint256 _buyPrice, uint16 _swapPercent, uint16 _sellTax,
-        uint256 _maxBuyAmount, uint16 _maxSellPercent, address _teamWallet,
-        uint256 _startTime, uint256 _endTime) public {
-        Parameters memory paras = Parameters({sellTokenAddress: _sellToken,
-        buyTokenAddress: _buyToken,
-        sellTokenDecimals: 18,
-        buyTokenDecimals: 18,
-        buyTokenIsNative: true,
-        raiseTotal: _raiseTotal,
-        buyPrice: _buyPrice,
-        swapPercent: _swapPercent,
-        sellTax: _sellTax,
-        maxBuyAmount: _maxBuyAmount,
-        maxSellPercent: _maxSellPercent,
-        teamWallet: address(_teamWallet),
-        startTime: _startTime,
-        endTime: _endTime});
-
-        require(_sellToken != address(0) && _buyToken != address(0), "Token address is zero");
-        require(_buyPrice > 0, "Buy price is incorrect");
-
+    function createCrowdfundingContract(Parameters calldata paras) public {
+        if (paras.sellTokenAddress == address(0) && paras.buyTokenAddress == address(0)) {
+            revert TokenAddress();
+        }
+        require(paras.buyPrice > 0, "ERR: BUY PRICE");
+        if (paras.router != address(0)) {
+            require(paras.dexInitPrice > 0, "ERR: INIT PRICE OF DEX");
+        }
+        require(isDexRouters(paras.router) || paras.router == address(0), "ERR:NOT SUPPORT DEX");
         IERC20 sellToken = IERC20(paras.sellTokenAddress);
         Crowdfunding newCrowdfunding = new Crowdfunding(address(this), msg.sender);
         newCrowdfunding.init(paras);
         uint256 _deposit = newCrowdfunding.deposit();
         require(_deposit > 0, "Sell token deposit is zero");
-        require(sellToken.balanceOf(msg.sender) >= _deposit, "Sell token balance is insufficient");
-        require(sellToken.allowance(msg.sender, address(this)) >= _deposit, "Sell token allowance is insufficient");
+        // require(sellToken.balanceOf(msg.sender) >= _deposit, "Sell token balance is insufficient");
+        // require(sellToken.allowance(msg.sender, address(this)) >= _deposit, "Sell token allowance is insufficient");
+        if (sellToken.balanceOf(msg.sender) < _deposit) {
+           revert TokenBalanceInsufficient("Sell");
+        }
+        if (sellToken.allowance(msg.sender, address(this)) < _deposit) {
+           revert TokenAllowanceInsufficient("Sell");
+        }
         require(sellToken.transferFrom(msg.sender, newCrowdfunding.vaultAccount(), _deposit), "Sell token transferFrom failure");
-
         newCrowdfunding.transferOwnership(msg.sender);
         address _address = address(newCrowdfunding);
         store.push(_address);
         emit Created(msg.sender, _address, paras);
     }
-
     function children() external view returns (address[] memory) {
         return store.children();
     }
-
     function isChild(address _address) external view returns (bool) {
         return store.isChild(_address);
     }
-
-    function getStore() external onlyOwner view returns (address) {
-        return address(store);
-    }
-
     function transferPrimary(address newFactory) external onlyOwner {
         store.transferPrimary(newFactory);
     }
-
     function transferStore(address newStore) external onlyOwner {
         store = FactoryStore(newStore);
     }
-
     function renounceOwnership() public override onlyOwner {
+    }
+    function getStore() external onlyOwner view returns (address) {
+        return address(store);
+    }
+    function addToDexRouters(address _router) public onlyOwner {
+        dexRouters.addToWhitelist(_router);
+    }
+    function isDexRouters(address _router) public view returns (bool) {
+        return dexRouters.isWhitelisted(_router);
+    }
+    function removeFromDexRouters(address _router) public onlyOwner {
+        dexRouters.removeFromWhitelist(_router);
+    }
+    function setFeeTo(address _feeTo) external {
+        if (msg.sender != feeToSetter) {
+           revert Unauthorized(msg.sender);
+        }
+        feeTo = _feeTo;
+    }
+    function setFeeToSetter(address _feeToSetter) external {
+        if (msg.sender != feeToSetter || msg.sender != owner()) {
+           revert Unauthorized(msg.sender);
+        }
+        feeToSetter = _feeToSetter;
     }
 }
 
 contract Crowdfunding is Ownable {
     using SafeMath for uint;
-
     enum Status {
         Pending, Upcoming, Live, Ended, Cancel
     }
-
     event Created(address owner, address factory, address founder, uint256 deposit, Parameters paras);
     event Buy(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
     event Sell(address caller, uint256 buyAmount, uint256 sellAmount, uint256 buyTokenBalance, uint256 sellTokenBalance, uint256 swapPoolBalance);
     event Cancel(address caller, Status status);
     event Remove(address caller, Status status);
+    event TransferToLiquidity(address caller, Status status, bytes data);
     event Receive(address sender, string func);
     event UpdateParas(address caller, uint256 buyPrice, uint16 swapPercent, uint256 maxBuyAmount, uint16 maxSellPercent, uint256 endTime);
-
     CrowdfundingStore store;
-    IERC20 private sellToken;
-    IERC20 private buyToken;
+    IERC20Metadata private sellToken;
+    IERC20Metadata private buyToken;
+    ICrowdfundingFactory private crowdfundingFactory;
     address private factory;
     address private founder;
+    uint256 private depositSellAmount;
     uint256 private depositAmount;
     uint256 private buyTokenAmount;
     uint256 private swapPoolAmount;
@@ -128,7 +147,7 @@ contract Crowdfunding is Ownable {
     modifier isActive() {
         _checkActive();
         _;
-    }
+    } 
 
     modifier inTime() {
         _checkInTime();
@@ -166,91 +185,152 @@ contract Crowdfunding is Ownable {
         factory = _factory;
         founder = _founder;
         thisAccount = address(this);
+        crowdfundingFactory = ICrowdfundingFactory(factory);
     }
-
+    
     function init(Parameters memory _parameters) public payable onlyOwner zeroStore {
         store = new CrowdfundingStore();
-        vault = payable(address(store));
-
+        vault = payable(address(store)); 
         paras = _parameters;
         status = _statusFromTime();
-        sellToken = IERC20(paras.sellTokenAddress);
-        paras.sellTokenDecimals = ERC20(paras.sellTokenAddress).decimals();
+        sellToken = IERC20Metadata(paras.sellTokenAddress);
+        paras.sellTokenDecimals = sellToken.decimals();
         if (paras.sellTokenAddress == paras.buyTokenAddress) {
             paras.buyTokenIsNative = true;
             paras.buyTokenDecimals = 18;
         } else {
             paras.buyTokenIsNative = false;
-            paras.buyTokenDecimals = ERC20(paras.buyTokenAddress).decimals();
-            buyToken = IERC20(paras.buyTokenAddress);
+            buyToken = IERC20Metadata(paras.buyTokenAddress);
+            paras.buyTokenDecimals = buyToken.decimals();
         }
-        depositAmount = _calculateDeposit();
-        sellTokenAmount = depositAmount;
-        emit Created(owner(), factory, founder, depositAmount, paras);
+        // depositSellAmount = _calculateDeposit();
+        (,depositSellAmount) = _swapAmount(paras.raiseTotal, 0);
+        sellTokenAmount = depositSellAmount;
+        depositAmount = paras.raiseTotal.mul(paras.swapPercent).mul(paras.dexInitPrice).div(10000).div(10**paras.buyTokenDecimals).add(depositSellAmount);
+        emit Created(owner(), factory, founder, depositSellAmount, paras);
     }
-
     function buy(uint256 _buyAmount, uint256 _sellAmount) public payable isActive inTime noReentrant returns (bool) {
-        require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
-        require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
-        require(_checkMaxBuyAmount(msg.sender, _buyAmount), "Amount exceeds maximum");
-        require(sellToken.balanceOf(vault) >= _sellAmount, "Sell token balance is insufficient");
-
+        // require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
+        if (_buyAmount == 0 || _sellAmount == 0) {
+            revert ZeroAmount();
+        }
+        // require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
+        if (!_checkPrice(_buyAmount, _sellAmount)) {
+            revert PriceIsMismatch();
+        }
+        if (_buyAmount < paras.minBuyAmount) {
+            revert AmountLTMinimum();
+        }
+        // require(_checkMaxBuyAmount(msg.sender, _buyAmount), "Amount exceeds maximum");
+        if (!_checkMaxBuyAmount(msg.sender, _buyAmount)) {
+            revert AmountExceedsMaximum();
+        }
+        // require(sellToken.balanceOf(vault) >= _sellAmount, "Sell token balance is insufficient");
+        if (sellToken.balanceOf(vault) < _sellAmount) {
+            revert TokenBalanceInsufficient("Sell");
+        }
         uint256 _toPoolAmount = _toSwapPoolAmount(_buyAmount);
         if (paras.buyTokenIsNative) {
             require(msg.value == _buyAmount, "msg.value is not valid");
             (bool isSend,) = vault.call{value: _toPoolAmount}("");
-            require(isSend, "Transfer failure");
+            // require(isSend, "Transfer failure");
+            if (!isSend) {
+                revert Transfer("Buy"); 
+            }
             (isSend,) = paras.teamWallet.call{value: msg.value.sub(_toPoolAmount)}("");
-            require(isSend, "Transfer team failure");
+            // require(isSend, "Transfer team failure");
+            if (!isSend) {
+                revert Transfer("Buy"); 
+            }
         } else {
-            require(buyToken.allowance(msg.sender, thisAccount) >= _buyAmount, "Your buy token allowance is insufficient");
-            require(buyToken.balanceOf(msg.sender) >= _buyAmount, "Your buy token balance is insufficient");
-            require(buyToken.transferFrom(msg.sender, vault, _toPoolAmount), "Buy token transferFrom failure");
-            require(buyToken.transferFrom(msg.sender, paras.teamWallet, _buyAmount.sub(_toPoolAmount)), "Buy token transfer team failure");
+            // require(buyToken.allowance(msg.sender, thisAccount) >= _buyAmount, "Your buy token allowance is insufficient");
+            if (buyToken.allowance(msg.sender, thisAccount) < _buyAmount) {
+                revert TokenAllowanceInsufficient("Buy");
+            }
+            // require(buyToken.balanceOf(msg.sender) >= _buyAmount, "Your buy token balance is insufficient");
+            if (buyToken.balanceOf(msg.sender) < _buyAmount) {
+                revert TokenBalanceInsufficient("Buy");
+            }
+            // require(buyToken.transferFrom(msg.sender, paras.teamWallet, _buyAmount.sub(_toPoolAmount)), "Buy token transfer team failure");
+            if (!buyToken.transferFrom(msg.sender, vault, _toPoolAmount)) {
+                revert Transfer("Buy"); 
+            }
+            // require(buyToken.transferFrom(msg.sender, vault, _toPoolAmount), "Buy token transferFrom failure");
+            if (!buyToken.transferFrom(msg.sender, paras.teamWallet, _buyAmount.sub(_toPoolAmount))) {
+                revert Transfer("Buy"); 
+            }
         }
-        require(store.transferToken(sellToken, msg.sender, _sellAmount), "Sell token transfer failure");
-
+        // require(store.transferToken(sellToken, msg.sender, _sellAmount), "Sell token transfer failure");
+        if (!store.transferToken(sellToken, msg.sender, _sellAmount)) {
+            revert Transfer("Sell"); 
+        }
         buyTokenAmount = buyTokenAmount.add(_buyAmount);
         sellTokenAmount = sellTokenAmount.sub(_sellAmount);
         swapPoolAmount = swapPoolAmount.add(_toPoolAmount);
         store.addTotal(msg.sender, _buyAmount, _sellAmount);
         store.addAmount(msg.sender, _buyAmount, _sellAmount);
-
         emit Buy(msg.sender, _buyAmount, _sellAmount, buyTokenAmount, sellTokenAmount, swapPoolAmount);
         return true;
     }
-
     function sell(uint256 _buyAmount, uint256 _sellAmount) public payable isActive inTime noReentrant returns (bool) {
-        require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
-        require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
-        require(_checkMaxSellAmount(msg.sender, _sellAmount), "Amount exceeds maximum");
-        uint256 _buyAmountAfterTax = _amountAfterTax(_buyAmount);
-        require(_buyBalance() >= _buyAmountAfterTax, "Balance is insufficient");
-
-        require(sellToken.allowance(msg.sender, thisAccount) >= _sellAmount, "Your sell token allowance is insufficient");
-        require(sellToken.balanceOf(msg.sender) >= _sellAmount, "Your sell token balance is insufficient");
-        require(sellToken.transferFrom(msg.sender, vault, _sellAmount), "Sell token transferFrom failure");
-        if (paras.buyTokenIsNative) {
-            require(vault.balance >= _buyAmountAfterTax, "Balance is insufficient");
-            require(store.transfer(msg.sender, _buyAmountAfterTax), "Transfer buyer failure");
-        } else {
-            require(buyToken.balanceOf(vault) >= _buyAmountAfterTax, "Buy token balance is insufficient");
-            require(store.transferToken(buyToken, msg.sender, _buyAmountAfterTax), "Buy token transfer buyer failure");
+        // require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
+        if (_buyAmount == 0 || _sellAmount == 0) {
+            revert ZeroAmount();
         }
-
+        // require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
+        if (!_checkPrice(_buyAmount, _sellAmount)) {
+            revert PriceIsMismatch();
+        }
+        // require(_checkMaxSellAmount(msg.sender, _sellAmount), "Amount exceeds maximum");
+        if (!_checkMaxSellAmount(msg.sender, _sellAmount)) {
+            revert AmountExceedsMaximum();
+        }
+        uint256 _buyAmountAfterTax = _amountAfterTax(_buyAmount);
+        // require(_buyBalance() >= _buyAmountAfterTax, "Balance is insufficient");
+        if (_buyBalance() < _buyAmountAfterTax) {
+            revert TokenBalanceInsufficient("Buy");
+        }
+        // require(sellToken.allowance(msg.sender, thisAccount) >= _sellAmount, "Your sell token allowance is insufficient");
+        if (sellToken.allowance(msg.sender, thisAccount) < _sellAmount) {
+            revert TokenAllowanceInsufficient("Sell token");
+        }
+        // require(sellToken.balanceOf(msg.sender) >= _sellAmount, "Your sell token balance is insufficient");
+        if (sellToken.balanceOf(msg.sender) < _sellAmount) {
+            revert TokenBalanceInsufficient("Sell token");
+        }
+        // require(sellToken.transferFrom(msg.sender, vault, _sellAmount), "Sell token transferFrom failure");
+        if (!sellToken.transferFrom(msg.sender, vault, _sellAmount)) {
+            revert Transfer("Sell");
+        }
+        if (paras.buyTokenIsNative) {
+            // require(vault.balance >= _buyAmountAfterTax, "Balance is insufficient");
+            // require(store.transfer(msg.sender, _buyAmountAfterTax), "Transfer buyer failure");
+            if (vault.balance < _buyAmountAfterTax) {
+                revert TokenAllowanceInsufficient("Buy token");
+            }
+            if (!store.transfer(msg.sender, _buyAmountAfterTax)) {
+                revert Transfer("Buy token"); 
+            }
+        } else {
+            // require(buyToken.balanceOf(vault) >= _buyAmountAfterTax, "Buy token balance is insufficient");
+            // require(store.transferToken(buyToken, msg.sender, _buyAmountAfterTax), "Buy token transfer buyer failure");
+            if (buyToken.balanceOf(vault) < _buyAmountAfterTax) {
+                revert TokenAllowanceInsufficient("Buy token");
+            }
+            if (!store.transferToken(buyToken, msg.sender, _buyAmountAfterTax)) {
+                revert Transfer("Buy token"); 
+            }
+        }
         buyTokenAmount = buyTokenAmount.sub(_buyAmount);
         sellTokenAmount = sellTokenAmount.add(_sellAmount);
         swapPoolAmount = swapPoolAmount.sub(_buyAmountAfterTax);
         store.subAmount(msg.sender, _buyAmount, _sellAmount);
-
         emit Sell(msg.sender, _buyAmount, _sellAmount, buyTokenAmount, sellTokenAmount, swapPoolAmount);
         return true;
     }
-
     receive() external payable {
         emit Receive(msg.sender, "receive");
     }
-
     function cancel() public onlyOwner isActive beforeStart {
         require(_refundSellToken(payable(paras.teamWallet)), "Refund sell token failure");
         status = Status.Cancel;
@@ -258,45 +338,55 @@ contract Crowdfunding is Ownable {
     }
 
     function remove() public onlyOwner isActive canOver {
+        if (_buyBalance()>0) {
+            if (paras.router!=address(0)) {
+                revert TransferLiquidity("only auto listing");
+            }
+            // require(paras.router==address(0), "Can only be closed by transferring liquidity");
+            (bool ok ) = _takeFee();
+            require(ok, "There is an error in withdrawing the handling fee");
+        }
         require(_refundBuyToken(payable(paras.teamWallet)), "Refund buy token failure");
         require(_refundSellToken(payable(paras.teamWallet)), "Refund sell token failure");
         status = Status.Ended;
         emit Remove(msg.sender, status);
     }
-
-    function updateParas(uint256 _buyPrice, uint16 _swapPercent, uint256 _maxBuyAmount, uint16 _maxSellPercent, uint256 _endTime) public onlyOwner isActive beforeEnd {
+    function updateParas(uint256 _buyPrice, uint16 _swapPercent, uint256 _maxBuyAmount, uint256 _minBuyAmount, uint16 _maxSellPercent, uint256 _endTime) public onlyOwner isActive beforeEnd {
         paras.buyPrice = _buyPrice;
         paras.swapPercent = _swapPercent;
         paras.maxBuyAmount = _maxBuyAmount;
+        paras.minBuyAmount = _minBuyAmount;
         paras.maxSellPercent = _maxSellPercent;
         paras.endTime = _endTime;
         emit UpdateParas(msg.sender, _buyPrice, _swapPercent, _maxBuyAmount, _maxSellPercent, _endTime);
     }
-
     function vaultAccount() public view onlyOwner returns (address) {
         return vault;
     }
-
     function state() public view returns (uint256 _raiseTotal, uint256 _raiseAmount, uint256 _swapPoolAmount,
         uint256 _sellTokenDeposit, uint256 _sellTokenAmount,
         uint256 _myBuyTokenAmount, uint256 _mySellTokenAmount,
         uint256 _buyTokenBalance, uint256 _sellTokenBalance,
-        Status _status) {
+        Status _status, uint256 _dexInitPrice) {
         uint256 _raiseBalance = vault.balance;
         if (!paras.buyTokenIsNative) {
             _raiseBalance = buyToken.balanceOf(vault);
         }
         (uint256 _buyAmount, uint256 _sellAmount) = store.getAmount(msg.sender);
-        return (paras.raiseTotal, buyTokenAmount, swapPoolAmount, depositAmount, sellTokenAmount,
-        _buyAmount, _sellAmount, _raiseBalance, sellToken.balanceOf(vault), status);
+        return (paras.raiseTotal, buyTokenAmount, swapPoolAmount, depositSellAmount, sellTokenAmount,
+        _buyAmount, _sellAmount, _raiseBalance, sellToken.balanceOf(vault), status,paras.dexInitPrice);
     }
 
-    function account() public view returns (address _owner, address _factory, address _founder) {
+    function account() public view returns (address, address, address) {
         return (owner(), factory, founder);
     }
 
     function parameters() public view returns (Parameters memory _paras) {
         return paras;
+    }
+
+    function sellDeposit() public view returns (uint256 _depositAmount) {
+        return (depositSellAmount);
     }
 
     function deposit() public view returns (uint256 _depositAmount) {
@@ -328,6 +418,44 @@ contract Crowdfunding is Ownable {
     }
 
     function renounceOwnership() public override onlyOwner {
+    }
+
+    function transferToLiquidity(address _router,  
+        bytes calldata _data) public payable 
+        onlyOwner noReentrant isActive canOver returns(bool success, bytes memory result){
+        // require(paras.router!=address(0), "Does not support automatic transfer of liquidity");
+        if (paras.router==address(0)) {
+            revert TransferLiquidity("not allow auto listing");
+        }
+        if (_router!=paras.router) {
+            revert TransferLiquidity("Inconsistent router");
+        }
+        // require(_router==paras.router, "Please transfer to the dex you chose when creating");
+        (bool ok ) = _takeFee();
+        require(ok, "There is an error in withdrawing the handling fee");
+        uint256 amountB = _buyBalance();
+        uint256 amountA = amountB.mul(paras.dexInitPrice).div(10 ** paras.buyTokenDecimals);
+        // require(, "The balance of the token sold is insufficient to complete the automatic transfer of liquidity");
+        if (amountA>sellToken.balanceOf(vault)) {
+            revert TokenBalanceInsufficient("sell token");
+        }
+        (success, result) = store.transferToLiquidity(_router, sellToken, buyToken, amountA, amountB, _data, paras.buyTokenIsNative);
+        require(success, "Failed to add liquidity");
+        require(_refundSellToken(payable(paras.teamWallet)), "Refund sell token failure");
+        status = Status.Ended;
+        emit TransferToLiquidity(msg.sender, status, result);
+        return (success, result);
+    }
+
+    function _takeFee() internal returns (bool) {
+        uint256 fee =  _buyBalance().mul(crowdfundingFactory.fee()).div(10000);
+        bool ok; 
+        if (paras.buyTokenIsNative) {
+            (ok)=store.transfer(crowdfundingFactory.feeTo(), fee);
+        }else {
+            (ok)=store.transferToken(buyToken, crowdfundingFactory.feeTo(), fee);
+        }
+        return (ok);
     }
 
     function _refundBuyToken(address payable _to) internal returns (bool) {
@@ -401,12 +529,9 @@ contract Crowdfunding is Ownable {
         return _swapAmount(0, Math.min(_sellMaxAmount, _remainSellAmount));
     }
 
-    function _calculateDeposit() internal view returns (uint256) {
-        (,uint256 _sellAmount) = _swapAmount(paras.raiseTotal, 0);
-        return _sellAmount;
-    }
-
     function _checkPrice(uint256 _buyAmount, uint256 _sellAmount) internal view returns (bool) {
+        // console.log("_buyAmount: ",_buyAmount);
+        // console.log("_sellAmount: ",_sellAmount);
         (, uint256 _sAmount) = _swapAmount(_buyAmount, 0);
         (uint256 _bAmount,) = _swapAmount(0, _sellAmount);
         if (_bAmount == _buyAmount || _sAmount == _sellAmount) {
@@ -450,7 +575,7 @@ contract Crowdfunding is Ownable {
         require(block.timestamp > paras.endTime || buyTokenAmount >= paras.raiseTotal, "Crowdfunding end condition not met");
         require(status != Status.Ended, "Crowdfunding status is ended");
     }
-
+    
     function _statusFromTime() internal view returns (Status) {
         if (block.timestamp < paras.startTime) {
             return Status.Upcoming;
