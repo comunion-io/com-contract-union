@@ -178,7 +178,7 @@
       {
         "chainId": 43113,
         "chainName": "avaxTest",
-        "address": "0xf8874878065d8E371208bdA2408c689430f2645D"
+        "address": "0xAa0C7d0732BA49CC9e38E779410b62b0D3557E8B"
       },
       {
         "chainId": 43114,
@@ -224,6 +224,11 @@
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
         "address": ""
+      },
+      {
+        "chainId": 5700,
+        "chainName": "Syscoin Tanenbaum Testnet",
+        "address": "0x001547114664D1050271943eaC4657bE2c15EFcC"
       }
     ]
   },
