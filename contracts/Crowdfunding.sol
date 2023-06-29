@@ -291,13 +291,15 @@ contract Crowdfunding is Ownable, EIP712 {
         uint256 _sellAmount
     ) public payable isActive inTime noReentrant returns (bool) {
         // require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
-        if (_buyAmount == 0 || _sellAmount == 0) {
-            revert ZeroAmount();
-        }
-        // require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
-        if (!_checkPrice(_buyAmount, _sellAmount)) {
-            revert PriceIsMismatch();
-        }
+        // if (_buyAmount == 0 || _sellAmount == 0) {
+        //     revert ZeroAmount();
+        // }
+        // // require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
+        // if (!_checkPrice(_buyAmount, _sellAmount)) {
+        //     revert PriceIsMismatch();
+        // }
+
+        _checkAmount(_buyAmount, _sellAmount);
         if (_buyAmount < paras.minBuyAmount) {
             revert AmountLTMinimum();
         }
@@ -368,11 +370,10 @@ contract Crowdfunding is Ownable, EIP712 {
         return true;
     }
 
-    function sell(
+    function _checkAmount(
         uint256 _buyAmount,
         uint256 _sellAmount
-    ) public payable isActive inTime noReentrant returns (bool) {
-        // require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
+    ) internal view {
         if (_buyAmount == 0 || _sellAmount == 0) {
             revert ZeroAmount();
         }
@@ -380,6 +381,21 @@ contract Crowdfunding is Ownable, EIP712 {
         if (!_checkPrice(_buyAmount, _sellAmount)) {
             revert PriceIsMismatch();
         }
+    }
+
+    function sell(
+        uint256 _buyAmount,
+        uint256 _sellAmount
+    ) public payable isActive inTime noReentrant returns (bool) {
+        // require(_buyAmount != 0 && _sellAmount != 0, "Amount is zero");
+        // if (_buyAmount == 0 || _sellAmount == 0) {
+        //     revert ZeroAmount();
+        // }
+        // // require(_checkPrice(_buyAmount, _sellAmount), "Price is mismatch");
+        // if (!_checkPrice(_buyAmount, _sellAmount)) {
+        //     revert PriceIsMismatch();
+        // }
+        _checkAmount(_buyAmount, _sellAmount);
         // require(_checkMaxSellAmount(msg.sender, _sellAmount), "Amount exceeds maximum");
         if (!_checkMaxSellAmount(msg.sender, _sellAmount)) {
             revert AmountExceedsMaximum();
@@ -551,17 +567,17 @@ contract Crowdfunding is Ownable, EIP712 {
         );
     }
 
-    function account() public view returns (address, address, address) {
-        return (owner(), factory, founder);
-    }
+    // function account() public view returns (address, address, address) {
+    //     return (owner(), factory, founder);
+    // }
 
     function parameters() public view returns (Parameters memory _paras) {
         return paras;
     }
 
-    function sellDeposit() public view returns (uint256 _depositAmount) {
-        return (depositSellAmount);
-    }
+    // function sellDeposit() public view returns (uint256 _depositAmount) {
+    //     return (depositSellAmount);
+    // }
 
     function deposit() public view returns (uint256 _depositAmount) {
         return (depositAmount);
@@ -583,9 +599,9 @@ contract Crowdfunding is Ownable, EIP712 {
         return _getSellMaxAmount(msg.sender);
     }
 
-    function buyTokenIsNative() public view returns (bool isNative) {
-        return paras.buyTokenIsNative;
-    }
+    // function buyTokenIsNative() public view returns (bool isNative) {
+    //     return paras.buyTokenIsNative;
+    // }
 
     function getStore() external view onlyOwner returns (address) {
         return address(store);
