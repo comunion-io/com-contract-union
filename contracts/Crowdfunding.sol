@@ -12,7 +12,7 @@ import "./CrowdfundingStore.sol";
 import "./Error.sol";
 import "./Whitelist.sol";
 
-contract CrowdfundingFactory is Ownable, Whitelist {
+contract CrowdfundingFactory is Ownable {
     event Created(address founder, address crowdfunding, Parameters paras);
     FactoryStore store;
     Whitelist dexRouters;
