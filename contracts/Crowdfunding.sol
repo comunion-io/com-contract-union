@@ -186,10 +186,10 @@ contract Crowdfunding is Ownable, EIP712 {
     event Receive(address sender, string func);
     event UpdateParas(
         address caller,
-        uint256 buyPrice,
-        uint16 swapPercent,
-        uint256 maxBuyAmount,
-        uint16 maxSellPercent,
+        // uint256 buyPrice,
+        // uint16 swapPercent,
+        // uint256 maxBuyAmount,
+        // uint16 maxSellPercent,
         uint256 endTime
     );
     CrowdfundingStore store;
@@ -503,25 +503,25 @@ contract Crowdfunding is Ownable, EIP712 {
     }
 
     function updateParas(
-        uint256 _buyPrice,
-        uint16 _swapPercent,
-        uint256 _maxBuyAmount,
-        uint256 _minBuyAmount,
-        uint16 _maxSellPercent,
+        // uint256 _buyPrice,
+        // uint16 _swapPercent,
+        // uint256 _maxBuyAmount,
+        // uint256 _minBuyAmount,
+        // uint16 _maxSellPercent,
         uint256 _endTime
     ) public onlyOwner isActive beforeEnd {
-        paras.buyPrice = _buyPrice;
-        paras.swapPercent = _swapPercent;
-        paras.maxBuyAmount = _maxBuyAmount;
-        paras.minBuyAmount = _minBuyAmount;
-        paras.maxSellPercent = _maxSellPercent;
+        // paras.buyPrice = _buyPrice;
+        // paras.swapPercent = _swapPercent;
+        // paras.maxBuyAmount = _maxBuyAmount;
+        // paras.minBuyAmount = _minBuyAmount;
+        // paras.maxSellPercent = _maxSellPercent;
         paras.endTime = _endTime;
         emit UpdateParas(
             msg.sender,
-            _buyPrice,
-            _swapPercent,
-            _maxBuyAmount,
-            _maxSellPercent,
+            // _buyPrice,
+            // _swapPercent,
+            // _maxBuyAmount,
+            // _maxSellPercent,
             _endTime
         );
     }
