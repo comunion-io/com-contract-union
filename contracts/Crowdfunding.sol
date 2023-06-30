@@ -48,7 +48,9 @@ contract CrowdfundingFactory is Ownable {
         IERC20 sellToken = IERC20(paras.sellTokenAddress);
         Crowdfunding newCrowdfunding = new Crowdfunding(
             address(this),
-            msg.sender
+            msg.sender,
+            "Crowdfunding",
+            "1.0"
         );
         newCrowdfunding.init(paras);
         uint256 _deposit = newCrowdfunding.deposit();
@@ -208,8 +210,6 @@ contract Crowdfunding is Ownable, EIP712 {
     address payable private vault;
     Status private status;
     bool internal locked;
-    string private constant NAME = "Crowdfunding";
-    string private constant VERSION = "1.0";
 
     modifier isActive() {
         _checkActive();
@@ -248,7 +248,12 @@ contract Crowdfunding is Ownable, EIP712 {
         _;
     }
 
-    constructor(address _factory, address _founder) EIP712(NAME, VERSION) {
+    constructor(
+        address _factory,
+        address _founder,
+        string memory _name,
+        string memory _version
+    ) EIP712(_name, _version) {
         factory = _factory;
         founder = _founder;
         thisAccount = address(this);
