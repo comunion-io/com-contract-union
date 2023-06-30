@@ -208,6 +208,8 @@ contract Crowdfunding is Ownable, EIP712 {
     address payable private vault;
     Status private status;
     bool internal locked;
+    string private constant NAME = "Crowdfunding";
+    string private constant VERSION = "1.0";
 
     modifier isActive() {
         _checkActive();
@@ -246,10 +248,7 @@ contract Crowdfunding is Ownable, EIP712 {
         _;
     }
 
-    constructor(
-        address _factory,
-        address _founder
-    ) EIP712("Crowdfunding", "1.0") {
+    constructor(address _factory, address _founder) EIP712(NAME, VERSION) {
         factory = _factory;
         founder = _founder;
         thisAccount = address(this);
