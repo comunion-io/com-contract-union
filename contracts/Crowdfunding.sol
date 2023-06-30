@@ -172,7 +172,8 @@ contract Crowdfunding is Ownable, EIP712 {
         uint256 sellAmount,
         uint256 buyTokenBalance,
         uint256 sellTokenBalance,
-        uint256 swapPoolBalance
+        uint256 swapPoolBalance,
+        uint256 _timestamp
     );
     event Sell(
         address caller,
@@ -180,7 +181,8 @@ contract Crowdfunding is Ownable, EIP712 {
         uint256 sellAmount,
         uint256 buyTokenBalance,
         uint256 sellTokenBalance,
-        uint256 swapPoolBalance
+        uint256 swapPoolBalance,
+        uint256 _timestamp
     );
     event Cancel(address caller, Status status);
     event Remove(address caller, Status status);
@@ -369,7 +371,8 @@ contract Crowdfunding is Ownable, EIP712 {
             _sellAmount,
             buyTokenAmount,
             sellTokenAmount,
-            swapPoolAmount
+            swapPoolAmount,
+            block.timestamp
         );
         return true;
     }
@@ -452,7 +455,8 @@ contract Crowdfunding is Ownable, EIP712 {
             _sellAmount,
             buyTokenAmount,
             sellTokenAmount,
-            swapPoolAmount
+            swapPoolAmount,
+            block.timestamp
         );
         return true;
     }
