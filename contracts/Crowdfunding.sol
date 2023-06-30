@@ -195,7 +195,7 @@ contract Crowdfunding is Ownable, EIP712 {
     CrowdfundingStore store;
     IERC20Metadata private sellToken;
     IERC20Metadata private buyToken;
-    ICrowdfundingFactory private crowdfundingFactory;
+    ICrowdfundingFactory private ifactory;
     address private factory;
     address private founder;
     uint256 private depositSellAmount;
@@ -253,7 +253,7 @@ contract Crowdfunding is Ownable, EIP712 {
         factory = _factory;
         founder = _founder;
         thisAccount = address(this);
-        crowdfundingFactory = ICrowdfundingFactory(factory);
+        ifactory = ICrowdfundingFactory(factory);
     }
 
     function init(
@@ -537,13 +537,7 @@ contract Crowdfunding is Ownable, EIP712 {
             uint256 _raiseTotal,
             uint256 _raiseAmount,
             uint256 _swapPoolAmount,
-            uint256 _sellTokenDeposit,
-            uint256 _sellTokenAmount,
-            uint256 _myBuyTokenAmount,
-            uint256 _mySellTokenAmount,
             uint256 _buyTokenBalance,
-            uint256 _sellTokenBalance,
-            Status _status,
             uint256 _dexInitPrice
         )
     {
@@ -551,18 +545,12 @@ contract Crowdfunding is Ownable, EIP712 {
         if (!paras.buyTokenIsNative) {
             _raiseBalance = buyToken.balanceOf(vault);
         }
-        (uint256 _buyAmount, uint256 _sellAmount) = store.getAmount(msg.sender);
+        // (uint256 _buyAmount, uint256 _sellAmount) = store.getAmount(msg.sender);
         return (
             paras.raiseTotal,
             buyTokenAmount,
             swapPoolAmount,
-            depositSellAmount,
-            sellTokenAmount,
-            _buyAmount,
-            _sellAmount,
             _raiseBalance,
-            sellToken.balanceOf(vault),
-            status,
             paras.dexInitPrice
         );
     }
@@ -571,8 +559,32 @@ contract Crowdfunding is Ownable, EIP712 {
     //     return (owner(), factory, founder);
     // }
 
-    function parameters() public view returns (Parameters memory _paras) {
-        return paras;
+    function parameters()
+        public
+        view
+        returns (
+            address _sellTokenAddress,
+            address _buyTokenAddress,
+            uint8 _buyTokenDecimals,
+            uint256 _buyPrice,
+            uint16 _swapPercent,
+            uint256 _maxBuyAmount,
+            uint256 _minBuyAmount,
+            uint16 _maxSellPercent,
+            uint256 _dexInitPrice
+        )
+    {
+        return (
+            paras.sellTokenAddress,
+            paras.buyTokenAddress,
+            paras.buyTokenDecimals,
+            paras.buyPrice,
+            paras.swapPercent,
+            paras.maxBuyAmount,
+            paras.minBuyAmount,
+            paras.maxSellPercent,
+            paras.dexInitPrice
+        );
     }
 
     // function sellDeposit() public view returns (uint256 _depositAmount) {
@@ -693,7 +705,7 @@ contract Crowdfunding is Ownable, EIP712 {
         address _router,
         uint256 _amountA,
         bytes calldata _data
-    ) public view returns (bytes32) {
+    ) internal view returns (bytes32) {
         return
             _hashTypedDataV4(
                 keccak256(
@@ -718,16 +730,12 @@ contract Crowdfunding is Ownable, EIP712 {
     }
 
     function _takeFee() internal returns (bool) {
-        uint256 fee = _buyBalance().mul(crowdfundingFactory.fee()).div(10000);
+        uint256 fee = _buyBalance().mul(ifactory.fee()).div(10000);
         bool ok;
         if (paras.buyTokenIsNative) {
-            (ok) = store.transfer(crowdfundingFactory.feeTo(), fee);
+            (ok) = store.transfer(ifactory.feeTo(), fee);
         } else {
-            (ok) = store.transferToken(
-                buyToken,
-                crowdfundingFactory.feeTo(),
-                fee
-            );
+            (ok) = store.transferToken(buyToken, ifactory.feeTo(), fee);
         }
         return (ok);
     }
@@ -916,7 +924,7 @@ contract Crowdfunding is Ownable, EIP712 {
         require(
             block.timestamp > paras.endTime ||
                 buyTokenAmount >= paras.raiseTotal,
-            "Crowdfunding end condition not met"
+            "ERR: NE"
         );
         if (status == Status.Ended) {
             revert StatusIsEnded();
