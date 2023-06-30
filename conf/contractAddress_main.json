@@ -133,12 +133,12 @@
       {
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
-        "address": "0xa4213F4606bc3E8358748c3BdecC2F0d27364F47"
+        "address": "0x748eF6Ac94148AC23Df596Fd1a60E47D56e0C4e4"
       },
       {
         "chainId": 57000,
         "chainName": "Rollux Testnet",
-        "address": "0x2E9718E54eE3292d0ab9ffe1642e6C9A749A76F1"
+        "address": "0x2A38a4E713317887DD693e6813f606842a585a7e"
       }
     ]
   },
