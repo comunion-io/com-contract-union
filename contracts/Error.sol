@@ -11,3 +11,14 @@ error AmountExceedsMaximum();
 error AmountLTMinimum();
 error PriceIsMismatch();
 error TransferLiquidity(string _type);
+error TransferLiquiditySignatureVerificationFailed();
+error HandleFeeError();
+
+error Canceled();
+error NotStarted();
+error HasEnded();
+error HasStarted();
+error StatusIsEnded();
+error AddLiquidityFailed();
+error RefundSellTokenFailed();
+error RefundBuyTokenFailed();
