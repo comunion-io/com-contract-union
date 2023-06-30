@@ -546,6 +546,7 @@ contract Crowdfunding is Ownable, EIP712 {
             uint256 _raiseAmount,
             uint256 _swapPoolAmount,
             uint256 _buyTokenBalance,
+            Status _status,
             uint256 _dexInitPrice
         )
     {
@@ -559,6 +560,7 @@ contract Crowdfunding is Ownable, EIP712 {
             buyTokenAmount,
             swapPoolAmount,
             _raiseBalance,
+            status,
             paras.dexInitPrice
         );
     }
