@@ -38,7 +38,7 @@ contract BountyFactory is Ownable {
         if (paras.founderDepositAmount > 0) {
             if (_depositToken == address(0)) {
                 require(msg.value == paras.founderDepositAmount, "msg.value is not valid");
-                require(msg.sender.balance >= paras.founderDepositAmount, "Your balance is insufficient");
+                // require(msg.sender.balance >= paras.founderDepositAmount, "Your balance is insufficient");
                 (bool isSend,) = bounty.vaultAccount().call{value: paras.founderDepositAmount}("");
                 require(isSend, "Transfer contract failure");
                 paras.depositTokenIsNative = true;
