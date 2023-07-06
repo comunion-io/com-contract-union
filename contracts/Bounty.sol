@@ -349,7 +349,7 @@ contract Bounty is Ownable {
         if (_amount > 0) {
             if (paras.depositTokenIsNative) {
                 require(msg.value == _amount, "msg.value is not valid");
-                require(msg.sender.balance >= _amount, "Your balance is insufficient");
+                // require(msg.sender.balance >= _amount, "Your balance is insufficient");
                 (bool isSend,) = vault.call{value: _amount}("");
                 require(isSend, "Transfer contract failure");
             } else {
