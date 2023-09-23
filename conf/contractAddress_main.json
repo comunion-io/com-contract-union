@@ -37,6 +37,11 @@
         "chainId": 1101,
         "chainName": "Polygon zkEVM",
         "address": "0x7CB4DF5651221Ea433f7fFAE43593F8b9DE2BcD2"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0x9079cF5475908533d5C7f5CeBdCAfbADB5CA4280"
       }
     ]
   },
@@ -78,6 +83,11 @@
         "chainId": 1101,
         "chainName": "Polygon zkEVM",
         "address": "0x3B6a47f6369e4Ab0a1c477b830dfC95f46E49f07"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0x1C51aB3E344818bE11560fEf77E8C8237A2BD974"
       }
     ]
   },
@@ -144,6 +154,11 @@
         "chainId": 1101,
         "chainName": "Polygon zkEVM",
         "address": "0x6a3aE286a7b403932d4361A9F9069EaA32656065"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0xF64C9A5077C4dfc660DFa55E684427e5B109FcD1"
       }
     ]
   },
