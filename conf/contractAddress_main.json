@@ -32,6 +32,11 @@
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
         "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x7CB4DF5651221Ea433f7fFAE43593F8b9DE2BcD2"
       }
     ]
   },
@@ -68,6 +73,11 @@
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
         "address": "0xe3f80B82ef0de5b6C779f008B79FD96fA27EE6C7"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x3B6a47f6369e4Ab0a1c477b830dfC95f46E49f07"
       }
     ]
   },
@@ -129,6 +139,11 @@
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
         "address": "0xa4213F4606bc3E8358748c3BdecC2F0d27364F47"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x6a3aE286a7b403932d4361A9F9069EaA32656065"
       }
     ]
   },
