@@ -34,6 +34,11 @@
         "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
       },
       {
+        "chainId": 57000,
+        "chainName": "Rollux Testnet",
+        "address": "0xB44257926FC5EFD6Df94783A8B4f011c6BF64767"
+      },
+      {
         "chainId": 1101,
         "chainName": "Polygon zkEVM",
         "address": "0x7CB4DF5651221Ea433f7fFAE43593F8b9DE2BcD2"
@@ -148,7 +153,12 @@
       {
         "chainId": 57,
         "chainName": "Syscoin Mainnet",
-        "address": "0xa4213F4606bc3E8358748c3BdecC2F0d27364F47"
+        "address": "0x748eF6Ac94148AC23Df596Fd1a60E47D56e0C4e4"
+      },
+      {
+        "chainId": 57000,
+        "chainName": "Rollux Testnet",
+        "address": "0x2A38a4E713317887DD693e6813f606842a585a7e"
       },
       {
         "chainId": 1101,
