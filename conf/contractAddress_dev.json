@@ -72,6 +72,16 @@
         "chainId": 57000,
         "chainName": "Rollux Testnet",
         "address": "0x01E06d112B316c418c46B89471135504F86B2798"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x0Ec08Ab7bA6BbDFcB8F597e6E4dA915F2a4B0931"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0xEF7815fa68204C8924885E907D27040623baE024"
       }
     ]
   },
@@ -138,6 +148,16 @@
         "chainId": 57000,
         "chainName": "Rollux Testnet",
         "address": "0x5522FA7Cddf6a5E19944F68ec9F2802ae5fC0a9B"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x5A88B212c80d5B0C0a14800D760dD594eDc5c3Ea"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0x023F31C4B5d22d40c56F6ccFf54dA10EfC627FAE"
       }
     ]
   },
@@ -239,6 +259,16 @@
         "chainId": 57000,
         "chainName": "Rollux Testnet",
         "address": "0xCad5f778b1285bFD01bD0bc754cdd325a82df396"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x65449a070868B26374b456252aD752Af5607c73e"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0x0Ec08Ab7bA6BbDFcB8F597e6E4dA915F2a4B0931"
       }
     ]
   },
