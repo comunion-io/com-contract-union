@@ -99,18 +99,22 @@ contract CrowdfundingFactory is Ownable {
         return address(store);
     }
 
+    // Add the router address whitelist of the exchange
     function addToDexRouters(address _router) public onlyOwner {
         dexRouters.addToWhitelist(_router);
     }
 
+    // Determine whether the exchange router is in the whitelist
     function isDexRouters(address _router) public view returns (bool) {
         return dexRouters.isWhitelisted(_router);
     }
 
+    // Remove an exchange router from the whitelist
     function removeFromDexRouters(address _router) public onlyOwner {
         dexRouters.removeFromWhitelist(_router);
     }
 
+    // Set up fee collector
     function setFeeTo(address _feeTo) external {
         if (msg.sender != feeToSetter) {
             revert Unauthorized(msg.sender);
@@ -118,6 +122,7 @@ contract CrowdfundingFactory is Ownable {
         feeTo = _feeTo;
     }
 
+    // Set up fee collector administrator
     function setFeeToSetter(address _feeToSetter) external {
         if (msg.sender != feeToSetter || msg.sender != owner()) {
             revert Unauthorized(msg.sender);
@@ -125,6 +130,7 @@ contract CrowdfundingFactory is Ownable {
         feeToSetter = _feeToSetter;
     }
 
+    // Set signers for transfer liquidity
     function setTransferSigner(address _transferSigner) external onlyOwner {
         transferSigner = _transferSigner;
     }
@@ -510,6 +516,7 @@ contract Crowdfunding is Ownable, EIP712 {
         emit Remove(msg.sender, status);
     }
 
+    // Only end time can be updated
     function updateParas(
         // uint256 _buyPrice,
         // uint16 _swapPercent,
@@ -639,6 +646,7 @@ contract Crowdfunding is Ownable, EIP712 {
 
     function renounceOwnership() public override onlyOwner {}
 
+    // Transfer liquidity to the configured exchange
     function transferToLiquidity(
         address _router,
         uint256 _amountA,
@@ -711,6 +719,7 @@ contract Crowdfunding is Ownable, EIP712 {
         return (success, result);
     }
 
+    // Get signature hash
     function getHash(
         address _router,
         uint256 _amountA,
@@ -731,6 +740,7 @@ contract Crowdfunding is Ownable, EIP712 {
             );
     }
 
+    // Verify signature hash
     function _verify(
         address _signer,
         bytes32 _hash,
@@ -739,6 +749,7 @@ contract Crowdfunding is Ownable, EIP712 {
         return ECDSA.recover(_hash, _signature) == _signer;
     }
 
+    // take fee
     function _takeFee() internal returns (bool) {
         uint256 fee = _buyBalance().mul(ifactory.fee()).div(10000);
         bool ok;
